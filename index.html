@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+    <!-- Meta Information -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angular JS Form IO</title>
+
+    <!-- External Stylesheets -->
+    <link rel="stylesheet" href="dist/formio.full.min.css" />
+    <link rel="stylesheet" href="dist/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uswds/2.6.0/css/uswds.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.1.0/daterangepicker.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="styles/uswds.css">
+    <link rel="stylesheet" href="styles/style.css" />
+
+    <!-- Custom Component Styles -->
+    <link rel="stylesheet" href="custom-components/Star-Rating/StarRatingComponent.css" />
+    <link rel="stylesheet" href="custom-components/Geo-Location/GeolocationComponent.css" />
+    <link rel="stylesheet" href="custom-components/Slider/SliderComponent.css" />
+    <link rel="stylesheet" href="custom-components/Enable-Disable/EnableDisableComponent.css" />
+    <link rel="stylesheet" href="custom-components/Web-Cam/WebcamComponent.css" />
+    <link rel="stylesheet" href="custom-components/QR-Code/QRCodeComponent.css" />
+    <link rel="stylesheet" href="custom-components/Contact/ContactComponent.css" />
+    <link rel="stylesheet" href="custom-components/Age-Calculator/AgeCalculatorComponent.css" />
+    <link rel="stylesheet" href="custom-components/Transportation-And-Expense-Table/transportationAndExpenseTable.css" />
+    <link rel="stylesheet" href="custom-components/Personal-Details/PersonalDetails.css" />
+    <link rel="stylesheet" href="custom-components/Schedule-Table/scheduleTable.css" />
+    <link rel="stylesheet" href="custom-components/DateRangePicker/dateRangePicker.css" />
+    <link rel="stylesheet" href="custom-components/ExtendedDatePicker/dateRangePicker.css" />
+
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <!-- Navigation Links -->
+        <a ui-sref="form-builder">Form Builder</a>
+        <a ui-sref="form-preview">Form Preview</a>
+        <a ui-sref="pre-generated-form-preview">Pre-generated Form Preview</a>
+    </nav>
+
+    <!-- Content View -->
+    <div class="row col-md-12">
+        <div class="container">
+            <!-- Angular UI Router View (Dynamic Content) -->
+            <div ui-view></div>
+        </div>
+    </div>
+
+    <!-- External Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.1.0/daterangepicker.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.min.js"></script>
+
+    <!-- FormIO Contrib Scripts -->
+    <!-- <script src="https://unpkg.com/@formio/contrib@latest/dist/formio-contrib.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/@formio/contrib@latest/dist/formio-contrib.css"> -->
+
+    <!-- Custom JavaScript Libraries -->
+    <script src="dist/formio.full.min.js"></script>
+    <script src="dist/ckeditor.js"></script>
+    <script src="dist/signature_pad.min.js"></script>
+    <script src="dist/ngFormBuilder-full.js"></script>
+    <script src="dist/angular-json-explorer.min.js"></script>
+
+    <!-- Custom Component Scripts -->
+    <script src="custom-components/Star-Rating/StarRatingComponent.js"></script>
+    <script src="custom-components/Slider/SliderComponent.js"></script>
+    <script src="custom-components/Enable-Disable/EnableDisableComponent.js"></script>
+    <script src="custom-components/Web-Cam/WebcamComponent.js"></script>
+    <script src="custom-components/Contact/ContactComponent.js"></script>
+    <script src="custom-components/Age-Calculator/AgeCalculatorComponent.js"></script>
+    <script src="custom-components/QR-Code/QRCodeComponent.js"></script>
+    <script src="custom-components/Transportation-And-Expense-Table/transportationAndExpenseTable.js"></script>
+    <script src="custom-components/Personal-Details/PersonalDetails.js"></script>
+    <script src="custom-components/Schedule-Table/scheduleTable.js"></script>
+    <script src="custom-components/DateRangePicker/dateRangePicker.js"></script>
+    <script src="custom-components/ExtendedDatePicker/dateRangePicker.js"></script>
+    <script src="custom-components/Data-Grid-Footer/dataGridFooter.js"></script>
+
+    <!-- Google Maps API (for Geo-location) -->
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk&callback=initMap"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk&libraries=places"></script> -->
+
+    <!-- Additional Custom Components (Geo-location and Custom Textfield) -->
+    <script src="custom-components/Geo-Location/GeolocationComponent.js"></script>
+    <script src="custom-components/Custom Textfield/customtextfield.js"></script>
+
+    <!-- Static Files (Form Schemas, etc.) -->
+    <script src="Static-Files/builder-options.js"></script>
+    <!-- Uncomment if schema files are needed -->
+    <!-- <script src="Static-Files/form-schema-1.js"></script> -->
+    <!-- <script src="Static-Files/form-schema-2.js"></script> -->
+    <!-- <script src="Static-Files/form-schema-3.js"></script> -->
+    <!-- <script src="Static-Files/form-schema-4.js"></script> -->
+    <script src="Static-Files/form-shutcho-shinsei.js"></script>
+
+    <!-- Application Scripts -->
+    <script src="app.js"></script>
+    <script src="app-routes.js"></script>
+    <script src="controllers/FormIOController.js"></script>
+    <script src="controllers/FormPreviewController.js"></script>
+    <script src="controllers/PreGeneratedFormPreviewController.js"></script>
+
+    <!-- FormIO Contrib Initialization -->
+    <!-- <script type="text/javascript">
+        Formio.use(FormioContrib);
+    </script> -->
+
+    <!-- Angular Translation Module -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-translate/2.18.4/angular-translate.min.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,1 @@
+var app = angular.module('myApp', ["ngRoute", "ui.router", "ui.bootstrap", "ui.select", "formio", "ngFormBuilder", "ngJsonExplorer"]);

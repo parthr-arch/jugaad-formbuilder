@@ -1,0 +1,23 @@
+<div ng-controller="FormIOController as formio">
+    <div class="">
+        <h2>{{formio.title}} Form Builder with Preview and Submit</h2>
+        <div id="formio"></div>
+        <div id="builder"></div>
+        <div class="form-actions">
+            <button class="btn btn-save" ng-click="saveForm()">Save Form</button>
+            <button class="btn btn-primary" ng-click="previewFormLink()">Preview Form</button>
+            <button class="btn btn-reset" ng-click="resetForm()">Reset Form</button>
+            <!-- <button ng-click="exportPDF()">Export PDF</button> -->
+            <!-- <button class="btn btn-primary" ng-click="previewForm()">Preview Form</button> -->
+            <!-- <button class="btn btn-default" ng-click="previewFormPreBuildedForm()">Pre-Builded Form Preview</button> -->
+        </div>
+        <div id="preview"></div>
+        <div class="form-actions" ng-if="formRendered">
+            <button class="btn btn-save" ng-click="submitForm()">Submit Form</button>
+            <button class="btn-reset" ng-click="resetPreview()">Reset Preview</button>
+        </div>
+        <div ng-if="formRendered" class="form-actions">
+            <button class="btn btn-save" ng-click="externalSubmit()">External Submit Button</button>
+        </div>
+    </div>
+</div>
