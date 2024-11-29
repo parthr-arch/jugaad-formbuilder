@@ -1,0 +1,45 @@
+/* Enable/Disable Toggle Button Styles */
+.enable-disable-component {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .enable-disable-component label {
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .enable-disable-component input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 50px;
+    height: 25px;
+    background-color: #ccc;
+    border-radius: 15px;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  .enable-disable-component input[type="checkbox"]::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 21px;
+    height: 21px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+  }
+  
+  .enable-disable-component input[type="checkbox"]:checked {
+    background-color: #4caf50;
+  }
+  
+  .enable-disable-component input[type="checkbox"]:checked::before {
+    transform: translateX(25px);
+  }
+  

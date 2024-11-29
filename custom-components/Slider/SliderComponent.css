@@ -1,0 +1,80 @@
+/* Slider Component Styles */
+.slider-component {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: Arial, sans-serif; /* Ensuring font consistency */
+}
+
+/* Label Style */
+.slider-component label {
+  font-size: 14px;
+  color: #333;
+  margin-right: 10px; /* Space between label and slider */
+}
+
+/* Slider Input */
+.slider-component input[type="range"] {
+  -webkit-appearance: none; /* For Safari */
+  appearance: none; /* General for all browsers */
+  width: 200px;
+  height: 8px;
+  background: #ddd;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  /* Added padding for better touch targets in mobile view */
+  padding: 0 10px;
+  box-sizing: content-box; 
+}
+
+/* Slider Track */
+.slider-component input[type="range"]::-webkit-slider-runnable-track {
+  height: 8px;
+  background: #ddd;
+  border-radius: 5px;
+}
+
+.slider-component input[type="range"]::-moz-range-track {
+  height: 8px;
+  background: #ddd;
+  border-radius: 5px;
+}
+
+/* Slider Thumb */
+.slider-component input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #4caf50;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: -6px;
+}
+
+.slider-component input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #4caf50;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+/* Hover and Focus Effects */
+.slider-component input[type="range"]:hover::-webkit-slider-thumb,
+.slider-component input[type="range"]:focus::-webkit-slider-thumb,
+.slider-component input[type="range"]:hover::-moz-range-thumb,
+.slider-component input[type="range"]:focus::-moz-range-thumb {
+  background: #66bb6a; /* Darker green on hover/focus */
+}
+
+/* Displaying the Current Value */
+.slider-component span {
+  font-size: 14px;
+  color: #333;
+  margin-left: 10px; /* Space between slider and value */
+}
