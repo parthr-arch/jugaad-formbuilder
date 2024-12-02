@@ -40,7 +40,7 @@ h2 {
 }
 
 /* Buttons */
-.btn {
+/* .btn {
   padding: 10px 15px;
   border: none;
   border-radius: 5px;
@@ -67,7 +67,7 @@ h2 {
   color: #78909c;
   transition: 0.3s ease;
   text-align: left;
-}
+} */
 
 /* Builder Component List */
 .formio-builder-component-list {

@@ -1,23 +1,40 @@
-<div ng-controller="FormIOController as formio">
-    <div class="">
-        <h2>{{formio.title}} Form Builder with Preview and Submit</h2>
-        <div id="formio"></div>
-        <div id="builder"></div>
-        <div class="form-actions">
-            <button class="btn btn-save" ng-click="saveForm()">Save Form</button>
-            <button class="btn btn-primary" ng-click="previewFormLink()">Preview Form</button>
-            <button class="btn btn-reset" ng-click="resetForm()">Reset Form</button>
-            <!-- <button ng-click="exportPDF()">Export PDF</button> -->
-            <!-- <button class="btn btn-primary" ng-click="previewForm()">Preview Form</button> -->
-            <!-- <button class="btn btn-default" ng-click="previewFormPreBuildedForm()">Pre-Builded Form Preview</button> -->
-        </div>
-        <div id="preview"></div>
-        <div class="form-actions" ng-if="formRendered">
-            <button class="btn btn-save" ng-click="submitForm()">Submit Form</button>
-            <button class="btn-reset" ng-click="resetPreview()">Reset Preview</button>
-        </div>
-        <div ng-if="formRendered" class="form-actions">
-            <button class="btn btn-save" ng-click="externalSubmit()">External Submit Button</button>
+<div ng-controller="FormIOController as formio" class="container mt-4">
+    <!-- <button ng-click="changeLanguage('en')" >English</button>
+    <button ng-click="changeLanguage('jp')" >Japanese</button> -->
+    <div class="card">
+        <div class="card-body">
+            <div id="formio" class="mb-3"  ng-show="isDivVisible"></div>
+            <div id="builder" class="mb-3"  ng-show="isDivVisible"></div>
+            <div class="form-actions mb-3">
+                <button class="btn btn-success" ng-click="saveForm()">Save Form</button>
+                <button class="btn btn-info" ng-click="previewFormLink()">Preview Form</button>
+                <button class="btn btn-secondary" ng-click="resetForm()">Reset Form</button>
+            </div>
+            <div id="preview" class="mb-3"></div>
+            <div ng-if="formRendered" class="form-actions mb-3">
+                <button class="btn btn-primary" ng-click="submitForm()">Submit Form</button>
+                <button class="btn btn-danger" ng-click="resetPreview()">Reset Preview</button>
+            </div>
+            <div ng-if="formRendered" class="form-actions mb-3">
+                <button class="btn btn-warning" ng-click="externalSubmit()">External Submit Button</button>
+            </div>
         </div>
     </div>
 </div>
+
+<style>
+    .border {
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        background-color: #f8f9fa;
+    }
+    .text-center {
+        text-align: center;
+    }
+    .mt-4 {
+        margin-top: 1.5rem;
+    }
+    .mb-3 {
+        margin-bottom: 1rem;
+    }
+</style>

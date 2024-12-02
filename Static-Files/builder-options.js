@@ -71,7 +71,7 @@ var builderOptions = {
                 "extendeddatepicker": true,
                 "customtextfield": true,
                 "textfield": true,
-                "dataGridFooter": true,
+                // "dataGridFooter": true,
                 
                 // "geoLocation": true,
             }
@@ -228,6 +228,60 @@ var builderOptions = {
                         },
                         weight: 10, // Controls the position of the dropdown
                         tooltip: 'This is a custom dropdown for your settings.',
+                    },
+                ],
+            },
+          
+        ],
+        "columns": [
+            {
+                key: 'display',
+                ignore: false,
+                components: [
+                    {
+                        type: 'select',
+                        input: true,
+                        key: 'customColumns',
+                        label: 'Custom Columns', // Label for the dropdown
+                        placeholder: 'Select column',
+                        dataSrc: 'values',
+                        data: {
+                            values: [
+                                { label: 'xs', value: 'xs' },
+                                { label: 'sm', value: 'sm' },
+                                { label: 'md', value: 'md' },
+                                { label: 'lg', value: 'lg' },
+                                { label: 'xl', value: 'xl' },
+                            ]
+                        },
+                        weight: 10, // Controls the position of the dropdown
+                        tooltip: 'This is a custom columns for your settings.',
+                    },
+                    {
+                        type: 'select',
+                        input: true,
+                        key: 'customBlocks',
+                        label: 'Custom Blocks', // Label for the dropdown
+                        placeholder: 'Select blocks',
+                        dataSrc: 'values',
+                        data: {
+                            values: [
+                                { label: '1', value: '1' },
+                                { label: '2', value: '2' },
+                                { label: '3', value: '3' },
+                                { label: '4', value: '4' },
+                                { label: '5', value: '5' },
+                                { label: '6', value: '6' },
+                                { label: '7', value: '7' },
+                                { label: '8', value: '8' },
+                                { label: '9', value: '9' },
+                                { label: '10', value: '10' },
+                                { label: '11', value: '11' },
+                                { label: '12', value: '12' },
+                            ]
+                        },
+                        weight: 10, // Controls the position of the dropdown
+                        tooltip: 'This is a custom block for your settings.',
                     },
                 ],
             },

@@ -12,14 +12,14 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
             builder.emit('change', builder.schema);
         });
 
-        builder.on('saveComponent', function(schema) {
+        builder.on('saveComponent', function (schema) {
             // Log the schema on component save (if needed)
-            // $log.debug('Component saved:', schema);
+            $log.debug('Component saved:', schema);
         });
 
         builder.on('change', function (schema) {
             // Log schema changes
-            // $log.debug('Form Schema Changed:', schema);
+            $log.debug('Form Schema Changed:', schema);
             $rootScope.formSchema = schema;
             if (!$rootScope.$$phase) {
                 $rootScope.$apply();
@@ -92,11 +92,11 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
     // Reset the form builder
     $rootScope.resetForm = function () {
         Formio.builder(document.getElementById('builder'), {}, {})
-            .then(function(builder) {
+            .then(function (builder) {
                 // Reset logic if needed after re-initialization
                 // $log.debug('Form Builder Reset.');
             })
-            .catch(function(error) {
+            .catch(function (error) {
                 // $log.error('Error resetting form builder:', error);
             });
     };
@@ -186,4 +186,59 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
                 // $log.error('Error rendering pre-built form preview:', error);
             });
     };
+
+    // Initial state of the div
+    $scope.isDivVisible = true;
+
+    // Function to hide the div for 3 seconds
+    // $scope.changeLanguage = function (language) {
+    //     builderOptions.language = language
+    //     // document.getElementById('formio').style.display = 'none';
+    //     // document.getElementById('builder').style.display = 'none';
+
+    //     // // $scope.isDivVisible = false; // Hide the div
+    //     // $timeout(function () {
+    //     //     $scope.isDivVisible = true; // Show the div after 3 seconds
+    //     // document.getElementById('formio').style.display = 'block';
+    //     // document.getElementById('builder').style.display = 'block';
+
+    //     // }, 1000); // 3000 milliseconds = 3 seconds
+    //     console.log(builderOptions);
+    //     $scope.reloadScripts();
+
+    // };
+
+    // $scope.reloadScripts = function () {
+    //     // Array of script URLs to reload
+    //     const scriptUrls = [
+    //     //   'app.js', // Add more script URLs as needed
+    //     //   'app-routes.js', // Add more script URLs as needed
+    //     //   'controllers/FormIOController.js', // Add more script URLs as needed
+    //     //   'controllers/FormPreviewController.js', // Add more script URLs as needed
+    //     //   'controllers/PreGeneratedFormPreviewController.js', // Add more script URLs as needed
+    //     ];
+    //     // Remove existing scripts
+    //     scriptUrls.forEach((url) => {
+    //       const existingScript = document.querySelector(`script[src="${url}"]`);
+    //       if (existingScript) {
+    //         existingScript.remove();
+    //       }
+    //     });
+    
+    //     // Dynamically reload scripts
+    //     scriptUrls.forEach((url) => {
+    //       const scriptElement = document.createElement('script');
+    //       scriptElement.src = url;
+    //       scriptElement.type = 'text/javascript';
+    //       scriptElement.onload = () => console.log(`${url} loaded successfully.`);
+    //       document.body.appendChild(scriptElement);
+    //     });
+    //   };
+
+    //   $state.go('pre-generated-form-preview');
+    //   $timeout(function () {
+    //         $state.go('form-builder');
+    //     }, 1000);
+    
+
 });
