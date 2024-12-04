@@ -1,24 +1,106 @@
 // Pre Generated Form Preview Controller
-app.controller('PreGeneratedFormPreviewController', function ($scope, $rootScope, formioComponents, $timeout, $window, $document) {
+app.controller('PreGeneratedFormPreviewController', function ($scope, $rootScope, formioComponents, $timeout, $window, $document, $state) {
     $rootScope.formRendered = false;
-    $rootScope.previewFormPreBuildedForm = function () {
-        var previewElement = document.getElementById('preview');
-        previewElement.innerHTML = '';
-        Formio.createForm(previewElement, formSchema)
-            .then(function (form) {
-                $rootScope.formSchema = form
-                $rootScope.formInstance = form;
-                $rootScope.formRendered = true;
-                if (!$rootScope.$$phase) {
-                    $rootScope.$apply();
-                }
-                console.log('Form Preview Rendered:', form);
-            })
-            .catch(function (error) {
-                console.error('Error rendering form preview:', error);
-                console.log('Error rendering form preview. Please check the console for details.');
-            });
-    }
+    $rootScope.SelectedLanguage;
+    // $rootScope.previewFormPreBuildedForm = function () {
+    //     var previewElement = document.getElementById('preview');
+    //     previewElement.innerHTML = '';
+    //     formSchema = {
+    //         components: [
+    //           {
+    //             type: 'textfield',
+    //             key: 'firstName',
+    //             label: 'First Name',
+    //             placeholder: 'Enter your first name',
+    //             input: true
+    //           },
+    //           {
+    //             type: 'textfield',
+    //             key: 'lastName',
+    //             label: 'Last Name',
+    //             placeholder: 'Enter your last name',
+    //             input: true
+    //           },
+    //           {
+    //             type: 'survey',
+    //             key: 'questions',
+    //             label: 'Survey',
+    //             values: [
+    //               {
+    //                 label: 'Great',
+    //                 value: 'great'
+    //               },
+    //               {
+    //                 label: 'Good',
+    //                 value: 'good'
+    //               },
+    //               {
+    //                 label: 'Poor',
+    //                 value: 'poor'
+    //               }
+    //             ],
+    //             questions: [
+    //               {
+    //                 label: 'How would you rate the Form.io platform?',
+    //                 value: 'howWouldYouRateTheFormIoPlatform'
+    //               },
+    //               {
+    //                 label: 'How was Customer Support?',
+    //                 value: 'howWasCustomerSupport'
+    //               },
+    //               {
+    //                 label: 'Overall Experience?',
+    //                 value: 'overallExperience'
+    //               }
+    //             ]
+    //           },
+    //           {
+    //             type: 'button',
+    //             action: 'submit',
+    //             label: 'Submit',
+    //             theme: 'primary'
+    //           }
+    //         ]
+    //       }, {
+    //         language: 'jp',
+    //         i18n: {
+    //           sp: {
+    //             'First Name': 'Nombre de pila',
+    //             'Last Name': 'Apellido',
+    //             'Enter your first name': 'Ponga su primer nombre',
+    //             'Enter your last name': 'Introduce tu apellido',
+    //             'How would you rate the Form.io platform?': '¿Cómo calificaría la plataforma Form.io?',
+    //             'How was Customer Support?': '¿Cómo fue el servicio de atención al cliente?',
+    //             'Overall Experience?': '¿Experiencia general?',
+    //             Survey: 'Encuesta',
+    //             Excellent: 'Excelente',
+    //             Great: 'Estupendo',
+    //             Good: 'Bueno',
+    //             Average: 'Promedio',
+    //             Poor: 'Pobre',
+    //             'Submit': 'Enviar',
+    //             complete: 'Presentación Completa',
+    //           },
+    //           ch: {
+    //             'First Name': '名字',
+    //             'Last Name': '姓',
+    //             'Enter your first name': '输入你的名字',
+    //             'Enter your last name': '输入你的姓氏',
+    //             'How would you rate the Form.io platform?': '你如何评价Form.io平台？',
+    //             'How was Customer Support?': '客户支持如何？',
+    //             'Overall Experience?': '总体体验？',
+    //              Survey: '调查',
+    //             Excellent: '优秀',
+    //             Great: '大',
+    //             Good: '好',
+    //             Average: '平均',
+    //             Poor: '错',
+    //             'Submit': '提交',
+    //             complete: '提交完成',
+    //           }
+    //         }
+    //     };
+    // }
 
     // Export PDF functionality
     $rootScope.exportPDF = function () {
@@ -102,6 +184,8 @@ app.controller('PreGeneratedFormPreviewController', function ($scope, $rootScope
         { "template": "Static-Files/wizard-form.js", "displayName": "Wizard Form" },
         { "template": "Static-Files/attandance.js", "displayName": "Attandance Form" },
         { "template": "Static-Files/calculate-grid.js", "displayName": "Grid Calculate Form" },
+        { "template": "Static-Files/translation-form.js", "displayName": "Multi-Language Form" },
+       
         
     ];
 
@@ -164,6 +248,55 @@ app.controller('PreGeneratedFormPreviewController', function ($scope, $rootScope
           return;
         }
       };
+      
 
+      $rootScope.formRendered = false;
+      $rootScope.SelectedLanguage = 'en'; // Default language
+  
+      $rootScope.previewFormPreBuildedForm = function () {
+          var previewElement = document.getElementById('preview');
+          previewElement.innerHTML = '';
+        
+        console.log(formSchema);
+        
+        debugger;
+          Formio.createForm(previewElement, formSchema, languageSupport).then(function (form) {
+            console.log($rootScope);
+            console.log($scope);
+              form.language = $rootScope.SelectedLanguage; // Set the selected language
+              $rootScope.formInstance = form; // Save the form instance
+              $rootScope.formRendered = true;
+              form.redraw(); // Ensure the form re-renders with the new language
+              $rootScope.formSchema = form
+              $rootScope.formInstance = form;
+              $rootScope.formRendered = true;
+              if (!$rootScope.$$phase) {
+                  $rootScope.$apply();
+              }
+
+              $scope.setLanguage = function(lang) {
+                form.language = lang;
+              };
+              console.log('Form Preview Rendered:', form);
+          }).catch(function (error) {
+            console.error('Error rendering form preview:', error);
+            console.log('Error rendering form preview. Please check the console for details.');
+      });
+      };
+  
+      $scope.changeLanguage = function (language) {
+          $rootScope.SelectedLanguage = language;
+          builderOptions.language = language;
+          $rootScope.formRendered = false;
+          $scope.SelectedLanguage = language;
+          debugger;
+        //   if ($rootScope.formInstance) {
+        //     $rootScope.formInstance.language = language; // Change language dynamically
+        //     $rootScope.formInstance.redraw(); // Re-render the form
+        // } else {
+        //     $rootScope.previewFormPreBuildedForm(); // Render form if not already initialized
+        // }
+          $rootScope.previewFormPreBuildedForm(); // Re-render the form
+      };
 
 });
