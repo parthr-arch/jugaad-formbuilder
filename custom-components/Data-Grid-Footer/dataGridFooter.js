@@ -148,7 +148,7 @@
                             (component) => component.type === 'dataGridFooter'
                         );
                         const updatedGrid = changed.changed?.instance?.component?.type === 'datagrid' ? changed.changed?.instance?.component : changed.changed?.instance?.parent?.component;
-                        fetchComponentDetail?.filter(component => component.dropdown1 === updatedGrid.key || component.component?.dropdown1 === updatedGrid.key)?.forEach((gridComponent) => {
+                        fetchComponentDetail?.filter(component => component.dropdown1 === updatedGrid?.key || component.component?.dropdown1 === updatedGrid?.key)?.forEach((gridComponent) => {
                             gridComponent = gridComponent?.dropdown1 ? gridComponent : gridComponent.component
                             const selectedDataGridKey = gridComponent?.dropdown1 // Key from dropdown1
                             const selectedColumnKey = gridComponent?.dropdown2 // Key from dropdown2
