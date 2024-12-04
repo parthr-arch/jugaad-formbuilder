@@ -32,7 +32,10 @@
     render(content) {
       if(registeredId.includes(this.id)){
         const existingElement = document.getElementById(this.id);
-        return `<div class="extended-datepicker-component">${existingElement?.outerHTML}</div>`
+        if(existingElement){
+          return `<div class="extended-datepicker-component">${existingElement?.outerHTML}</div>`
+        }
+        
       }
       return super.render(`
         <div class="extended-datepicker-component">

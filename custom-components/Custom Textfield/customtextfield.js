@@ -45,7 +45,10 @@
       
       if(registeredId.includes(this.id)){
         const existingElement = document.getElementById(this.id);
-        return super.render(`<div class="custom-textfield-component">${existingElement?.outerHTML}</div>`);
+        if(existingElement){
+          return super.render(`<div class="custom-textfield-component">${existingElement?.outerHTML}</div>`);
+        }
+        
       }
 
       return super.render(`
