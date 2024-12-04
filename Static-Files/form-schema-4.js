@@ -57,3 +57,4 @@ var formSchema = {
   "clearOnHide": true,
   "tableView": true
 }
+var languageSupport= {};

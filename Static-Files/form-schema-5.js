@@ -318,3 +318,4 @@ var formSchema =
             }
         ]
     }
+    var languageSupport= {};
