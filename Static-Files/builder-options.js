@@ -73,7 +73,7 @@ var builderOptions = {
                 "textfield": true,
                 "columnsLayout": true,
 
-                // "dataGridFooter": true,
+                "dataGridFooter": true,
                 
                 // "geoLocation": true,
             }
