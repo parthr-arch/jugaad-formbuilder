@@ -24,7 +24,7 @@ var formSchema = {
                 { label: 'Poor', value: 'poor' }
             ],
             questions: [
-                { label: 'How would you rate the Form.io platform?', value: 'howWouldYouRateTheFormIoPlatform' },
+                { label: 'How would you rate the platform?', value: 'howWouldYouRateTheFormIoPlatform' },
                 { label: 'How was Customer Support?', value: 'howWasCustomerSupport' },
                 { label: 'Overall Experience?', value: 'overallExperience' }
             ]
@@ -51,7 +51,7 @@ var languageSupport = {
             'Great': 'Great',
             'Good': 'Good',
             'Poor': 'Poor',
-            'How would you rate the Form.io platform?': 'How would you rate the Form.io platform?',
+            'How would you rate the platform?': 'How would you rate the platform?',
             'How was Customer Support?': 'How was Customer Support?',
             'Overall Experience?': 'Overall Experience?'
         },
@@ -65,7 +65,7 @@ var languageSupport = {
             'Great': '素晴らしい',
             'Good': '良い',
             'Poor': '悪い',
-            'How would you rate the Form.io platform?': 'Form.ioプラットフォームをどう評価しますか？',
+            'How would you rate the platform?': 'プラットフォームをどう評価しますか？',
             'How was Customer Support?': 'カスタマーサポートはいかがでしたか？',
             'Overall Experience?': '全体的な体験はどうでしたか？'
         }
