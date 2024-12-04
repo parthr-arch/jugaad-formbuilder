@@ -8,11 +8,7 @@ app.controller('FormIOController', function($scope, $rootScope, formioComponents
     $rootScope.formBuildercomponent;
     $rootScope.formBuildercomponentSchema;
     Formio.builder(document.getElementById('builder'), {}, builderOptions).then(function(builder) {
-      console.log(builder);
-      console.log($rootScope);
-      console.log(formioComponents);
-      console.log(Formio);
-
+      
       $rootScope.formBuilder = builder;
       builder.on('addComponent', (component) => {
         builder.emit('change', builder.schema);
@@ -82,7 +78,6 @@ app.controller('FormIOController', function($scope, $rootScope, formioComponents
       $state.go('form-preview');
     };
     $rootScope.resetForm = function() {
-      debugger;
       Formio.builder(document.getElementById('builder'), {}, builderOptions)
         .then(function(builder) {
           console.log('Form Builder Reset.');
@@ -94,7 +89,6 @@ app.controller('FormIOController', function($scope, $rootScope, formioComponents
     $rootScope.resetPreview = function() {
       document.getElementById('preview').innerHTML = '';
       $rootScope.formRendered = false;
-      console.log('Preview Reset.');
     };
     $rootScope.exportPDF = function() {
       html2canvas(document.querySelector("#preview"), {
@@ -168,16 +162,14 @@ app.controller('FormIOController', function($scope, $rootScope, formioComponents
       }
       Formio.builder(document.getElementById('builder'), $scope.formDefinition, $scope.builderOptions).then(function(builder) {
         $scope.formBuilder = builder;
-        console.log("Form builder reinitialized successfully.");
         $rootScope.resetForm();
       });
     };
     $scope.changeLanguage = function(language) {
       builderOptions.language = language;
       $rootScope.formBuilder.i18next.language = language;
-      console.log(Formio);
-      console.log($rootScope);
+     
+      console.log("$rootScope.formBuilder", $rootScope.formBuilder);
       $scope.initializeBuilder();
-      $state.reload()
     };
   });
