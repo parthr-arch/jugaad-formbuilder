@@ -162,7 +162,7 @@
 
                                 const dataGridElement = document.getElementById(updatedGrid?.id);
 
-                                const table = dataGridElement.querySelector('table.datagrid-table');
+                                const table = dataGridElement?.querySelector('table.datagrid-table');
 
                                 if (table) {
                                     const getSumColumn = document.getElementById(gridComponent?.dropdown2)
@@ -174,7 +174,7 @@
                         });
                         if(changed.changed?.instance?.parent?.type === 'form'){
                             const dataGridElement = document.getElementById(updatedGrid?.id);
-                            const table = dataGridElement.querySelector('table.datagrid-table');
+                            const table = dataGridElement?.querySelector('table.datagrid-table');
                             const tfoot = table.querySelector('tfoot');
 
                             if (tfoot) {
