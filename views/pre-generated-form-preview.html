@@ -20,6 +20,11 @@
 <div class="">
     <div class="container">
         <!-- <div id="preview" class="border p-3"></div> -->
-        <div id="preview"></div>
+        <div id="preview" ></div>
+        <div ng-if="formRendered && selectedScript" class="form-actions mb-3">
+            <button class="btn btn-primary d-inline-block" ng-click="submitForm()">Submit Form</button>
+            <!-- <button class="btn btn-danger d-inline-block" ng-click="resetPreview()">Reset Preview</button> -->
+            <!-- <button class="btn btn-warning d-inline-block" ng-click="externalSubmit()">External Submit Button</button> -->
+        </div>
     </div>
 </div>

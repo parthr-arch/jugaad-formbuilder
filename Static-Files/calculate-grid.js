@@ -1,70 +1,81 @@
-var formSchema = {
-    "components": [
-      {
-        "type": "table",
-        "label": "My Table",
-        "key": "table",
-        "input": true,
-        "tableView": true,
-        "columns": [
+var formSchema  = {
+  components: [
+    {
+      type: 'table',
+      input: false,
+      numRows: 3,
+      numCols: 2,
+      key: 'tableData',
+      rows: [
+        [
           {
-            "label": "Column 1",
-            "key": "column1",
-            "input": true,
-            "type": "number",
-            "validate": {
-              "required": true
-            }
+            components: [
+              {
+                type: 'number',
+                key: 'value1',
+                label: 'Value 1',
+                input: true,
+                validate: { required: true },
+              },
+            ],
           },
           {
-            "label": "Column 2",
-            "key": "column2",
-            "input": true,
-            "type": "number",
-            "validate": {
-              "required": true
-            }
-          }
+            components: [
+              {
+                type: 'number',
+                key: 'value2',
+                label: 'Value 2',
+                input: true,
+                validate: { required: true },
+              },
+            ],
+          },
         ],
-        "footer": [
+        [
           {
-            "label": "Total Column 1",
-            "key": "totalColumn1",
-            "type": "number",
-            "input": false,
-            "defaultValue": 0
+            components: [
+              {
+                type: 'number',
+                key: 'value1',
+                label: 'Value 1',
+                input: true,
+              },
+            ],
           },
           {
-            "label": "Total Column 2",
-            "key": "totalColumn2",
-            "type": "number",
-            "input": false,
-            "defaultValue": 0
-          }
-        ]
-      }
-    ],
-    "logic": [
-      {
-        "name": "Sum Columns",
-        "trigger": {
-          "type": "event",
-          "event": "change",
-          "component": "table"
-        },
-        "actions": [
+            components: [
+              {
+                type: 'number',
+                key: 'value2',
+                label: 'Value 2',
+                input: true,
+              },
+            ],
+          },
+        ],
+      ],
+      footer: [
+        [
           {
-            "name": "Calculate Total Column 1",
-            "action": "custom",
-            "custom": "var totalColumn1 = 0; form.table.data.forEach(function(row) { if (row.column1) totalColumn1 += row.column1; }); form.totalColumn1 = totalColumn1;"
+            components: [
+              {
+                type: 'html',
+                tag: 'p',
+                content: `<strong>Total:</strong> <span id="totalValue1">0</span>`,
+              },
+            ],
           },
           {
-            "name": "Calculate Total Column 2",
-            "action": "custom",
-            "custom": "var totalColumn2 = 0; form.table.data.forEach(function(row) { if (row.column2) totalColumn2 += row.column2; }); form.totalColumn2 = totalColumn2;"
-          }
-        ]
-      }
-    ]
-  }
-  
+            components: [
+              {
+                type: 'html',
+                tag: 'p',
+                content: `<strong>Total:</strong> <span id="totalValue2">0</span>`,
+              },
+            ],
+          },
+        ],
+      ],
+    },
+  ],
+};

@@ -1,7 +1,6 @@
 // Pre Generated Form Preview Controller
 app.controller('PreGeneratedFormPreviewController', function ($scope, $rootScope, formioComponents, $timeout, $window, $document) {
-    $rootScope.message = "Jugaad Pre generated Forms!";
-    // Preview Pre-Builded form functionality
+    $rootScope.formRendered = false;
     $rootScope.previewFormPreBuildedForm = function () {
         var previewElement = document.getElementById('preview');
         previewElement.innerHTML = '';
@@ -13,24 +12,20 @@ app.controller('PreGeneratedFormPreviewController', function ($scope, $rootScope
                 if (!$rootScope.$$phase) {
                     $rootScope.$apply();
                 }
-                // console.log('Form Preview Rendered:', form);
+                console.log('Form Preview Rendered:', form);
             })
             .catch(function (error) {
-                // console.error('Error rendering form preview:', error);
-                // console.log('Error rendering form preview. Please check the console for details.');
+                console.error('Error rendering form preview:', error);
+                console.log('Error rendering form preview. Please check the console for details.');
             });
     }
 
     // Export PDF functionality
     $rootScope.exportPDF = function () {
-        // Select all tfoot elements in all tables within the form
         const allTfootElements = document.querySelectorAll("table.table.datagrid-table tfoot");
-
-        // Hide all tfoot elements
         allTfootElements.forEach((tfoot) => {
-            tfoot.style.display = "none"; // Hide the tfoot
+            tfoot.style.display = "none"; 
         });
-
         html2canvas(document.querySelector("#preview"), {
             scale: 2,
             useCORS: true,
@@ -49,13 +44,11 @@ app.controller('PreGeneratedFormPreviewController', function ($scope, $rootScope
                 unit: 'mm',
                 format: 'a4'
             });
-
             const pageWidth = pdf.internal.pageSize.getWidth();
             const pageHeight = pdf.internal.pageSize.getHeight();
             const margin = 10;
             const imgWidth = pageWidth - 2 * margin;
             const contentHeightPerPage = (canvas.width / imgWidth) * (pageHeight - 2 * margin);
-
             let currentY = 0;
             const canvasHeight = canvas.height;
 
@@ -86,14 +79,11 @@ app.controller('PreGeneratedFormPreviewController', function ($scope, $rootScope
             }
 
             pdf.save('form.pdf');
-
-            // Restore the visibility of tfoot elements
             allTfootElements.forEach((tfoot) => {
                 tfoot.style.display = ""; // Make the tfoot visible again
             });
         }).catch(err => {
             console.error('Error generating PDF:', err);
-            // Restore the visibility of tfoot elements
             allTfootElements.forEach((tfoot) => {
                 tfoot.style.display = ""; // Make the tfoot visible again
             });
@@ -111,7 +101,7 @@ app.controller('PreGeneratedFormPreviewController', function ($scope, $rootScope
         { "template": "Static-Files/complex-calc.js", "displayName": "Complex Form" },
         { "template": "Static-Files/wizard-form.js", "displayName": "Wizard Form" },
         { "template": "Static-Files/attandance.js", "displayName": "Attandance Form" },
-        // { "template": "Static-Files/calculate-grid.js", "displayName": "Grid Calculate Form" },
+        { "template": "Static-Files/calculate-grid.js", "displayName": "Grid Calculate Form" },
         
     ];
 
@@ -143,10 +133,37 @@ app.controller('PreGeneratedFormPreviewController', function ($scope, $rootScope
         angular.forEach(scripts, function (script) {
             if (script.id !== currentTemplate) {
                 script.parentNode.removeChild(script);
-                // console.log(`${script.id} removed.`);
+                console.log(`${script.id} removed.`);
             }
         });
     };
+
+    $rootScope.saveForm = function() {
+        console.debug('Form Schema Saved:', $rootScope.formSchema);
+      };
+      $rootScope.submitForm = function() {
+        // console.debug('Form submitted:', $rootScope.formSchema);
+        console.debug('Form data:', $rootScope.formSchema._data);
+      };
+      $rootScope.resetPreview = function() {
+        document.getElementById('preview').innerHTML = '';
+        $rootScope.formRendered = false;
+        console.debug('Preview Reset.');
+      };
+      $rootScope.externalSubmit = function() {
+        if ($rootScope.formInstance) {
+          $rootScope.formInstance.submit().then(function(submission) {
+            console.debug('External Submission:', submission);
+            return;
+          }).catch(function(error) {
+            console.error('Submission Error:', error);
+            return;
+          });
+        } else {
+          console.warn('Form instance not available for external submission.');
+          return;
+        }
+      };
 
 
 });

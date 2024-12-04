@@ -159,3 +159,8 @@ nav a {
     outline: none;
     background-color: #fff; /* Ensure background is white */
 }
+
+.formio-form .form-group .radio {
+  display: inline-block; /* Display radio buttons in a line */
+  margin-right: 15px;     /* Optional: Space between radio buttons */
+}
