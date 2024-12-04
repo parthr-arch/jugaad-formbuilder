@@ -69,14 +69,6 @@
             const dataGridToBindKey = this.component?.dropdown1;
             const findDataGridComponentDetail = this.parent.components.find(component => component.key === dataGridToBindKey)
 
-            // Debounce function to limit rapid calls
-            const debounce = (func, delay) => {
-                let timer;
-                return (...args) => {
-                    clearTimeout(timer);
-                    timer = setTimeout(() => func(...args), delay);
-                };
-            };
             
             setTimeout(() => {
                 const parentDiv = document.getElementById(findDataGridComponentDetail?.id); // Replace 'ek7b3dr' with the actual ID if different
@@ -87,10 +79,11 @@
                     if (table) {
                         // Select the <tfoot> element of the table
                         const tfoot = table.querySelector('tfoot');
-
-                        if (tfoot) {
+                        const checkForExistingRow = tfoot.querySelector('tr');
+                        if (tfoot && checkForExistingRow?.getAttribute('id') !== `${dataGridToBindKey}-footer`) {
                             // Create a new <tr> element
                             const newRow = document.createElement('tr');
+                            newRow.setAttribute('id', `${dataGridToBindKey}-footer`)
 
                             // Create and populate <td> elements for the new row
                             const columns = [{key: '', label: '合計金額'}];
@@ -176,10 +169,11 @@
                             const dataGridElement = document.getElementById(updatedGrid?.id);
                             const table = dataGridElement?.querySelector('table.datagrid-table');
                             const tfoot = table.querySelector('tfoot');
-
-                            if (tfoot) {
+                            const checkForExistingRow = tfoot.querySelector('tr');
+                            if (tfoot && checkForExistingRow?.getAttribute('id') !== `${updatedGrid?.key}-footer`) {
                                 // Create a new <tr> element
-                                const newRow = document.createElement('tr');
+                                const newRow = document.createElement('tr');   
+                                newRow.setAttribute('id', `${updatedGrid?.key}-footer`)
 
                                 // Create and populate <td> elements for the new row
                                 const columns = [{key: '', label: '合計金額'}];
