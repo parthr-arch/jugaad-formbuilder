@@ -53,7 +53,7 @@
 
     attach(element) {
       super.attach(element);
-
+      console.log("document.getElementById(this.id)",document.getElementById(this.id))
       const containerElement = document.getElementById(this.id);
       const outputElement = document.getElementById(`${this.id}-output`);
 
@@ -115,10 +115,11 @@
     
       // Clear previous bindings
       // $(containerElement).off();
-    
+      console.log("Here it is ", pickerType)
       switch (pickerType) {
         case 'daterangepicker':
-          if(registeredId.includes(this.id)){
+          const getElement = document.getElementById(this.id)?.querySelector('span')
+          if(registeredId.includes(this.id) && getElement?.innerText !== 'Select Date'){
             break;
           }
           registeredId.push(this.id);
