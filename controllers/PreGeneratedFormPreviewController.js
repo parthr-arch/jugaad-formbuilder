@@ -123,6 +123,10 @@ app.controller('PreGeneratedFormPreviewController', function ($scope, $rootScope
                 script.id = selectedTemplate; // Assign the script's name as its ID
                 $document[0].body.appendChild(script);
                 // console.log(`${selectedTemplate} loaded.`);
+
+                setTimeout(() => {
+                    $rootScope.previewFormPreBuildedForm()
+                }, 100)
             }
         }
     };
