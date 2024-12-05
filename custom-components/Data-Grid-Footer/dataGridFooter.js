@@ -228,8 +228,6 @@
                 .filter((field) => field.type === 'textfield' || field.type === 'number')
                 .map((field) => ({ label: field.key, value: field.key }));
 
-            console.log('Updating dropdown 2 options:', columnList);
-
             // Update dropdown2's options dynamically
             const dropdown2 = editFormComponents.components.find((comp) => comp.key === 'dropdown2');
             if (dropdown2) {

@@ -81,7 +81,6 @@
             },
             (error) => {
               locationOutput.value = 'Error getting location';
-              console.error(error);
             }
           );
         } else {

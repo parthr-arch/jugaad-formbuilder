@@ -122,7 +122,6 @@ class MyComponent extends Input {
          * reference to that object.
          */
         this.addEventListener(this.refs.customRef, 'click', () => {
-            // console.log('Custom Ref has been clicked!!!');        
         });
         return super.attach(element);
     }

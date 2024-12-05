@@ -66,7 +66,6 @@
       const infoElement = document.getElementById(`${this.id}-info`);
 
       if (!inputElement) {
-        // console.error("Input element not found for custom text field.");
         return;
       }
 
@@ -74,7 +73,6 @@
       const linkedDatePickerKey = this.component.linkedDatePicker;
 
       if (!linkedDatePickerKey) {
-        // console.warn("No linked date picker specified.");
         // infoElement.textContent = "No linked date picker selected.";
         return;
       }
@@ -115,7 +113,6 @@
             const allTextField = document.getElementById(parentComponent.id).querySelectorAll('.days-count')
             if(allTextField.length > 0){
               data[parentComponent?.key].forEach((record, index) => {
-                // console.log(customTextField);
                 const days = moment(record[customTextField.linkedDatePicker]?.endDate).diff(moment(record[customTextField.linkedDatePicker]?.startDate), 'days');
                 allTextField[index].value = days;
                 allTextField[index].setAttribute("value", days)
@@ -208,7 +205,6 @@
           weight: 20,
           tooltip: 'Select a date picker to link with this text field.',
           onChange: function (value) {
-            // console.log(value);
           }
         }
       );

@@ -22,8 +22,6 @@ app.controller('FormIOController', function (
     Formio.builder(document.getElementById('builder'), {}, builderOptions)
       .then((builder) => {
         $rootScope.formBuilder = builder;
-        debugger;
-
         // Events for Form Builder
         builder.on('addComponent', (component) => {
           builder.emit('change', builder.schema);
@@ -31,12 +29,10 @@ app.controller('FormIOController', function (
         });
 
         builder.on('saveComponent', (schema) => {
-          console.log('Component saved:', schema);
           $rootScope.formBuildercomponentSchema = schema;
         });
 
         builder.on('change', (schema) => {
-          console.log('Form Schema Changed:', schema);
           $rootScope.formSchema = schema;
 
           if (!$rootScope.$$phase) {
@@ -45,7 +41,6 @@ app.controller('FormIOController', function (
         });
       })
       .catch((error) => {
-        console.error("Error initializing Formio builder:", error);
       });
   };
 
@@ -58,7 +53,6 @@ app.controller('FormIOController', function (
       !$rootScope.formSchema.components ||
       $rootScope.formSchema.components.length === 0
     ) {
-      console.warn('No components to preview.');
       return;
     }
 
@@ -80,7 +74,6 @@ app.controller('FormIOController', function (
         };
       })
       .catch((error) => {
-        console.error('Error rendering form preview:', error);
       });
   };
 
@@ -90,16 +83,13 @@ app.controller('FormIOController', function (
 
     Formio.createForm(previewElement, formSchema)
       .then((form) => {
-        console.log('Pre-built Form Preview Rendered:', form);
       })
       .catch((error) => {
-        console.error('Error rendering pre-built form preview:', error);
       });
   };
 
   // --- Form Submission ---
   $rootScope.submitForm = function () {
-    console.log('Form submitted:', $rootScope.formSchema);
   };
 
   $rootScope.externalSubmit = function () {
@@ -107,24 +97,19 @@ app.controller('FormIOController', function (
       $rootScope.formInstance
         .submit()
         .then((submission) => {
-          console.log('External Submission:', submission);
         })
         .catch((error) => {
-          console.error('Submission Error:', error);
         });
     } else {
-      console.warn('Form instance not available for external submission.');
     }
   };
 
   // --- Form Management ---
   $rootScope.saveForm = function () {
-    console.log('Form Schema Saved:', $rootScope.formSchema);
   };
 
   $rootScope.resetForm = function () {
     initializeFormBuilder();
-    console.log('Form Builder Reset.');
   };
 
   $rootScope.resetPreview = function () {
@@ -138,7 +123,6 @@ app.controller('FormIOController', function (
     // if ($rootScope.formBuilder && $rootScope.formBuilder.i18next) {
     //   $rootScope.formBuilder.i18next.language = language;
     // }
-    // console.log("Language changed to:", language);
     $scope.initializeBuilder();
     initializeFormBuilder();
   };
@@ -147,7 +131,6 @@ app.controller('FormIOController', function (
   $rootScope.exportPDF = function () {
     const previewElement = document.querySelector("#preview");
     if (!previewElement) {
-      console.warn("Preview element not found.");
       return;
     }
 
@@ -198,14 +181,12 @@ app.controller('FormIOController', function (
         pdf.save('form.pdf');
       })
       .catch((err) => {
-        console.error('Error generating PDF:', err);
       });
   };
 
   // --- Event Handling ---
   $rootScope.$on('formSubmission', (err, submission) => {
     if (err) {
-      console.error('Error in form submission event:', err);
     } else {
       jQuery('#jsonview').JSONView(submission);
     }
@@ -229,7 +210,6 @@ app.controller('FormIOController', function (
         $rootScope.resetForm();
       })
       .catch((error) => {
-        console.error('Error initializing builder:', error);
       });
   };
 });

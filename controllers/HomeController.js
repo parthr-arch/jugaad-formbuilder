@@ -6,7 +6,6 @@ app.controller('HomeController', function ($scope, $rootScope, formioComponents,
     // Function to handle potential errors
     function handleError(error) {
         // Log the error for debugging purposes
-        // console.log('An error occurred:', error);
         // Optionally, you can show an alert or update the UI to inform the user
         $scope.errorMessage = "An unexpected error occurred. Please try again later.";
     }

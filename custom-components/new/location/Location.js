@@ -108,7 +108,6 @@ export default class LocationComponent extends TextFieldComponent {
       autocomplete.addListener('place_changed', () => {
         const place = autocomplete.getPlace();
         if (!place.geometry) {
-          // console.log('Autocomplete\'s returned place contains no geometry');
           return;
         }
 
@@ -149,11 +148,9 @@ export default class LocationComponent extends TextFieldComponent {
             this.setValue(results[0].formatted_address);
           }
           else {
-            // console.log('No results found');
           }
         }
         else {
-          // console.log(`Geocoder failed due to: ${status}`);
         }
       });
     });

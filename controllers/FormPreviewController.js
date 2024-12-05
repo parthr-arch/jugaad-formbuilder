@@ -7,7 +7,6 @@ app.controller('FormPreviewController', function ($scope, $rootScope, formioComp
     $rootScope.previewForm = function () {
         // Check if form schema is valid
         if (!$rootScope.formSchema || !$rootScope.formSchema.components || $rootScope.formSchema.components.length === 0) {
-            console.error('Please add components to the form before previewing.');
             return;
         }
 
@@ -24,8 +23,6 @@ app.controller('FormPreviewController', function ($scope, $rootScope, formioComp
                 }
             })
             .catch(function (error) {
-                console.error('Error rendering form preview:', error);
-                alert('Error rendering form preview. Please check the console for details.');
             });
     };
 
@@ -94,8 +91,6 @@ app.controller('FormPreviewController', function ($scope, $rootScope, formioComp
 
             pdf.save('form.pdf');
         }).catch(err => {
-            console.error('Error generating PDF:', err);
-            alert('Error generating PDF. Please check the console for details.');
         });
     };
 });

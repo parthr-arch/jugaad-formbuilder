@@ -48,7 +48,6 @@
       const inputElement = document.getElementById(elementId);
 
       if (!inputElement) {
-        console.error(`Element with ID ${elementId} not found.`);
         return;
       }
 
