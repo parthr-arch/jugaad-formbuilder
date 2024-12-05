@@ -874,4 +874,3 @@ var formSchema = {
   // }
   ]
 }
-var languageSupport= {};
