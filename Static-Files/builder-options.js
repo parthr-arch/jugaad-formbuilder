@@ -284,6 +284,26 @@ var builderOptions = {
                         },
                         weight: 10, // Controls the position of the dropdown
                         tooltip: 'This is a custom block for your settings.',
+                        onChange: (event) => {
+                            if(event.data){
+                                const columnCount = 12/event.data.customBlocks
+                                if(event.data.columns.length > columnCount){
+                                event.data.columns = event.data.columns.splice(1).map(obj => ({...obj,currentWidth: event.data.customBlocks, width: event.data.customBlocks }))
+                                }
+                                if(event.data.columns.length < columnCount){
+                                event.data.columns = event.data.columns.map(obj => ({...obj,currentWidth: event.data.customBlocks, width: event.data.customBlocks }))
+                                event.data.columns.push({
+                                    components: [],
+                                    currentWidth: event.data.customBlocks,
+                                    offset: 0,
+                                    pull: 0,
+                                    push: 0,
+                                    size: "md",
+                                    width: event.data.customBlocks
+                                })
+                                }
+                            }
+                        }
                     },
                 ],
             },

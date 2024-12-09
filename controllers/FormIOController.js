@@ -49,8 +49,9 @@ app.controller('FormIOController', function (
         });
 
         builder.on('change', (schema) => {
-          $rootScope.formSchema = schema; // Store form schema on change
-
+           // Store form schema on change
+          $rootScope.formSchema = schema;
+            
           // Ensure AngularJS updates the view
           if (!$rootScope.$$phase) {
             $rootScope.$apply();
