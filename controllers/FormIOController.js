@@ -17,7 +17,7 @@ app.controller('FormIOController', function (
   $rootScope.formBuilder = null; // Stores the form builder instance
   $rootScope.formBuildercomponent = null; // Stores the most recently added form builder component
   $rootScope.formBuildercomponentSchema = null; // Stores the schema of the most recently saved component
-  
+
   // Array to hold saved forms
   $scope.savedForms = []; // List of forms stored in localStorage
 
@@ -310,4 +310,70 @@ app.controller('FormIOController', function (
     $state.reload();
     initializeFormBuilder(); // Reinitialize the form builder
   };
+
+  $scope.loadGoogleTranslate = function () {
+    // Check if the script is already loaded
+    if (!document.querySelector('script[src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"]')) {
+      var script = document.createElement('script');
+      script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+      document.body.appendChild(script);
+    }
+
+    // Check if the CSS is already applied
+    if (!document.querySelector('style#googleTranslateCSS')) {
+      var style = document.createElement('style');
+      style.id = 'googleTranslateCSS';
+      style.innerHTML = `
+        body { top: 0 !important; }
+       .goog-te-banner-frame { display: none !important; }
+       .goog-logo-link { display: none !important; }
+       .goog-te-gadget-simple img { display: none !important; }
+       #skiptranslate { display: none !important; }
+      `;
+      // style.innerHTML = `
+      //       iframe { visibility: hidden !important; }
+      //       body { top: 0 !important; }
+      //       #google_translate_element span { display: none !important; }
+      //       .goog-te-banner-frame { display: none !important; }
+      //       .goog-logo-link { display: none !important; }
+      //   `;
+      document.head.appendChild(style);
+    }
+
+            // Initialize the translate element once the script is loaded
+            window.googleTranslateElementInit = function () {
+              new google.translate.TranslateElement({
+                  pageLanguage: 'en',
+                  includedLanguages: 'en,ja',
+                  layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+              }, 'google_translate_element');
+          };
+
+          // Hide iframe if it becomes visible
+          $timeout(function() {
+              // var iframe = document.querySelector('iframe.skiptranslate');
+              // if (iframe && iframe.style.visibility === 'visible') {
+              //     iframe.style.visibility = 'hidden';
+              // }
+              var iframe2 = document.querySelector('iframe#goog-gt-tt');
+              if (iframe2 && iframe2.style.visibility === 'visible') {
+                  iframe2.style.visibility = 'hidden';
+              }
+              
+          }, 1000);
+  };
+
+  $scope.translatePage = function (language) {
+    debugger
+    var iframe = document.querySelector('iframe.goog-te-banner-frame');
+    if (iframe) {
+      var select = iframe.contentWindow.document.querySelector('select.goog-te-combo');
+      if (select) {
+        select.value = language;
+        select.dispatchEvent(new Event('change'));
+      }
+    }
+  };
+
+  $timeout($scope.loadGoogleTranslate, 0);
 });
