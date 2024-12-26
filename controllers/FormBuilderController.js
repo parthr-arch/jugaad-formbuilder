@@ -239,9 +239,9 @@ app.controller('FormIOController', function (
                     $rootScope.formSchema = $scope.selectedForm.schema;
                     $scope.form = builder;
                     if ($scope?.selectedForm?.data) {
-                        if (builder && builder.instance && builder.instance.submission) {
-                            builder.instance.submission = { data: $scope.selectedForm.data };
-                            console.log("Loaded data into the builder instance:", builder.instance.submission.data);
+                        if (builder && builder.submission) {
+                            builder.submission = { data: $scope.selectedForm.data };
+                            console.log("Loaded data into the builder instance:", builder.submission);
                         }
                     }
                 })
