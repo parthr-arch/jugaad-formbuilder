@@ -1,487 +1,367 @@
-var getData = [
-    { 'label': 'test1', 'value': 'value1' }
-];
-
 var builderOptions = {
-    "builder": {
-        "api": false,
-        "conditional": false,
-        "logic": false,
-        "layout": false,
-        "allComponents": {
-            "title": "Jugaad Components",
-            "weight": 0,
-            "default": true,
-            "components": {
-                "textarea": true,
-                "number": true,
-                "password": true,
-                "checkbox": true,
-                "select": true,
-                "radio": true,
-                "button": true,
-                "email": true,
-                "url": true,
-                "file": true,
-                "datetime": true,
-                "currency": false,
-                "survey": true,
-                "signature": true,
-                "day": true,
-                "time": true,
-                "resource": false,
-                "custom": false,
-                "hidden": false,
-                "htmlelement": true,
-                "content": false,
-                "panel": true,
-                "fieldset": true,
-                "well": false,
-                "columns": true,
-                "table": true,
-                "tabs": true,
-                "container": false,
-                "datagrid": true,
-                "editgrid": false,
-                "tree": false,
-                "selectboxes": true,
-                "tags": false,
-                "address": true,
-                "location": true,
-                "repeater": true,
-                "submit": false,
-                "reset": false,
-                "recaptcha": false,
-                "advancedselect": false,
-                "fileGrid": true,
-                "form": true,
-                "slider": true,
-                // "contact": false,
-                "enabledisable": true,
-                "starrating": true,
-                "webcam": true,
-                // "mycomponent": false,
-                // "transportationAndExpenseTable": true,
-                // "qrcode": true,
-                // "ageCalculator": false,
-                // "japaneseName": true,
-                // "scheduleTable": true,
-                "geolocation": true,
-                // "daterangepicker": false,
-                "extendeddatepicker": true,
-                "extendedtextarea": true,
-                "customtextfield": true,
-                "threecolumns": true,
-                "twocolumns": true,
-                "fourcolumns": true,
-                "textfield": true,
-                "columnsLayout": true,
-                "dataGridFooter": true,
-                "confirmemail": true,
-                "addressContainer": {
-                    "title": "Address",
-                    "key": "addressContainer",
-                    "schema": {
-                      "label": "Addresses",
-                      "type": "container",
-                      "key": "addressContainer",
-                      "input": true,
-                      "components": [
-                        {
-                          "label": "Postal Code",
-                          "key": "postalCode",
-                          "type": "textfield",
-                          "input": true
-                        },
-                        {
-                          "label": "Prefecture",
-                          "key": "prefecture",
-                          "type": "textfield",
-                          "input": true
-                        },
-                        {
-                          "label": "City",
-                          "key": "city",
-                          "type": "textfield",
-                          "input": true
-                        },
-                        {
-                          "label": "Address 1",
-                          "key": "addressone",
-                          "type": "textfield",
-                          "input": true
-                        },
-                        {
-                          "label": "Address 2",
-                          "key": "addresstwo",
-                          "type": "textfield",
-                          "input": true
-                        }, 
-                        {
-                          "label":"Full Address",
-                          "key":"fullAddress",
-                          "type":"textarea",
-                          "input":true
+    "builderOptions": {
+        "builder": {
+            "basic": {
+                "title": "Basic Components",
+                "weight": 0,
+                "components": {
+                    "textfield": true,
+                    "textarea": true,
+                    "addressContainer": {
+                        "title": "Address",
+                        "key": "addressContainer",
+                        "schema": {
+                          "label": "Addresses",
+                          "type": "container",
+                          "key": "addressContainer",
+                          "input": true,
+                          "components": [
+                            {
+                              "label": "Postal Code",
+                              "key": "postalCode",
+                              "type": "textfield",
+                              "input": true
+                            },
+                            {
+                              "label": "Prefecture",
+                              "key": "prefecture",
+                              "type": "textfield",
+                              "input": true
+                            },
+                            {
+                              "label": "City",
+                              "key": "city",
+                              "type": "textfield",
+                              "input": true
+                            },
+                            {
+                              "label": "Address 1",
+                              "key": "addressone",
+                              "type": "textfield",
+                              "input": true
+                            },
+                            {
+                              "label": "Address 2",
+                              "key": "addresstwo",
+                              "type": "textfield",
+                              "input": true
+                            }, 
+                            {
+                              "label":"Full Address",
+                              "key":"fullAddress",
+                              "type":"textarea",
+                              "input":true
+                            }
+          
+                          ]
                         }
-      
-                      ]
-                    }
-                  },
-                  "contactContainer": {
-                    "title": "Contact",
-                    "key": "contactContainer",
-                    "schema": {
-                      "label": "Contacts",
-                      "type": "container",
-                      "key": "contactContainer",
-                      "input": true,
-                      "components": [
+                      },
+                      "contactContainer": {
+                        "title": "Contact",
+                        "key": "contactContainer",
+                        "schema": {
+                          "label": "Contacts",
+                          "type": "container",
+                          "key": "contactContainer",
+                          "input": true,
+                          "components": [
+                            {
+                              "label": "Contact (Mobile)",
+                              "key": "contactMobile",
+                              "type": "textfield",
+                              "input": true
+                            },
+                            {
+                             "label": "Contact (landline)",
+                              "key": "contactLandline",
+                              "type": "textfield",
+                              "input": true
+                            }
+                          ]
+                        }
+                      },
+                    // "number": true,
+                    // "checkbox": true,
+                    // "select": true,
+                    // "button": true
+                }
+            },
+            // "advanced": {
+            //     "title": "Advanced Components",
+            //     "weight": 10,
+            //     "components": {
+            //         "password": true,
+            //         "email": true,
+            //         "url": true,
+            //         "currency": true,
+            //         "phoneNumber": true,
+            //         "signature": true,
+            //         "file": true
+            //     }
+            // },
+            // "layout": {
+            //     "title": "Layout Components",
+            //     "weight": 20,
+            //     "components": {
+            //         "columns": true,
+            //         "fieldset": true,
+            //         "panel": true,
+            //         "tabs": true,
+            //         "table": true,
+            //         "well": true
+            //     }
+            // },
+            // "data": {
+            //     "title": "Data Components",
+            //     "weight": 30,
+            //     "components": {
+            //         "datagrid": true,
+            //         "editgrid": true,
+            //         "dataMap": true,
+            //         "tree": true,
+            //         "hidden": true,
+            //         "resource": true
+            //     }
+            // },
+            // "custom": {
+            //     "title": "Custom Components",
+            //     "weight": 40,
+            //     "components": {}
+            // }
+        },
+        "placeholder": "Drag and drop components here",
+        "editForm": {
+            "textfield": [
+                {
+                    "key": "api",
+                    "ignore": true
+                },
+                {
+                    "key": "logic",
+                    "ignore": true
+                },
+                {
+                    "key": "conditional",
+                    "label": "Conditional Logic",
+                    "type": "panel",
+                    "components": []
+                },
+                {
+                    "key": "validation",
+                    "label": "Validation Settings",
+                    "type": "panel",
+                    "components": []
+                },
+                {
+                    "key": "appearance",
+                    "label": "Appearance Settings",
+                    "type": "panel",
+                    "components": []
+                }
+            ],
+            "textarea": [
+                {
+                    "key": "api",
+                    "ignore": true
+                },
+                {
+                    "key": "logic",
+                    "ignore": true
+                },
+                {
+                    "key": "conditional",
+                    "label": "Conditional Logic",
+                    "type": "panel",
+                    "components": []
+                },
+                {
+                    "key": "validation",
+                    "label": "Validation Settings",
+                    "type": "panel",
+                    "components": []
+                }
+            ],
+            "number": [
+                {
+                    "key": "api",
+                    "ignore": true
+                },
+                {
+                    "key": "logic",
+                    "ignore": true
+                },
+                {
+                    "key": "validation",
+                    "label": "Validation Settings",
+                    "type": "panel",
+                    "components": []
+                }
+            ],
+            "checkbox": [
+                {
+                    "key": "api",
+                    "ignore": true
+                },
+                {
+                    "key": "logic",
+                    "ignore": true
+                }
+            ],
+            "select": [
+                {
+                    "key": "api",
+                    "ignore": true
+                },
+                {
+                    "key": "logic",
+                    "ignore": true
+                },
+                {
+                    "key": "data",
+                    "label": "Data Source",
+                    "type": "panel",
+                    "components": []
+                }
+            ],
+            "button": [
+                {
+                    "key": "api",
+                    "ignore": true
+                },
+                {
+                    "key": "logic",
+                    "ignore": true
+                },
+                {
+                    "key": "display",
+                    "label": "Display Settings",
+                    "type": "panel",
+                    "components": [
                         {
-                          "label": "Contact (Mobile)",
-                          "key": "contactMobile",
-                          "type": "textfield",
-                          "input": true
+                            "key": "label",
+                            "type": "textfield",
+                            "label": "Label",
+                            "placeholder": "Enter button label",
+                            "tooltip": "Text displayed on the button"
                         },
                         {
-                         "label": "Contact (landline)",
-                          "key": "contactLandline",
-                          "type": "textfield",
-                          "input": true
+                            "key": "theme",
+                            "type": "select",
+                            "label": "Theme",
+                            "data": {
+                                "values": [
+                                    { "label": "Primary", "value": "primary" },
+                                    { "label": "Secondary", "value": "secondary" },
+                                    { "label": "Danger", "value": "danger" }
+                                ]
+                            },
+                            "tooltip": "Choose the button theme"
+                        },
+                        {
+                            "key": "size",
+                            "type": "select",
+                            "label": "Size",
+                            "data": {
+                                "values": [
+                                    { "label": "Small", "value": "small" },
+                                    { "label": "Medium", "value": "medium" },
+                                    { "label": "Large", "value": "large" }
+                                ]
+                            },
+                            "tooltip": "Set the button size"
                         }
-                      ]
-                    }
-                  },
-                // "geoLocation": true,
+                    ]
+                }
+            ]
+        },
+        "defaultConfig": {
+            "display": "form",
+            "components": []
+        },
+        "iconset": "fa",
+        "language": "en",
+        "i18n": {
+            "en": {
+                "Drag and drop components here": "Drag and drop components here",
+                "Basic Components": "Basic Components",
+                "Advanced Components": "Advanced Components",
+                "Layout Components": "Layout Components",
+                "Data Components": "Data Components",
+                "Custom Components": "Custom Components"
+            },
+            "es": {
+                "Drag and drop components here": "Arrastra y suelta los componentes aquí",
+                "Basic Components": "Componentes Básicos",
+                "Advanced Components": "Componentes Avanzados",
+                "Layout Components": "Componentes de Diseño",
+                "Data Components": "Componentes de Datos",
+                "Custom Components": "Componentes Personalizados"
             }
         },
-        // custom:{
-        //     title: 'Layout Controls',
-        //     weight:10,
-        //     components: {
-        //         "twocolumns": true,
-        //         "threecolumns": true,
-        //         "fourcolumns": true,
-        //         "fivecolumns": true,
-        //         "sixcolumns": true,
-        //     },
-        //     title: 'Layout Controls',
-        //     weight:10,
-        //     components: {
-        //         "twocolumns": true,
-        //         "threecolumns": true,
-        //         "fourcolumns": true,
-        //         "fivecolumns": true,
-        //         "sixcolumns": true,
-        //     }
-        // },
-        // custom: {
-        //     title: 'User Fields',
-        //     weight: 10,
-        //     components: {
-        //         firstName: {
-        //             title: 'First Name',
-        //             key: 'firstName',
-        //             icon: 'terminal',
-        //             schema: {
-        //                 label: 'First Name',
-        //                 type: 'textfield',
-        //                 key: 'firstName',
-        //                 input: true
-        //             }
-        //         },
-        //         lastName: {
-        //             title: 'Last Name',
-        //             key: 'lastName',
-        //             icon: 'terminal',
-        //             schema: {
-        //                 label: 'Last Name',
-        //                 type: 'textfield',
-        //                 key: 'lastName',
-        //                 input: true
-        //             }
-        //         },
-        //         email: {
-        //             title: 'Email',
-        //             key: 'email',
-        //             icon: 'at',
-        //             schema: {
-        //                 label: 'Email',
-        //                 type: 'email',
-        //                 key: 'email',
-        //                 input: true
-        //             }
-        //         },
-        //         phoneNumber: {
-        //             title: 'Mobile Phone',
-        //             key: 'mobilePhone',
-        //             icon: 'phone-square',
-        //             schema: {
-        //                 label: 'Mobile Phone',
-        //                 type: 'phoneNumber',
-        //                 key: 'mobilePhone',
-        //                 input: true
-        //             }
-        //         }
-        //     }
-        // },
-
-        "basic": false,
-        "advanced": false,
-        "data": false,
-        "premium": false
+        "customAttributes": {
+            "textfield": {
+                "maxlength": 255,
+                "minlength": 1,
+                "customClass": "custom-textfield",
+                "placeholder": "Enter text",
+                "tooltip": "This is a text field",
+                "defaultValue": "Default Text"
+            },
+            "textarea": {
+                "rows": 5,
+                "customClass": "custom-textarea",
+                "placeholder": "Enter long text",
+                "tooltip": "This is a text area",
+                "defaultValue": "Default Long Text"
+            },
+            "number": {
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "customClass": "custom-number",
+                "tooltip": "Enter a number between 0 and 100",
+                "defaultValue": 50
+            },
+            "checkbox": {
+                "customClass": "custom-checkbox",
+                "tooltip": "Check this box",
+                "defaultValue": false
+            },
+            "select": {
+                "customClass": "custom-select",
+                "tooltip": "Select an option",
+                "defaultValue": "",
+                "options": [
+                    { "label": "Option 1", "value": "option1" },
+                    { "label": "Option 2", "value": "option2" },
+                    { "label": "Option 3", "value": "option3" }
+                ]
+            },
+            "button": {
+                "customClass": "custom-button",
+                "tooltip": "Click this button",
+                "label": "Submit"
+            }
+        },
+        "additionalSettings": {
+            "theme": "bootstrap",
+            "validateOnInit": true,
+            "allowCalculateOverride": true,
+            "allowMultipleMasks": true,
+            "highlightErrors": true,
+            "saveDraft": true,
+            "autoFocus": true,
+            "buttonSettings": {
+                "showCancel": true,
+                "showNext": true,
+                "showPrevious": true
+            },
+            "disableAlerts": false,
+            "lazyLoad": true,
+            "readOnly": false,
+            "skipValidation": false
+        }
     },
-    "editForm": {
-        "textfield": [
-            {
-                key: 'api',
-                ignore: true
-            },
-            {
-                key: 'conditional',
-                ignore: true
-            },
-            {
-                key: 'layout',
-                ignore: true
-            },
-            {
-                key: 'logic',
-                ignore: true
-            },
-            {
-                key: 'validation',
-                ignore: true
-            },
-            {
-                key: 'data',
-                ignore: false
-            },
-            {
-                key: 'display',
-                ignore: false,
-                components: [
-                    {
-                        // You can ignore existing fields.
-                        key: 'placeholder',
-                        ignore: false,
-                    },
-                    {
-                        // Or add your own. The syntax is form.io component definitions.
-                        type: 'textfield',
-                        input: true,
-                        label: 'My Custom Setting',
-                        weight: 12,
-                        key: 'myCustomSetting', // This will be available as component.myCustomSetting
-                    },
-                    {
-                        type: 'select',
-                        input: true,
-                        key: 'customDropdown',
-                        label: 'Custom Dropdown', // Label for the dropdown
-                        placeholder: 'Select an option',
-                        dataSrc: 'values',
-                        data: {
-                            values: getData
-                        },
-                        weight: 10, // Controls the position of the dropdown
-                        tooltip: 'This is a custom dropdown for your settings.',
-                    }
-                ],
-            },
-            {
-                // Or add your own. The syntax is form.io component definitions.
-                type: 'textfield',
-                input: true,
-                label: 'My Custom Setting',
-                weight: 12,
-                key: 'myCustomSetting', // This will be available as component.myCustomSetting
-                ignore: false,
-                components: [
-                    {
-                        // You can ignore existing fields.
-                        key: 'placeholder',
-                        ignore: true,
-                    },
-                    {
-                        // Or add your own. The syntax is form.io component definitions.
-                        type: 'textfield',
-                        input: true,
-                        label: 'My Custom Setting',
-                        weight: 12,
-                        key: 'myCustomSetting', // This will be available as component.myCustomSetting
-                    },
-                    {
-                        type: 'select',
-                        input: true,
-                        key: 'customDropdown',
-                        label: 'Custom Dropdown', // Label for the dropdown
-                        placeholder: 'Select an option',
-                        dataSrc: 'values',
-                        data: {
-                            values: [
-                                { label: 'Option 1', value: 'option1' },
-                                { label: 'Option 2', value: 'option2' },
-                                { label: 'Option 3', value: 'option3' }
-                            ]
-                        },
-                        weight: 10, // Controls the position of the dropdown
-                        tooltip: 'This is a custom dropdown for your settings.',
-                    },
-                ],
-            },
-
-        ],
-        "columns": [
-            {
-                key: 'display',
-                ignore: false,
-                components: [
-                    {
-                        type: 'select',
-                        input: true,
-                        key: 'customColumns',
-                        label: 'Custom Columns', // Label for the dropdown
-                        placeholder: 'Select column',
-                        dataSrc: 'values',
-                        data: {
-                            values: [
-                                { label: 'xs', value: 'xs' },
-                                { label: 'sm', value: 'sm' },
-                                { label: 'md', value: 'md' },
-                                { label: 'lg', value: 'lg' },
-                                { label: 'xl', value: 'xl' },
-                            ]
-                        },
-                        weight: 10, // Controls the position of the dropdown
-                        tooltip: 'This is a custom columns for your settings.',
-                    },
-                    {
-                        type: 'select',
-                        input: true,
-                        key: 'customBlocks',
-                        label: 'Custom Blocks', // Label for the dropdown
-                        placeholder: 'Select blocks',
-                        dataSrc: 'values',
-                        data: {
-                            values: [
-                                { label: '1', value: '1' },
-                                { label: '2', value: '2' },
-                                { label: '3', value: '3' },
-                                { label: '4', value: '4' },
-                                { label: '5', value: '5' },
-                                { label: '6', value: '6' },
-                                { label: '7', value: '7' },
-                                { label: '8', value: '8' },
-                                { label: '9', value: '9' },
-                                { label: '10', value: '10' },
-                                { label: '11', value: '11' },
-                                { label: '12', value: '12' },
-                            ]
-                        },
-                        weight: 10, // Controls the position of the dropdown
-                        tooltip: 'This is a custom block for your settings.',
-                        onChange: (event) => {
-                            if (event.data) {
-                                const columnCount = 12 / event.data.customBlocks
-                                if (event.data.columns.length > columnCount) {
-                                    event.data.columns = event.data.columns.splice(1).map(obj => ({ ...obj, currentWidth: event.data.customBlocks, width: event.data.customBlocks }))
-                                }
-                                if (event.data.columns.length < columnCount) {
-                                    event.data.columns = event.data.columns.map(obj => ({ ...obj, currentWidth: event.data.customBlocks, width: event.data.customBlocks }))
-                                    event.data.columns.push({
-                                        components: [],
-                                        currentWidth: event.data.customBlocks,
-                                        offset: 0,
-                                        pull: 0,
-                                        push: 0,
-                                        size: "md",
-                                        width: event.data.customBlocks
-                                    })
-                                }
-                            }
-                        }
-                    },
-                ],
-            },
-        ]
-    },
-    //     "editForm": {
-    //     "textfield": [
-    //         {
-    //             "key": "display",
-    //             "ignore": false
-    //         },
-    //         {
-    //             "key": "username",
-    //             "ignore": false
-    //         },
-    //         {
-    //             "key": "email",
-    //             "ignore": false
-    //         },
-    //         {
-    //             "key": "password",
-    //             "ignore": false
-    //         }
-    //     ],
-    //     "dropdown": [
-    //         {
-    //             "key": "role",
-    //             "options": ["Admin", "User", "Guest"],
-    //             "ignore": false
-    //         },
-    //         {
-    //             "key": "status",
-    //             "options": ["Active", "Inactive"],
-    //             "ignore": false
-    //         }
-    //     ],
-    //     "checkbox": [
-    //         {
-    //             "key": "subscribe",
-    //             "ignore": false
-    //         },
-    //         {
-    //             "key": "terms",
-    //             "ignore": false
-    //         }
-    //     ],
-    //     "radio": [
-    //         {
-    //             "key": "gender",
-    //             "options": ["Male", "Female", "Other"],
-    //             "ignore": false
-    //         }
-    //     ],
-    //     "datepicker": [
-    //         {
-    //             "key": "dob",
-    //             "ignore": false
-    //         },
-    //         {
-    //             "key": "startDate",
-    //             "ignore": false
-    //         }
-    //     ],
-    //     "textarea": [
-    //         {
-    //             "key": "bio",
-    //             "ignore": false
-    //         }
-    //     ],
-    //     "fileUpload": [
-    //         {
-    //             "key": "profilePicture",
-    //             "ignore": false
-    //         }
-    //     ],
-    //     "hiddenFields": [
-    //         {
-    //             "key": "userId",
-    //             "ignore": true
-    //         }
-    //     ]
-    // },
     "language": "en",
     "i18n": {
         "en": {
@@ -879,5 +759,4 @@ var builderOptions = {
             "Transportation and Expense Table": "交通費および経費テーブル"
         }
     }
-
-};
+}

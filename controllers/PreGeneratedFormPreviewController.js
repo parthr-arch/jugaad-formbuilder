@@ -91,6 +91,14 @@ app.controller('PreGeneratedFormPreviewController', function($scope, $rootScope,
       "template": "Static-Files/translation-form.js",
       "displayName": "Multi-Language Form"
     },
+    {
+      "template": "Static-Files/all-data.js",
+      "displayName": "All Form"
+    },
+    {
+      "template": "Static-Files/form-schema-3.js",
+      "displayName": "form-schema-3"
+    },
   ];
   $scope.loadScript = function() {
     const selectedTemplate = $scope.selectedScript;
@@ -122,20 +130,29 @@ app.controller('PreGeneratedFormPreviewController', function($scope, $rootScope,
     $rootScope.formRendered = false;
   };
   $rootScope.externalSubmit = function() {
+    console.log("List of Form Schema component", $rootScope?.formSchema?.components);
+    console.log("List of Form Schema component", $rootScope?.formSchema?.changed?.instance?.parent?.root?.component?.components);
     if ($rootScope.formInstance) {
-      $rootScope.formInstance.submit().then(function(submission) {
-        return;
-      }).catch(function(error) {
-        return;
-      });
+      // If form instance exists, submit it
+      $rootScope.formInstance
+        .submit()
+        .then((submission) => {
+          console.log(submission);
+          // Handle successful submission
+        })
+        .catch((error) => {
+          // Handle submission error
+        });
     } else {
-      return;
+      // Handle case when form instance is not present
     }
   };
   $rootScope.previewFormPreBuildedForm = function() {
     var previewElement = document.getElementById('preview');
     previewElement.innerHTML = '';
     Formio.createForm(previewElement, formSchema, languageSupport).then(function(form) {
+      // console.log(form);
+      
       form.language = $rootScope.SelectedLanguage;
       $rootScope.formInstance = form;
       $rootScope.formRendered = true;
