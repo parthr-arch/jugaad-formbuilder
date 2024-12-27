@@ -54,6 +54,15 @@ label {
     margin-bottom: 0;
 }
 
+#preview input,
+#preview select,
+#preview textarea {
+    border: 1px solid #ccc;
+    box-shadow: none;
+    outline: none;
+    background-color: #fff; /* Ensure background is white */
+    padding:5px 10px !important
+}
 select {
     min-width: 180px;
 }

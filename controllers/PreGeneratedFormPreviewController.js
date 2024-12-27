@@ -4,65 +4,111 @@ app.controller('PreGeneratedFormPreviewController', function($scope, $rootScope,
   $scope.selectedScript = '';
   $rootScope.formRendered = false;
   $rootScope.SelectedLanguage = 'en';
-  $rootScope.exportPDF = function() {
-    const allTfootElements = document.querySelectorAll("table.table.datagrid-table tfoot");
-    allTfootElements.forEach((tfoot) => {
-      tfoot.style.display = "none";
-    });
-    html2canvas(document.querySelector("#preview"), {
-      scale: 2,
-      useCORS: true,
-      onclone: (clonedDoc) => {
-        const formElements = clonedDoc.querySelectorAll("input, select, textarea");
-        formElements.forEach((element) => {
-          element.style.border = "1px solid #ccc";
-          element.style.backgroundColor = "#fff";
-          element.style.boxShadow = "none";
-        });
-      },
-    }).then(canvas => {
-      const pdf = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4'
-      });
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const pageHeight = pdf.internal.pageSize.getHeight();
-      const margin = 10;
-      const imgWidth = pageWidth - 2 * margin;
-      const contentHeightPerPage = (canvas.width / imgWidth) * (pageHeight - 2 * margin);
-      let currentY = 0;
-      const canvasHeight = canvas.height;
-      while (currentY < canvasHeight) {
-        const nextY = Math.min(currentY + contentHeightPerPage, canvasHeight);
-        const canvasSection = document.createElement('canvas');
-        canvasSection.width = canvas.width;
-        canvasSection.height = nextY - currentY;
-        const sectionCtx = canvasSection.getContext('2d');
-        sectionCtx.drawImage(
-          canvas,
-          0, currentY,
-          canvas.width, nextY - currentY,
-          0, 0,
-          canvas.width, nextY - currentY
-        );
-        const dataURL = canvasSection.toDataURL("image/jpeg", 1.0);
-        if (currentY > 0) {
-          pdf.addPage();
+
+  $rootScope.exportPDF = async function() {
+    const pdf = new jsPDF();
+      // IDs to include in the PDF  
+      const elementIds = $rootScope.formSchema.components.map(record => record.component.id); // Modify this array to include the IDs you want
+      
+      let yPosition = 10; // Initial Y offset
+
+      elementIds.forEach((id, index) => {
+        const element = document.getElementById(id);
+
+        if (element) {
+            // Convert the element to a canvas
+            html2canvas(element, {
+              scale:2,
+              useCORS: true, // Allow cross-origin content
+              logging: true, // Enable logging to debug
+              width: element.scrollWidth, // Ensure full width is captured
+              height: element.scrollHeight,
+            }).then((canvas) => {
+                const imgData = canvas.toDataURL('image/png');
+                const imgWidth = 190; // Width of the image in the PDF
+                const pageHeight = 290; // Height of a page in the PDF
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+                // Check if we need a new page
+                if (yPosition + imgHeight > pageHeight) {
+                    pdf.addPage();
+                    yPosition = 10; // Reset the position for new page
+                }
+
+                // Add the image to the PDF
+                pdf.addImage(imgData, 'PNG', 10, yPosition, imgWidth, imgHeight);
+                yPosition += imgHeight + 2; // Update Y position for next content
+
+                // Save the PDF after the last element
+                if (index === elementIds.length - 1) {
+                    pdf.save("form-export.pdf");
+                }
+            });
+        } else {
+            console.warn(`Element with ID '${id}' not found.`);
         }
-        pdf.addImage(dataURL, 'JPEG', margin, margin, imgWidth, (imgWidth * canvasSection.height) / canvas.width);
-        currentY = nextY;
-      }
-      pdf.save('form.pdf');
-      allTfootElements.forEach((tfoot) => {
-        tfoot.style.display = "";
-      });
-    }).catch(err => {
-      allTfootElements.forEach((tfoot) => {
-        tfoot.style.display = "";
-      });
     });
-  };
+          
+  }
+  // $rootScope.exportPDF = function() {
+  //   const allTfootElements = document.querySelectorAll("table.table.datagrid-table tfoot");
+  //   allTfootElements.forEach((tfoot) => {
+  //     tfoot.style.display = "none";
+  //   });
+  //   html2canvas(document.querySelector("#preview"), {
+  //     scale: 2,
+  //     useCORS: true,
+  //     onclone: (clonedDoc) => {
+  //       const formElements = clonedDoc.querySelectorAll("input, select, textarea");
+  //       formElements.forEach((element) => {
+  //         element.style.border = "1px solid #ccc";
+  //         element.style.backgroundColor = "#fff";
+  //         element.style.boxShadow = "none";
+  //       });
+  //     },
+  //   }).then(canvas => {
+  //     const pdf = new jsPDF({
+  //       orientation: 'portrait',
+  //       unit: 'mm',
+  //       format: 'a4'
+  //     });
+  //     const pageWidth = pdf.internal.pageSize.getWidth();
+  //     const pageHeight = pdf.internal.pageSize.getHeight();
+  //     const margin = 10;
+  //     const imgWidth = pageWidth - 2 * margin;
+  //     const contentHeightPerPage = (canvas.width / imgWidth) * (pageHeight - 2 * margin);
+  //     let currentY = 0;
+  //     const canvasHeight = canvas.height;
+  //     while (currentY < canvasHeight) {
+  //       const nextY = Math.min(currentY + contentHeightPerPage, canvasHeight);
+  //       const canvasSection = document.createElement('canvas');
+  //       canvasSection.width = canvas.width;
+  //       canvasSection.height = nextY - currentY;
+  //       const sectionCtx = canvasSection.getContext('2d');
+  //       sectionCtx.drawImage(
+  //         canvas,
+  //         0, currentY,
+  //         canvas.width, nextY - currentY,
+  //         0, 0,
+  //         canvas.width, nextY - currentY
+  //       );
+  //       const dataURL = canvasSection.toDataURL("image/jpeg", 1.0);
+  //       if (currentY > 0) {
+  //         pdf.addPage();
+  //       }
+  //       pdf.addImage(dataURL, 'JPEG', margin, margin, imgWidth, (imgWidth * canvasSection.height) / canvas.width);
+  //       currentY = nextY;
+  //     }
+  //     pdf.save('form.pdf');
+  //     allTfootElements.forEach((tfoot) => {
+  //       tfoot.style.display = "";
+  //     });
+  //   }).catch(err => {
+  //     allTfootElements.forEach((tfoot) => {
+  //       tfoot.style.display = "";
+  //     });
+  //   });
+  // };
   $scope.scripts = [{
       "template": "Static-Files/form-schema-4.js",
       "displayName": "Simple Calulation"
