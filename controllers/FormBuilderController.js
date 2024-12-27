@@ -47,9 +47,21 @@ app.controller('FormIOController', function (
         return currentY;
     };
 
+    $scope.initializeFormBuilderSchema = {
+        components: [
+            {
+                type: 'panel',
+                label: 'Section',
+                title: 'Section',
+                key: 'section',
+                components: []
+            }
+        ]
+    };
+
     // Initialize form builder
     const initializeFormBuilder = () => {
-        Formio.builder(document.getElementById('builder'), {}, builderOptions)
+        Formio.builder(document.getElementById('builder'), $scope.initializeFormBuilderSchema, builderOptions)
             .then((builder) => {
                 $rootScope.formBuilder = builder; // Store the builder instance
                 $scope.form = builder; // Store builder in scope
@@ -59,7 +71,7 @@ app.controller('FormIOController', function (
                         builder.submission = { data: $scope.selectedForm.data };
                         console.log("Loaded data into the builder instance:", builder.instance.submission.data);
                     }
-                }   
+                }
 
                 // Add event listeners for form builder actions
                 builder.on('addComponent', (component) => {
@@ -77,6 +89,55 @@ app.controller('FormIOController', function (
                         $rootScope.$apply();
                     }
                 });
+
+                builder.on('removeComponent', (component) => {
+                    console.log('Component removed:', component);
+                });
+
+                builder.on('editComponent', (component) => {
+                    console.log('Editing component:', component);
+                });
+
+                builder.on('updateComponent', (component) => {
+                    console.log('Component updated:', component);
+                });
+
+                builder.on('saveDraft', () => {
+                    console.log('Draft saved');
+                });
+
+                builder.on('resetDraft', () => {
+                    console.log('Draft reset');
+                });
+
+                builder.on('cancelComponent', () => {
+                    console.log('Component editing canceled');
+                });
+
+                builder.on('submit', (submission) => {
+                    console.log('Form submitted:', submission);
+                });
+
+                builder.on('error', (error) => {
+                    console.log('Error occurred:', error);
+                });
+                // Handle dragging a component
+                builder.on('dragComponent', function (component) {
+                    console.log('Dragging Component:', component);
+                });
+
+                // Handle dropping a component
+                builder.on('dropComponent', function (component) {
+                    console.log('Component Dropped:', component);
+
+                    // Update the form schema after the drop
+                    builder.emit('change', builder.schema);
+                    console.log('Schema Updated After Drop:', builder.schema);
+                    if (!$rootScope.$$phase) {
+                        $rootScope.$apply();
+                    }
+                });
+
             })
             .catch((error) => {
                 console.error("Error initializing form builder: ", error);
