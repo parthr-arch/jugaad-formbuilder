@@ -158,6 +158,7 @@ nav a {
     box-shadow: none;
     outline: none;
     background-color: #fff; /* Ensure background is white */
+    padding:5px 10px !important
 }
 
 .formio-form .form-group .radio {

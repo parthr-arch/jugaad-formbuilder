@@ -142,7 +142,7 @@ var builderOptions = {
             },
             {
                 key: 'conditional',
-                ignore: true
+                ignore: false
             },
             {
                 key: 'layout',
@@ -150,11 +150,11 @@ var builderOptions = {
             },
             {
                 key: 'logic',
-                ignore: true
+                ignore: false
             },
             {
                 key: 'validation',
-                ignore: true
+                ignore: false
             },
             {
                 key: 'data',
