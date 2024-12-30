@@ -73,6 +73,8 @@ app.controller('FormIOController', function (
                     }
                 }
 
+                $scope.onReady()
+
                 // Add event listeners for form builder actions
                 builder.on('addComponent', (component) => {
                     builder.emit('change', builder.schema);
@@ -440,5 +442,29 @@ app.controller('FormIOController', function (
             })
         };
         initializeFormBuilder();
+    };
+
+    //Method is used to restrict the drop zone inside panel and remove if drop outside
+    $scope.onReady = function() {
+        const builderInstance = $rootScope.formBuilder;
+        // Add a listener to Dragula instance
+        builderInstance.on('addComponent', function(component) {
+            const element = document.getElementById(component.id)
+            
+            // Validate if the component is dropped inside a valid panel
+            const isValidZone = element && element.closest('.formio-component-panel');
+            if (!isValidZone) {
+                console.warn('Dropping outside the panel is not allowed!');
+                const cancelButton = angular.element(document.querySelector('[ref="cancelButton"]'));
+                console.log("cancelButton", cancelButton); 
+                // Trigger the click event programmatically
+                if (cancelButton) {
+                    cancelButton.click(); // Trigger the click event
+                  }
+                $scope.initializeFormBuilderSchema.components = $scope?.initializeFormBuilderSchema?.components.filter(component => component.type == 'panel')
+
+                initializeFormBuilder();
+            }
+        });
     };
 });
