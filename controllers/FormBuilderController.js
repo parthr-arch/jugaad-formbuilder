@@ -74,6 +74,38 @@ app.controller('FormIOController', function (
                 }
 
                 // Add event listeners for form builder actions
+                builder.on('change', (event, schema) => {
+                    $rootScope.formSchema = schema;
+                    if (!$rootScope.$$phase) {
+                        $rootScope.$apply();
+                    }
+                    console.log('Change Detected...');
+                    console.log($scope?.initializeFormBuilderSchema?.components);
+                    if (!$scope?.initializeFormBuilderSchema?.components || $scope.initializeFormBuilderSchema.components.length < 1 && $scope?.initializeFormBuilderSchema?.components.filter(obj => obj.type !== "panel")) {
+                        $scope.initializeFormBuilderSchema = {
+                            components: [{
+                                type: 'panel',
+                                label: 'Section',
+                                title: 'Section',
+                                key: 'section',
+                                components: [],
+                                hasRemove: false,
+                                hasEdit: false
+                            }]
+                        };
+                        initializeFormBuilder();
+                    }
+
+                    if (!$scope?.initializeFormBuilderSchema?.components || $scope.initializeFormBuilderSchema.components.length > 1) {
+                        console.log($scope?.initializeFormBuilderSchema?.components);
+                        var filteredObjects = $scope?.initializeFormBuilderSchema?.components.filter(obj => obj.type === "panel");
+                        console.log(filteredObjects);
+                        console.log($scope?.initializeFormBuilderSchema?.components);
+                        builder.on('removeComponent');
+                        debugger;
+                    }
+                });
+
                 builder.on('addComponent', (component) => {
                     builder.emit('change', builder.schema);
                     $rootScope.formBuilderComponent = component;
