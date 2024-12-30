@@ -396,6 +396,69 @@ app.controller('FormIOController', function (
         console.log("Current Form Schema:", JSON.stringify($scope.form.schema));
     };
 
+    $scope.exportPDFFromJson = () => {
+        // Sample Form JSON from Form.io
+        const formJson = {
+            "display": "form",
+            "components": [
+                {
+                    "label": "Text Field",
+                    "key": "textField",
+                    "type": "textfield",
+                    "input": true
+                },
+                {
+                    "label": "Email",
+                    "key": "email",
+                    "type": "email",
+                    "input": true
+                },
+                {
+                    "label": "Date",
+                    "key": "date",
+                    "type": "datetime",
+                    "input": true
+                },
+                {
+                    "label": "Submit",
+                    "key": "submit",
+                    "type": "button",
+                    "input": true
+                }
+            ]
+        };
+
+        const pdf = new jsPDF(); // Create a new jsPDF instance
+        let yPosition = 10; // Initial Y position for content
+
+        // Add Form Title
+        pdf.setFontSize(16);
+        pdf.text("Form Export", 10, yPosition);
+        yPosition += 10;
+
+        // Iterate Over Components in JSON
+        formJson.components.forEach((component) => {
+            if (yPosition > 280) { // Assuming A4 page height is 297mm
+                pdf.addPage();
+                yPosition = 10; // Reset Y position for the new page
+            }
+            if (component.type !== 'button') {
+                // Add Label
+                pdf.setFontSize(12);
+                pdf.text(component.label, 10, yPosition);
+                yPosition += 2;
+
+                // Add Placeholder for Field
+                pdf.setDrawColor(0); // Black border
+                pdf.setLineWidth(0.1);
+                pdf.rect(10, yPosition, 100, 7); // Placeholder box
+                yPosition += 15;
+            }
+        });
+
+        // Save the PDF
+        pdf.save('Form.pdf');
+    }
     $scope.addSection = function ($event) {
         console.log($event);
         if ($scope?.initializeFormBuilderSchema?.components) {

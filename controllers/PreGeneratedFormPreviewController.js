@@ -145,6 +145,10 @@ app.controller('PreGeneratedFormPreviewController', function($scope, $rootScope,
       "template": "Static-Files/form-schema-3.js",
       "displayName": "form-schema-3"
     },
+    {
+      "template": "Static-Files/form-schema-7.js",
+      "displayName": "Multi page form for pdf"
+    }
   ];
   $scope.loadScript = function() {
     const selectedTemplate = $scope.selectedScript;
