@@ -3,15 +3,11 @@
     <div class="mb-4">
         <label for="languageSelect" class="form-label">Choose Form Builder Language:</label>
         <div class="btn-group" role="group" aria-label="Language Selection">
-            <button 
-                class="btn btn-outline-primary" 
-                ng-class="{'active': selectedLanguage === 'en'}" 
+            <button class="btn btn-outline-primary" ng-class="{'active': selectedLanguage === 'en'}"
                 ng-click="changeLanguage('en')">
                 English
             </button>
-            <button 
-                class="btn btn-outline-primary" 
-                ng-class="{'active': selectedLanguage === 'jp'}" 
+            <button class="btn btn-outline-primary" ng-class="{'active': selectedLanguage === 'jp'}"
                 ng-click="changeLanguage('jp')">
                 Japanese
             </button>
@@ -28,6 +24,9 @@
         <div class="card-body">
             <h5 class="card-title text-center">Form Builder Interface</h5>
             <div id="formio" class="mb-3"></div>
+            <div>
+                <button class="pull-right mb-3" ng-click="addSection($event);">Add Section</button>
+            </div>
             <div id="builder" class="mb-3"></div>
             <div id="form-preview" class="modal fade" tabindex="-1" aria-labelledby="formPreviewLabel"
                 aria-hidden="true">

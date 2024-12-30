@@ -427,4 +427,18 @@ app.controller('FormIOController', function (
         // Save the PDF
         pdf.save('Form.pdf');
     }
+    $scope.addSection = function ($event) {
+        console.log($event);
+        if ($scope?.initializeFormBuilderSchema?.components) {
+            console.log($scope?.initializeFormBuilderSchema);
+            $scope?.initializeFormBuilderSchema?.components.push({
+                type: 'panel',
+                label: 'Section',
+                title: 'Section',
+                key: 'section',
+                components: []
+            })
+        };
+        initializeFormBuilder();
+    };
 });

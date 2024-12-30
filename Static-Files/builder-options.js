@@ -3,7 +3,9 @@ var getData = [
 ];
 
 var builderOptions = {
+    // "builder": null,
     "builder": {
+        "default": false,
         "api": false,
         "conditional": false,
         "logic": false,
@@ -34,7 +36,7 @@ var builderOptions = {
                 "hidden": false,
                 "htmlelement": true,
                 "content": false,
-                "panel": true,
+                "panel": false,
                 "fieldset": true,
                 "well": false,
                 "columns": true,
@@ -230,6 +232,7 @@ var builderOptions = {
         "data": false,
         "premium": false
     },
+    noDefaultSubmitButton: true, // Optional: Remove the submit button
     "editForm": {
         "textfield": [
             {
