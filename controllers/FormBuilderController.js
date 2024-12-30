@@ -101,8 +101,6 @@ app.controller('FormIOController', function (
                         var filteredObjects = $scope?.initializeFormBuilderSchema?.components.filter(obj => obj.type === "panel");
                         console.log(filteredObjects);
                         console.log($scope?.initializeFormBuilderSchema?.components);
-                        builder.on('removeComponent');
-                        debugger;
                     }
                 });
 
