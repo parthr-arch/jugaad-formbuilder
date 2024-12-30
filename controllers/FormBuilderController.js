@@ -363,4 +363,19 @@ app.controller('FormIOController', function (
     $scope.GetListOfFormSchema = () => {
         console.log("Current Form Schema:", JSON.stringify($scope.form.schema));
     };
+
+    $scope.addSection = function ($event) {
+        console.log($event);
+        if ($scope?.initializeFormBuilderSchema?.components) {
+            console.log($scope?.initializeFormBuilderSchema);
+            $scope?.initializeFormBuilderSchema?.components.push({
+                type: 'panel',
+                label: 'Section',
+                title: 'Section',
+                key: 'section',
+                components: []
+            })
+        };
+        initializeFormBuilder();
+    };
 });
