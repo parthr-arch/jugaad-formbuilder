@@ -145,20 +145,4 @@ var formSchema =  {
     }
   ]
       }
-
-
-
-      {
-        name: "shahil",
-        costing: [
-          {product: "bat", price: 100, qty: 5 },
-          {product: "ball", price: 200, qty: 4 }
-        ],
-        gender: "male",
-        middleName: "",
-        address: "",
-        cricket: true,
-        chess: false,
-      }
-
       

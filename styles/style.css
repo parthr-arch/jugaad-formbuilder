@@ -54,7 +54,7 @@ label {
     margin-bottom: 0;
 }
 
-#preview input,
+#preview input:not([type="checkbox"]):not([type="range"]),
 #preview select,
 #preview textarea {
     border: 1px solid #ccc;
