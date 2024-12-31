@@ -1,45 +1,25 @@
-app.controller('FormIOController', function (
-    $scope,
-    $rootScope,
-    formioComponents,
-    $timeout,
-    $state,
-    $log,
-    $window,
-    $route
-) {
-    // Initialize $rootScope variables
+app.controller('FormIOController', function ($scope, $rootScope, formioComponents, $timeout, $state, $log, $window, $route) {
     $rootScope.title = "Form IO";
     $rootScope.formSchema = null;
     $rootScope.formRendered = false;
     $rootScope.formInstance = null;
-
-    // Initialize $scope variables
     $scope.savedForms = [];
-    $scope.selectedLanguage = 'en'; // Default language
+    $scope.selectedLanguage = 'en';
 
-    // --- Helper Functions ---
-
-    // Load saved forms from local storage
-    const loadSavedForms = () => {
-        const forms = $window.localStorage.getItem('savedForms');
+    var loadSavedForms = () => {
+        var forms = $window.localStorage.getItem('savedForms');
         if (forms) {
             try {
                 $scope.savedForms = JSON.parse(forms);
-                console.log("Loaded saved forms:", $scope.savedForms);
-            } catch (error) {
-                console.error("Error parsing saved forms:", error);
-                $scope.savedForms = [];
-            }
+            } catch (error) { }
         }
     };
 
-    // Align elements within boundaries for PDF export
-    const alignToElementBoundaries = (currentY, canvasHeight) => {
-        const elements = document.querySelectorAll("#preview-data > *");
-        for (let element of elements) {
-            const elementOffset = element.offsetTop * 2; // Scale-adjusted offset
-            const elementHeight = element.offsetHeight * 2; // Scale-adjusted height
+    var alignToElementBoundaries = (currentY, canvasHeight) => {
+        var elements = document.querySelectorAll("#preview-data > *");
+        for (var element of elements) {
+            var elementOffset = element.offsetTop * 2;
+            var elementHeight = element.offsetHeight * 2;
             if (elementOffset >= currentY && elementOffset + elementHeight <= canvasHeight) {
                 return elementOffset + elementHeight;
             }
@@ -59,30 +39,22 @@ app.controller('FormIOController', function (
         ]
     };
 
-    // Initialize form builder
-    const initializeFormBuilder = () => {
+    var initializeFormBuilder = () => {
         Formio.builder(document.getElementById('builder'), $scope.initializeFormBuilderSchema, builderOptions)
             .then((builder) => {
-                $rootScope.formBuilder = builder; // Store the builder instance
-                $scope.form = builder; // Store builder in scope
-
+                $rootScope.formBuilder = builder;
+                $scope.form = builder;
                 if ($scope?.selectedForm?.data) {
                     if (builder && builder.submission) {
                         builder.submission = { data: $scope.selectedForm.data };
-                        console.log("Loaded data into the builder instance:", builder.instance.submission.data);
                     }
                 }
-
                 $scope.onReady()
-
-                // Add event listeners for form builder actions
                 builder.on('change', (event, schema) => {
                     $rootScope.formSchema = schema;
                     if (!$rootScope.$$phase) {
                         $rootScope.$apply();
                     }
-                    console.log('Change Detected...');
-                    console.log($scope?.initializeFormBuilderSchema?.components);
                     if (!$scope?.initializeFormBuilderSchema?.components || $scope.initializeFormBuilderSchema.components.length < 1 && $scope?.initializeFormBuilderSchema?.components.filter(obj => obj.type !== "panel")) {
                         $scope.initializeFormBuilderSchema = {
                             components: [{
@@ -97,215 +69,100 @@ app.controller('FormIOController', function (
                         };
                         initializeFormBuilder();
                     }
-
                     if (!$scope?.initializeFormBuilderSchema?.components || $scope.initializeFormBuilderSchema.components.length > 1) {
-                        console.log($scope?.initializeFormBuilderSchema?.components);
                         var filteredObjects = $scope?.initializeFormBuilderSchema?.components.filter(obj => obj.type === "panel");
-                        console.log(filteredObjects);
-                        console.log($scope?.initializeFormBuilderSchema?.components);
                     }
                 });
 
-                builder.on('addComponent', function(component, parent, element, path) {
-                    console.clear();
-                    console.log('Component:', component);
-                    console.log('Parent:', parent);
-                    console.log('Parent Component:', parent.component);
-                    console.log('Element:', element);
-                    console.log('Path:', path);
-                    builder.emit('change', builder.schema);
-                    // $rootScope.formBuilderComponent = component;
-                        // Check if the dropped component is a nested column
-                        // const component = event.component;
-                        // if (component.type === 'columns' && component.columns.some(col => col.type === 'columns')) {
-                        // // If nested column detected, remove it
-                        // alert('Nested columns are not allowed and will be removed.');
-                        // builder.removeComponent(component.id);
-                        // }
+                builder.on('addComponent', function (component, parent, element, path) {
                     if (component.type === 'columns' && parent.component && parent.component.type === 'columns') {
-                        debugger;
-                        // builder.removeComponent(component.id);
-                        // $scope.initializeFormBuilderSchema.components.splice(index, 1);
-                        // $scope.initializeFormBuilderSchema.components = $scope?.initializeFormBuilderSchema?.components.filter(components => components.id == component.id)
-                        // console.log($scope.initializeFormBuilderSchema.components);
-                        // debugger;
-                        // initializeFormBuilder();
-        
-                        // component.parent.removeChild(component);
-                        const cancelButton = angular.element(document.querySelector('[ref="cancelButton"]'));
+                        var cancelButton = angular.element(document.querySelector('[ref="cancelButton"]'));
                         if (cancelButton) {
                             cancelButton.click();
                         }
-                        // return false;
+                        return false;
                     }
-                    // if (component.type === 'panel' && parent.component && parent.component.type === 'panel') {
-                    //     alert('Nested panel are not allowed! Removing invalid component.');
-                    //     const cancelButton = angular.element(document.querySelector('[ref="cancelButton"]'));
-                    //     if (cancelButton) {
-                    //         cancelButton.click();
-                    //     }
-                    //     return false; 
-                    // }
                     if (component.type === 'panel' && parent.component && parent.component.type === 'panel') {
-                        debugger;
-                        // builder.removeComponent(component.id);
-                        // $scope.initializeFormBuilderSchema.components.splice(index, 1);
-                        // $scope.initializeFormBuilderSchema.components = $scope?.initializeFormBuilderSchema?.components.filter(components => components.id == component.id)
-                        // console.log($scope.initializeFormBuilderSchema.components);
-                        // debugger;
-                        // initializeFormBuilder();
-        
-                        // component.parent.removeChild(component);
-                        const cancelButton = angular.element(document.querySelector('[ref="cancelButton"]'));
+                        var cancelButton = angular.element(document.querySelector('[ref="cancelButton"]'));
                         if (cancelButton) {
                             cancelButton.click();
                         }
-                        // return false;
+                        return false;
                     }
                 });
-
-                builder.on('saveComponent', (schema) => {
-                    $rootScope.formBuilderComponentSchema = schema;
-                });
-                builder.on('onDrop', function(event, component) {
-                    // Check if the dropped component is a nested column
-                   
-                });
-                builder.on('change', (schema) => {
-                    $rootScope.formSchema = schema;
-                    if (!$rootScope.$$phase) {
-                        $rootScope.$apply();
-                    }
-                });
-
-                builder.on('removeComponent', (component) => {
-                    console.log('Component removed:', component);
-                });
-
-                builder.on('editComponent', (component) => {
-                    console.log('Editing component:', component);
-                });
-
-                builder.on('updateComponent', (component) => {
-                    console.log('Component updated:', component);
-                });
-
-                builder.on('saveDraft', () => {
-                    console.log('Draft saved');
-                });
-
-                builder.on('resetDraft', () => {
-                    console.log('Draft reset');
-                });
-
-                builder.on('cancelComponent', () => {
-                    console.log('Component editing canceled');
-                });
-
-                builder.on('submit', (submission) => {
-                    console.log('Form submitted:', submission);
-                });
-
-                builder.on('error', (error) => {
-                    console.log('Error occurred:', error);
-                });
-                // Handle dragging a component
-                builder.on('dragComponent', function (component) {
-                    console.log('Dragging Component:', component);
-                });
-
-                // Handle dropping a component
-                builder.on('dropComponent', function (component) {
-                    console.log('Component Dropped:', component);
-
-                    // Update the form schema after the drop
-                    builder.emit('change', builder.schema);
-                    console.log('Schema Updated After Drop:', builder.schema);
-                    if (!$rootScope.$$phase) {
-                        $rootScope.$apply();
-                    }
-                });
-
+                builder.on('saveComponent', (schema) => { $rootScope.formBuilderComponentSchema = schema; });
+                builder.on('onDrop', function (event, component) { });
+                builder.on('removeComponent', function (event, component) { });
+                builder.on('editComponent', function (event, component) { });
+                builder.on('updateComponent', function (event, component) { });
+                builder.on('saveDraft', function (event, component) { });
+                builder.on('resetDraft', function (event, component) { });
+                builder.on('cancelComponent', function (event, component) { });
+                builder.on('submit', function (event, component) { });
+                builder.on('error', function (event, component) { });
+                builder.on('dragComponent', function (event, component) { });
+                builder.on('dropComponent', function (event, component) { });
             })
-            .catch((error) => {
-                console.error("Error initializing form builder: ", error);
-            });
+            .catch((error) => { });
     };
 
-    // Initialize form builder on load
     loadSavedForms();
     initializeFormBuilder();
 
-    // --- Scope Functions ---
-
-    // Change language and update builder
     $scope.changeLanguage = function (language) {
         builderOptions.language = language;
         $scope.selectedLanguage = language;
         initializeFormBuilder();
     };
 
-    // Reset form builder to its initial state
     $rootScope.resetForm = function () {
         initializeFormBuilder();
     };
 
-    // Reset the form preview
     $rootScope.resetPreview = function () {
         document.getElementById('preview').innerHTML = '';
         $rootScope.formRendered = false;
     };
 
-    // Update an existing form
     $scope.updateForm = () => {
-        const formData = $scope.form.schema;
+        var formData = $scope.form.schema;
         if (formData && Object.keys(formData).length > 0) {
-            const formName = prompt('Enter the name of the form to update');
+            var formName = prompt('Enter the name of the form to update');
             if (formName) {
-                const formObject = $scope.savedForms.find(form => form.name === formName);
+                var formObject = $scope.savedForms.find(form => form.name === formName);
                 if (formObject) {
                     formObject.schema = formData;
                     formObject.data = $rootScope.formInstance ? $rootScope.formInstance.submission.data : {};
                     $window.localStorage.setItem('savedForms', JSON.stringify($scope.savedForms));
-                    console.log("Updated form:", formObject);
-                    alert("Form updated successfully!");
-                } else {
-                    alert('Form not found!');
-                }
+                } else { }
             }
         }
     };
 
-    // Export form preview to PDF
     $rootScope.exportPDF = function () {
         html2canvas(document.querySelector("#preview-data"), {
             scale: 2,
             useCORS: true
         }).then(canvas => {
-            const pdf = new jsPDF({
+            var pdf = new jsPDF({
                 orientation: 'portrait',
                 unit: 'mm',
                 format: 'a4'
             });
-
-            const pageWidth = pdf.internal.pageSize.getWidth();
-            const pageHeight = pdf.internal.pageSize.getHeight();
-            const margin = 10;
-            const imgWidth = pageWidth - 2 * margin;
-            const contentHeightPerPage = (canvas.width / imgWidth) * (pageHeight - 2 * margin);
-
-            let currentY = 0;
-            const canvasHeight = canvas.height;
-
+            var pageWidth = pdf.internal.pageSize.getWidth();
+            var pageHeight = pdf.internal.pageSize.getHeight();
+            var margin = 10;
+            var imgWidth = pageWidth - 2 * margin;
+            var contentHeightPerPage = (canvas.width / imgWidth) * (pageHeight - 2 * margin);
+            var currentY = 0;
+            var canvasHeight = canvas.height;
             while (currentY < canvasHeight) {
-                const nextY = Math.min(currentY + contentHeightPerPage, canvasHeight);
-                const alignedY = alignToElementBoundaries(nextY, canvasHeight);
-
-                const canvasSection = document.createElement('canvas');
+                var nextY = Math.min(currentY + contentHeightPerPage, canvasHeight);
+                var alignedY = alignToElementBoundaries(nextY, canvasHeight);
+                var canvasSection = document.createElement('canvas');
                 canvasSection.width = canvas.width;
                 canvasSection.height = alignedY - currentY;
-                const sectionCtx = canvasSection.getContext('2d');
-
+                var sectionCtx = canvasSection.getContext('2d');
                 sectionCtx.drawImage(
                     canvas,
                     0, currentY,
@@ -313,95 +170,76 @@ app.controller('FormIOController', function (
                     0, 0,
                     canvas.width, alignedY - currentY
                 );
-
-                const dataURL = canvasSection.toDataURL("image/jpeg", 1.0);
-
+                var dataURL = canvasSection.toDataURL("image/jpeg", 1.0);
                 if (currentY > 0) {
                     pdf.addPage();
                 }
                 pdf.addImage(dataURL, 'JPEG', margin, margin, imgWidth, (imgWidth * canvasSection.height) / canvas.width);
-
                 currentY = alignedY;
             }
 
             pdf.save('form.pdf');
-        }).catch(err => {
-            console.error("Error exporting to PDF: ", err);
-        });
+        }).catch(err => { });
     };
 
-    // Delete a saved form
     $scope.deleteForm = () => {
         if ($scope.selectedForm) {
-            const index = $scope.savedForms.indexOf($scope.selectedForm);
+            var index = $scope.savedForms.indexOf($scope.selectedForm);
             if (index > -1) {
                 $scope.savedForms.splice(index, 1);
                 $window.localStorage.setItem('savedForms', JSON.stringify($scope.savedForms));
-                console.log("Deleted form:", $scope.selectedForm);
-                alert('Form deleted!');
                 $scope.selectedForm = null;
                 $state.reload()
             }
         }
     };
 
-    // Get current form schema
-    $scope.getFormData = () => {
-        console.log("Current Form Schema:", $rootScope.formSchema);
-    };
+    $scope.getFormData = () => { };
 
-    // External form submission
     $scope.externalSubmit = () => {
         if ($rootScope.formInstance) {
             $rootScope.formInstance.submit()
-                .then((submission) => console.log("Submission successful:", submission))
-                .catch((error) => console.error("Submission error: ", error));
+                .then((submission) => { })
+                .catch((error) => { });
         }
     };
 
-    // Save form to local storage
     $scope.saveFormLocalStorage = () => {
-        const formData = $scope.form.schema;
+        var formData = $scope.form.schema;
         if (formData && Object.keys(formData).length > 0) {
-            const formName = prompt('Enter a name for the form');
+            var formName = prompt('Enter a name for the form');
             if (formName) {
-                const formObject = {
+                var formObject = {
                     name: formName,
                     schema: formData,
                     data: $rootScope.formInstance ? $rootScope.formInstance.submission.data : {}
                 };
                 $scope.savedForms.push(formObject);
                 $window.localStorage.setItem('savedForms', JSON.stringify($scope.savedForms));
-                console.log("Saved new form:", formObject);
-                alert("Form saved successfully!");
             }
         }
     };
 
-    // Load selected form for editing
     $scope.loadForm = () => {
         if ($scope.selectedForm) {
             Formio.builder(document.getElementById('builder'), $scope.selectedForm.schema)
                 .then((builder) => {
-                    console.log("Loaded selected form for editing:", builder);
                     $rootScope.formBuilder = builder;
                     $rootScope.formSchema = $scope.selectedForm.schema;
                     $scope.form = builder;
                     if ($scope?.selectedForm?.data) {
                         if (builder && builder.submission) {
                             builder.submission = { data: $scope.selectedForm.data };
-                            console.log("Loaded data into the builder instance:", builder.submission);
                         }
                     }
                 })
-                .catch((error) => console.error("Error loading form: ", error));
+                .catch((error) => { });
         }
     };
 
-    // Preview the current form schema
-    const initializePreview = () => {
+    var initializePreview = () => {
         if ($rootScope.formSchema) {
-            const previewElement = document.getElementById('preview-data');
+            var previewElement = document.getElementById('preview-data');
             previewElement.innerHTML = '';
             Formio.createForm(previewElement, $rootScope.formSchema)
                 .then((form) => {
@@ -413,11 +251,9 @@ app.controller('FormIOController', function (
                     if ($scope?.selectedForm?.data) {
                         if (form && form.submission) {
                             form.submission = { data: $scope.selectedForm.data };
-                            console.log("Loaded data into the builder instance:", form.submission);
                         }
                     }
-                })
-                .catch((error) => console.error("Error previewing form: ", error));
+                }).catch((error) => { });
         }
     };
 
@@ -427,34 +263,24 @@ app.controller('FormIOController', function (
         }
     };
 
-    // Generate pre-filled form preview
     $scope.preGeneratedFormWithFilledData = () => {
-        const schema = {
+        var schema = {
             components: [
                 { label: 'Email', key: 'email', type: 'textfield', input: true },
                 { label: 'Password', key: 'password', type: 'password', input: true }
             ]
         };
-
-        const data = { email: 'user@example.com', password: '12345678' };
-        const previewElement = document.getElementById('preview-data');
+        var data = { email: 'user@example.com', password: '12345678' };
+        var previewElement = document.getElementById('preview-data');
         previewElement.innerHTML = '';
-
         Formio.createForm(previewElement, schema, { submission: { data } })
-            .then((form) => {
-                form.submission = { data };
-                console.log("Pre-generated filled data for preview:", data);
-            })
-            .catch((error) => console.error("Error rendering pre-generated form: ", error));
+            .then((form) => { form.submission = { data }; }).catch((error) => { });
     };
 
-    $scope.GetListOfFormSchema = () => {
-        console.log("Current Form Schema:", JSON.stringify($scope.form.schema));
-    };
+    $scope.GetListOfFormSchema = () => { };
 
     $scope.exportPDFFromJson = () => {
-        // Sample Form JSON from Form.io
-        const formJson = {
+        var formJson = {
             "display": "form",
             "components": [
                 {
@@ -483,42 +309,31 @@ app.controller('FormIOController', function (
                 }
             ]
         };
-
-        const pdf = new jsPDF(); // Create a new jsPDF instance
-        let yPosition = 10; // Initial Y position for content
-
-        // Add Form Title
+        var pdf = new jsPDF();
+        var yPosition = 10;
         pdf.setFontSize(16);
         pdf.text("Form Export", 10, yPosition);
         yPosition += 10;
-
-        // Iterate Over Components in JSON
         formJson.components.forEach((component) => {
-            if (yPosition > 280) { // Assuming A4 page height is 297mm
+            if (yPosition > 280) {
                 pdf.addPage();
-                yPosition = 10; // Reset Y position for the new page
+                yPosition = 10;
             }
             if (component.type !== 'button') {
-                // Add Label
                 pdf.setFontSize(12);
                 pdf.text(component.label, 10, yPosition);
                 yPosition += 2;
-
-                // Add Placeholder for Field
-                pdf.setDrawColor(0); // Black border
+                pdf.setDrawColor(0);
                 pdf.setLineWidth(0.1);
-                pdf.rect(10, yPosition, 100, 7); // Placeholder box
+                pdf.rect(10, yPosition, 100, 7);
                 yPosition += 15;
             }
         });
-
-        // Save the PDF
         pdf.save('Form.pdf');
-    }
+    };
+
     $scope.addSection = function ($event) {
-        console.log($event);
         if ($scope?.initializeFormBuilderSchema?.components) {
-            console.log($scope?.initializeFormBuilderSchema);
             $scope?.initializeFormBuilderSchema?.components.push({
                 type: 'panel',
                 label: 'Section',
@@ -530,27 +345,21 @@ app.controller('FormIOController', function (
         initializeFormBuilder();
     };
 
-    //Method is used to restrict the drop zone inside panel and remove if drop outside
-    $scope.onReady = function() {
-        const builderInstance = $rootScope.formBuilder;
-        // Add a listener to Dragula instance
-        builderInstance.on('addComponent', function(component) {
-            const element = document.getElementById(component.id)
-            
-            // Validate if the component is dropped inside a valid panel
-            const isValidZone = element && element.closest('.formio-component-panel');
+    $scope.onReady = function () {
+        var builderInstance = $rootScope.formBuilder;
+        builderInstance.on('addComponent', function (component) {
+            var element = document.getElementById(component.id)
+            var isValidZone = element && element.closest('.formio-component-panel');
             if (!isValidZone) {
-                console.warn('Dropping outside the panel is not allowed!');
-                const cancelButton = angular.element(document.querySelector('[ref="cancelButton"]'));
-                console.log("cancelButton", cancelButton); 
-                // Trigger the click event programmatically
+                var cancelButton = angular.element(document.querySelector('[ref="cancelButton"]'));
                 if (cancelButton) {
-                    cancelButton.click(); // Trigger the click event
-                  }
+                    cancelButton.click();
+                }
                 $scope.initializeFormBuilderSchema.components = $scope?.initializeFormBuilderSchema?.components.filter(component => component.type == 'panel')
 
                 initializeFormBuilder();
             }
         });
     };
+
 });
