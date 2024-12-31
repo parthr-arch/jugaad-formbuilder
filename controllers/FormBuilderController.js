@@ -124,23 +124,12 @@ app.controller('FormIOController', function (
                     }
                     if (component.type === 'panel' && parent.component && parent.component.type === 'panel') {
                         alert('Nested panel are not allowed! Removing invalid component.');
-                        // Use Form.io's API to remove the component
-                        // if (parent.removeComponent) {
-                        //     parent.removeComponent(component);
-                        // } else {
-                        //     console.error('Failed to remove component. Manual intervention may be required.');
-                        // }
-                
-                        if (component.remove) {
-                            component.remove();
-                        } else {
-                            console.error('Unable to remove the component automatically.');
+                        const cancelButton = angular.element(document.querySelector('[ref="cancelButton"]'));
+                        if (cancelButton) {
+                            cancelButton.click();
                         }
-                
-                        return false; // Prevent further processing
+                        return false; 
                     }
-                
-                    return true; // Allow the component otherwise
                 });
 
                 builder.on('saveComponent', (schema) => {
