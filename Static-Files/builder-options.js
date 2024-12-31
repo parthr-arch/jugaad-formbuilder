@@ -232,6 +232,19 @@ var builderOptions = {
         "data": false,
         "premium": false
     },
+    // hooks: {
+    //     // Hook to intercept adding components
+    //     addComponent: function(component, parent) {
+    //         debugger;
+    //       // Check if the added component is "columns" and its parent is also "columns"
+    //       if (component.type === 'columns' && parent && parent.type === 'columns') {
+    //         // Prevent nested columns
+    //         alert('Nested columns are not allowed!');
+    //         return false; // Block the component from being added
+    //       }
+    //       return component; // Allow other components to be added
+    //     },
+    // },
     noDefaultSubmitButton: true, // Optional: Remove the submit button
     "editForm": {
         "textfield": [
