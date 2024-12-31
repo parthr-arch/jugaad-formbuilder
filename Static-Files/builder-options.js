@@ -247,6 +247,12 @@ var builderOptions = {
     // },
     noDefaultSubmitButton: true, // Optional: Remove the submit button
     "editForm": {
+        "columns": [
+            {
+              key: 'columns',
+              ignore: true // Disable nested columns in the editor
+            }
+          ],
         "textfield": [
             {
                 key: 'api',

@@ -107,35 +107,70 @@ app.controller('FormIOController', function (
                 });
 
                 builder.on('addComponent', function(component, parent, element, path) {
+                    console.clear();
                     console.log('Component:', component);
                     console.log('Parent:', parent);
                     console.log('Parent Component:', parent.component);
                     console.log('Element:', element);
                     console.log('Path:', path);
                     builder.emit('change', builder.schema);
-                    $rootScope.formBuilderComponent = component;
+                    // $rootScope.formBuilderComponent = component;
+                        // Check if the dropped component is a nested column
+                        // const component = event.component;
+                        // if (component.type === 'columns' && component.columns.some(col => col.type === 'columns')) {
+                        // // If nested column detected, remove it
+                        // alert('Nested columns are not allowed and will be removed.');
+                        // builder.removeComponent(component.id);
+                        // }
                     if (component.type === 'columns' && parent.component && parent.component.type === 'columns') {
-                        alert('Nested columns are not allowed! Removing invalid component.');
+                        debugger;
+                        // builder.removeComponent(component.id);
+                        // $scope.initializeFormBuilderSchema.components.splice(index, 1);
+                        // $scope.initializeFormBuilderSchema.components = $scope?.initializeFormBuilderSchema?.components.filter(components => components.id == component.id)
+                        // console.log($scope.initializeFormBuilderSchema.components);
+                        // debugger;
+                        // initializeFormBuilder();
+        
+                        // component.parent.removeChild(component);
                         const cancelButton = angular.element(document.querySelector('[ref="cancelButton"]'));
                         if (cancelButton) {
                             cancelButton.click();
                         }
-                        return false;
+                        // return false;
                     }
+                    // if (component.type === 'panel' && parent.component && parent.component.type === 'panel') {
+                    //     alert('Nested panel are not allowed! Removing invalid component.');
+                    //     const cancelButton = angular.element(document.querySelector('[ref="cancelButton"]'));
+                    //     if (cancelButton) {
+                    //         cancelButton.click();
+                    //     }
+                    //     return false; 
+                    // }
                     if (component.type === 'panel' && parent.component && parent.component.type === 'panel') {
-                        alert('Nested panel are not allowed! Removing invalid component.');
+                        debugger;
+                        // builder.removeComponent(component.id);
+                        // $scope.initializeFormBuilderSchema.components.splice(index, 1);
+                        // $scope.initializeFormBuilderSchema.components = $scope?.initializeFormBuilderSchema?.components.filter(components => components.id == component.id)
+                        // console.log($scope.initializeFormBuilderSchema.components);
+                        // debugger;
+                        // initializeFormBuilder();
+        
+                        // component.parent.removeChild(component);
                         const cancelButton = angular.element(document.querySelector('[ref="cancelButton"]'));
                         if (cancelButton) {
                             cancelButton.click();
                         }
-                        return false; 
+                        // return false;
                     }
                 });
 
                 builder.on('saveComponent', (schema) => {
                     $rootScope.formBuilderComponentSchema = schema;
                 });
-
+                builder.on('onDrop', function(event, component) {
+                    // Check if the dropped component is a nested column
+                   
+                });
                 builder.on('change', (schema) => {
                     $rootScope.formSchema = schema;
                     if (!$rootScope.$$phase) {
