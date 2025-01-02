@@ -253,6 +253,11 @@ var builderOptions = {
               ignore: true // Disable nested columns in the editor
             }
           ],
+          "panel": [
+            {
+                actions: false // Actions are enabled by default
+            }
+          ],
         "textfield": [
             {
                 key: 'api',

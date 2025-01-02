@@ -50,8 +50,8 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
                     }
                 }
                 $scope.onReady()
-                builder.on('change', (event, schema) => {
-                    $rootScope.formSchema = schema;
+                builder.on('change', (component) => {
+                    $rootScope.formSchema = component;
                     if (!$rootScope.$$phase) {
                         $rootScope.$apply();
                     }
@@ -340,6 +340,28 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
                 title: 'Section',
                 key: 'section',
                 components: []
+            })
+        };
+        initializeFormBuilder();
+    };
+    $scope.addDataGrid = function ($event) {
+        if ($scope?.initializeFormBuilderSchema?.components) {
+            $scope?.initializeFormBuilderSchema?.components.push({
+                "label": "Data Grid",
+                "reorder": false,
+                "addAnotherPosition": "bottom",
+                "layoutFixed": false,
+                "enableRowGroups": false,
+                "initEmpty": false,
+                "tableView": false,
+                "defaultValue": [
+                    {}
+                ],
+                "validateWhenHidden": false,
+                "key": "dataGrid",
+                "type": "datagrid",
+                "input": true,
+                "components": []
             })
         };
         initializeFormBuilder();
