@@ -61,7 +61,7 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
                                 type: 'panel',
                                 label: 'Section',
                                 title: 'Section',
-                                key: 'section',
+                                key: `section-${Math.random().toFixed(4)}`,
                                 components: [],
                                 hasRemove: false,
                                 hasEdit: false
@@ -661,7 +661,7 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
                 type: 'panel',
                 label: 'Section',
                 title: 'Section',
-                key: 'section',
+                key: `section-${Math.random().toFixed(4)}`,
                 components: []
             })
         };
@@ -692,8 +692,32 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
 
     $scope.onReady = function () {
         var builderInstance = $rootScope.formBuilder;
+        
         builderInstance.on('addComponent', function (component) {
             var element = document.getElementById(component.id)
+            
+            if(component.type === 'panel' && element.closest('.formio-component-panel')){
+              builderInstance.removeComponent(component.id);
+              const findComponent = $scope.initializeFormBuilderSchema.components.find(formElement => formElement.id === component.id)
+              if(!findComponent){
+                $scope?.initializeFormBuilderSchema?.components.forEach(component => {
+                  if(component.type == 'panel'){
+                    component.components = component.components.filter(item => item.type !== 'panel')
+                    component.components.forEach(element => {
+                      if(['columns', 'dataGrid'].includes(element.type)){
+
+                      }
+
+                    })
+                  }
+                })
+                
+                $scope.initializeFormBuilderSchema.components.push(component);
+                initializeFormBuilder();
+              }
+              
+              return;
+            }
             var isValidZone = element && element.closest('.formio-component-panel');
             if (!isValidZone) {
                 var cancelButton = angular.element(document.querySelector('[ref="cancelButton"]'));
