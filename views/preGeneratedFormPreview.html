@@ -2,26 +2,25 @@
     <h1 class="text-center mb-4" style="font-weight: unset;">Template Selection</h1>
     
     <div class="d-flex align-items-center justify-content-between flex-wrap mb-3">
-        <label for="scriptSelector" class="font-weight-bold mr-2 mb-0">Choose Template:</label>
-        <div class="w-50"> <!-- Adjust width as needed -->
+        <label for="scriptSelector" class="fw-bold me-2 mb-0">Choose Template:</label>
+        <div class="w-50">
             <select id="scriptSelector" ng-model="selectedScript" ng-change="loadScript()" 
                 class="form-control form-control-lg" aria-label="Select a script" aria-labelledby="scriptSelectorLabel">
                 <option value="" disabled selected>Select a script</option>
                 <option ng-repeat="script in scripts" ng-value="script.template">{{ script.displayName }}</option>
             </select>
         </div>
-        <button class="btn btn-primary btn-sm ml-2" ng-click="exportPDF()" ng-disabled="!selectedScript" aria-label="Export PDF">
+        <button class="btn btn-primary btn-sm ms-2" ng-click="exportPDF()" ng-disabled="!selectedScript" aria-label="Export PDF">
             <i class="bi bi-file-earmark-pdf"></i> Export PDF
         </button>
     </div>
     
     <div ng-if="selectedScript === 'Static-Files/translation-form.js'" class="d-flex align-items-center mb-3">
-        <label for="languageSelect" class="font-weight-bold mr-2">Choose Language:</label>
-        <button class="btn btn-secondary mr-2" ng-click="setLanguage('en')" aria-label="Select English">English</button>
+        <label for="languageSelect" class="fw-bold me-2">Choose Language:</label>
+        <button class="btn btn-secondary me-2" ng-click="setLanguage('en')" aria-label="Select English">English</button>
         <button class="btn btn-secondary" ng-click="setLanguage('jp')" aria-label="Select Japanese">Japanese</button>
     </div>
     
-
     <div id="preview" class="preview-area rounded p-3 mb-4 bg-light border">
         <h5>Preview</h5>
         <p>Please select a template to see the preview.</p>

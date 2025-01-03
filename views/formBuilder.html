@@ -1,5 +1,6 @@
 <div ng-controller="FormIOController as formio" class="container py-4">
     <h1 class="text-center mb-4">Form Builder</h1>
+    <!-- Language Selector -->
     <div class="mb-4">
         <label for="languageSelect" class="form-label">Choose Form Builder Language:</label>
         <div class="btn-group" role="group" aria-label="Language Selection">
@@ -13,6 +14,8 @@
             </button>
         </div>
     </div>
+
+    <!-- Form Selector -->
     <div class="mb-4">
         <label for="formSelect" class="form-label">Select a Form:</label>
         <select ng-model="selectedForm" id="formSelect" class="form-select"
@@ -20,61 +23,138 @@
             <option value="">Select a form</option>
         </select>
     </div>
+
+    <!-- Form Builder Interface -->
     <div class="card shadow-sm mb-4">
         <div class="card-body">
             <h5 class="card-title text-center">Form Builder Interface</h5>
-            <div id="formio" class="mb-3"></div>
-            <div>
-                <button class="pull-right mb-3" ng-click="addSection($event);">Add Section</button>
+            <div id="formio"></div>
+            <div class="d-flex flex-wrap gap-2">
+                <button class="btn btn-primary mb-3" ng-click="addSection($event);">Add Section</button>
+                <button class="btn btn-primary mb-3" ng-click="addDataGrid($event);">Add DataGrid</button>
             </div>
             <div id="builder" class="mb-3"></div>
-            <div id="form-preview" class="modal fade" tabindex="-1" aria-labelledby="formPreviewLabel"
-                aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="formPreviewLabel">Form Preview</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div id="preview"></div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
-                                Preview</button>
-                        </div>
-                    </div>
+        </div>
+    </div>
+
+    <!-- Form Preview Modal -->
+    <div id="form-preview" class="modal fade" tabindex="-1" aria-labelledby="formPreviewLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="formPreviewLabel">Form Preview</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="preview" class="p-3 bg-light rounded"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close Preview</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Form Data Preview -->
     <div class="card shadow-sm mb-4">
         <div class="card-body">
             <h5 class="card-title">Preview Data</h5>
-            <div id="preview-data" class="border p-3 mb-3"></div>
-            <button class="btn btn-primary me-2" ng-click="externalSubmit()">Submit</button>
-            <button class="btn btn-success me-2" ng-click="exportPDF()">Export PDF</button>
-            <button class="btn btn-success me-2" ng-click="exportPDFFromJson()">Export PDF from json</button>
+            <div id="preview-data" class="border"></div>
+            <div class="d-flex flex-wrap gap-2">
+                <button class="btn btn-primary" ng-click="externalSubmit()">Submit</button>
+                <button class="btn btn-success" ng-click="exportPDF()">Export PDF</button>
+                <button class="btn btn-success" ng-click="exportPDFFromJson()">Export PDF from JSON</button>
+            </div>
         </div>
     </div>
-    <div class="d-flex justify-content-between mb-4 flex-wrap">
-        <button class="btn btn-secondary me-2 mb-2" ng-click="GetListOfFormSchema()">Get List of Form Schema</button>
-        <button class="btn btn-primary me-2 mb-2" ng-click="previewForm()">Preview Form</button>
-        <button class="btn btn-info me-2 mb-2" ng-click="preGeneratedFormWithFilledData()">Pre Gen Data with
-            Form</button>
-        <button class="btn btn-success me-2 mb-2" ng-click="saveFormLocalStorage()">
+
+    <!-- Additional Actions -->
+    <div class="d-flex flex-wrap gap-2">
+        <button class="btn btn-secondary" ng-click="GetListOfFormSchema()">Get List of Form Schema</button>
+        <button class="btn btn-primary" ng-click="previewForm()">Preview Form</button>
+        <button class="btn btn-info" ng-click="preGeneratedFormWithFilledData()">Pre Gen Data with Form</button>
+        <button class="btn btn-success" ng-click="saveFormLocalStorage()">
             <i class="bi bi-save-fill"></i> Save Form
         </button>
-        <button class="btn btn-danger me-2 mb-2" ng-click="deleteForm()">
+        <button class="btn btn-danger" ng-click="deleteForm()">
             <i class="bi bi-trash-fill"></i> Delete Form
         </button>
-        <button class="btn btn-warning me-2 mb-2" ng-click="getFormData()">
+        <button class="btn btn-warning" ng-click="getFormData()">
             <i class="bi bi-file-earmark-text-fill"></i> Get Form Data
         </button>
     </div>
+
+    <!-- Footer -->
     <footer class="text-center mt-4">
-        <p>&copy; 2024 Vebuin. All Rights Reserved.</p>
+        <p class="text-muted">&copy; 2024 Vebuin. All Rights Reserved.</p>
     </footer>
 </div>
-<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css'>
-<script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js'></script>
+
+
+<style>
+    /* Styling for the sidebar components to look compact and user-friendly */
+#group-container-allComponents .formcomponent {
+  display: block;
+  padding: 0.5rem 1rem;
+  margin: 0.25rem 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.25rem;
+  text-align: left;
+  color: #ffffff;
+  background-color: #007bff;
+  border: none;
+  transition: all 0.3s ease-in-out;
+}
+
+#group-container-allComponents .formcomponent i {
+  margin-right: 8px;
+  font-size: 1rem;
+}
+
+#group-container-allComponents .formcomponent:hover {
+  background-color: #0056b3;
+  color: #e2e6ea;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+#group-container-allComponents .formcomponent:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
+#group-container-allComponents .formcomponent:active {
+  background-color: #004085;
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+#group-container-allComponents {
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 0.5rem;
+  max-height: 600px;
+}
+
+/* Scrollbar styling for the container */
+#group-container-allComponents::-webkit-scrollbar {
+  width: 8px;
+}
+
+#group-container-allComponents::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 0.5rem;
+}
+
+#group-container-allComponents::-webkit-scrollbar-thumb {
+  background: #007bff;
+  border-radius: 0.5rem;
+}
+
+#group-container-allComponents::-webkit-scrollbar-thumb:hover {
+  background: #0056b3;
+}
+
+</style>
