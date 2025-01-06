@@ -89,6 +89,13 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
                         }
                         return false;
                     }
+                    if (component.type === 'columns' && parent.component && parent.component.type === 'datagrid') {
+                      var cancelButton = angular.element(document.querySelector('[ref="cancelButton"]'));
+                      if (cancelButton) {
+                          cancelButton.click();
+                      }
+                      return false;
+                  }
                 });
                 builder.on('saveComponent', (schema) => { $rootScope.formBuilderComponentSchema = schema; });
                 builder.on('onDrop', function (event, component) { });
