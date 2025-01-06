@@ -5,6 +5,8 @@ var getData = [
 var builderOptions = {
     // "builder": null,
     "builder": {
+        // "allowAdvancedConditions": true,
+        // "advancedLogic": true,
         "default": false,
         "api": false,
         "conditional": false,

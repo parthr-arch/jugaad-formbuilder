@@ -42,6 +42,8 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
     var initializeFormBuilder = () => {
         Formio.builder(document.getElementById('builder'), $scope.initializeFormBuilderSchema, builderOptions)
             .then((builder) => {
+                console.log(builder);
+                // builder.dragDropEnabled = false;
                 $rootScope.formBuilder = builder;
                 $scope.form = builder;
                 if ($scope?.selectedForm?.data) {
@@ -73,9 +75,88 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
                         var filteredObjects = $scope?.initializeFormBuilderSchema?.components.filter(obj => obj.type === "panel");
                     }
                 });
+                // builder.on('addcomponentDragStartComponent', function (component, parent, element, path) {
+                //     console.log('Drag started:', component);
+                // });
+                // builder.on('componentDragEnd', function (component, parent, element, path) {
+                //     console.log('Drag ended:', component);
+                // });
+                // builder.on('componentDrop', function (component, parent, element, path) {
+                //     console.log('Component dropped:', component);
+                // });
+                // $rootScope.$on('formio.componentDragStart', function (event, component) {
+                //     console.log('Global Drag Start Event:', component);
+                // });
+        
+                // $rootScope.$on('formio.componentDrop', function (event, component, container) {
+                //     console.log('Global Drop Event:', component, 'into', container);
+                // });
+                // builder.on('dragstart', function (event) {
+                //     console.log('Custom Drag Start', event);
+                // });
+    
+                // builder.on('dragover', function (event) {
+                //     event.preventDefault();
+                //     console.log('Drag Over:', event);
+                // });
+    
+                // builder.on('drop', function (event) {
+                //     event.preventDefault();
+                //     console.log('Custom Drop:', event);
+                // });
 
+                // console.log('Form.io Builder initialized.');
+
+                // Add event listeners for drag-and-drop events
+                // builder.on('change', (schema) => {
+                //     console.log('Form schema updated:', schema);
+                // });
+    
+                // builder.on('componentDragStart', (component) => {
+                //     console.log('Drag started:', component);
+                // });
+    
+                // builder.on('componentDrop', (component, target) => {
+                //     console.log('Component dropped:', component, 'on target:', target);
+                // });
+
+                console.log('Form.io Builder initialized.');
+
+                // Listen to schema changes (triggered on drag-and-drop or editing components)
+                builder.on('change', (schema) => {
+                    console.log('Form schema updated:', schema);
+                });
+    
+                // Capture when a component starts being dragged
+                builder.on('componentDragStart', (component) => {
+                    console.log('Drag started for component:', component);
+                });
+    
+                // Capture when a component is dropped
+                builder.on('componentDrop', (component, target) => {
+                    console.log('Component dropped:', component, 'on target:', target);
+                });
+    
+                // Detect specific changes on component configurations
+                builder.on('editComponent', (component) => {
+                    console.log('Component edited:', component);
+                });
+    
+    
                 builder.on('addComponent', function (component, parent, element, path) {
+                    // console.log(component?.type);
+                    // console.log(parent);
+                    // console.log(parent?.component);
+                    // console.log(parent?.component?.type);
+                    // debugger;
                     if (component.type === 'columns' && parent.component && parent.component.type === 'columns') {
+                        var cancelButton = angular.element(document.querySelector('[ref="cancelButton"]'));
+                        if (cancelButton) {
+                            cancelButton.click();
+                        }
+                        return false;
+                    }
+                    if (component.type === 'panel' && parent.component && parent.component.type === 'panel') {
                         var cancelButton = angular.element(document.querySelector('[ref="cancelButton"]'));
                         if (cancelButton) {
                             cancelButton.click();
@@ -91,7 +172,9 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
                     }
                 });
                 builder.on('saveComponent', (schema) => { $rootScope.formBuilderComponentSchema = schema; });
-                builder.on('onDrop', function (event, component) { });
+                builder.on('onDrop', function (event, component) {
+                    console.log('onDrop');
+                 });
                 builder.on('removeComponent', function (event, component) { });
                 builder.on('editComponent', function (event, component) { });
                 builder.on('updateComponent', function (event, component) { });
@@ -99,9 +182,16 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
                 builder.on('resetDraft', function (event, component) { });
                 builder.on('cancelComponent', function (event, component) { });
                 builder.on('submit', function (event, component) { });
-                builder.on('error', function (event, component) { });
-                builder.on('dragComponent', function (event, component) { });
-                builder.on('dropComponent', function (event, component) { });
+                builder.on('error', function (event, component) {
+                    console.log('Error');
+                 });
+                builder.on('dragComponent', function (event, component) {
+                    console.log('Drag Component');
+                 });
+                builder.on('dropComponent', function (event, component) { 
+                    console.log('Drop Component');
+                    
+                });
             })
             .catch((error) => { });
     };
