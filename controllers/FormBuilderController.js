@@ -75,26 +75,15 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
                 });
 
                 builder.on('addComponent', function (component, parent, element, path) {
-                    if (component.type === 'columns' && parent.component && parent.component.type === 'columns') {
-                        var cancelButton = angular.element(document.querySelector('[ref="cancelButton"]'));
-                        if (cancelButton) {
-                            cancelButton.click();
-                        }
-                        return false;
+                  if (component.type === 'columns' && parent.component && parent.component.type === 'columns'
+                    || component.type === 'panel' && parent.component && parent.component.type === 'panel' 
+                    || component.type === 'columns' && parent.component && parent.component.type === 'datagrid'
+                  ) {
+                    var cancelButton = angular.element(document.querySelector('[ref="cancelButton"]'));
+                    if (cancelButton) {
+                      cancelButton.click();
                     }
-                    if (component.type === 'panel' && parent.component && parent.component.type === 'panel') {
-                        var cancelButton = angular.element(document.querySelector('[ref="cancelButton"]'));
-                        if (cancelButton) {
-                            cancelButton.click();
-                        }
-                        return false;
-                    }
-                    if (component.type === 'columns' && parent.component && parent.component.type === 'datagrid') {
-                      var cancelButton = angular.element(document.querySelector('[ref="cancelButton"]'));
-                      if (cancelButton) {
-                          cancelButton.click();
-                      }
-                      return false;
+                    return false;
                   }
                 });
                 builder.on('saveComponent', (schema) => { $rootScope.formBuilderComponentSchema = schema; });
