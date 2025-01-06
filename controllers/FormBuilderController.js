@@ -681,7 +681,7 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
                     {}
                 ],
                 "validateWhenHidden": false,
-                "key": "dataGrid",
+                "key": `datagrid-${Math.random().toFixed(4)}`,
                 "type": "datagrid",
                 "input": true,
                 "components": []
@@ -696,13 +696,12 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
         builderInstance.on('addComponent', function (component) {
             var element = document.getElementById(component.id)
             
-            if(component.type === 'panel' && element.closest('.formio-component-panel')){
-              builderInstance.removeComponent(component.id);
+            if(component.type === 'panel' && (element.closest('.formio-component-panel') || element.closest('.formio-component-datagrid'))){
               const findComponent = $scope.initializeFormBuilderSchema.components.find(formElement => formElement.id === component.id)
               if(!findComponent){
                 $scope?.initializeFormBuilderSchema?.components.forEach(component => {
-                  if(component.type == 'panel'){
-                    component.components = component.components.filter(item => item.type !== 'panel')
+                  if(component.type == 'panel' || component.type == 'datagrid'){
+                    component.components = component.components.filter(item => item.type !== 'panel' && item.type !== 'datagrid')
                     component.components.forEach(element => {
                       if(['columns', 'dataGrid'].includes(element.type)){
 
@@ -718,13 +717,34 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
               
               return;
             }
-            var isValidZone = element && element.closest('.formio-component-panel');
-            if (!isValidZone) {
+            if(['datagrid', 'panel'].includes(component.type) && element.closest('.formio-component-datagrid')){
+              const findComponent = $scope.initializeFormBuilderSchema.components.find(formElement => formElement.id === component.id)
+              if(!findComponent){
+                $scope?.initializeFormBuilderSchema?.components.forEach(component => {
+                  if(component.type == 'panel' || component.type == 'datagrid'){
+                    component.components = component.components.filter(item => item.type !== 'panel' && item.type !== 'datagrid')
+                    component.components.forEach(element => {
+                      if(['columns', 'dataGrid'].includes(element.type)){
+
+                      }
+
+                    })
+                  }
+                })
+                
+                $scope.initializeFormBuilderSchema.components.push(component);
+                initializeFormBuilder();
+              }
+              
+              return;
+            }
+            var isValidZone = element && (element.closest('.formio-component-panel') || element.closest('.formio-component-datagrid'));
+              if (!isValidZone && component.type !== 'datagrid') {
                 var cancelButton = angular.element(document.querySelector('[ref="cancelButton"]'));
                 if (cancelButton) {
                     cancelButton.click();
                 }
-                $scope.initializeFormBuilderSchema.components = $scope?.initializeFormBuilderSchema?.components.filter(component => component.type == 'panel')
+                $scope.initializeFormBuilderSchema.components = $scope?.initializeFormBuilderSchema?.components.filter(component => component.type == 'panel' || component.type == 'datagrid')
 
                 initializeFormBuilder();
             }
