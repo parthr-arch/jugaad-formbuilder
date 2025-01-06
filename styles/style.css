@@ -71,3 +71,7 @@ select {
 .d-flex {
     gap: 10px;
 }
+
+.component-edit-container .float-right a {
+    display: none;
+}
