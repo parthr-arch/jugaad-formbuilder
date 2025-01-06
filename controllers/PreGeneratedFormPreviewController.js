@@ -4,7 +4,6 @@ app.controller('PreGeneratedFormPreviewController', function ($scope, $rootScope
   $scope.selectedScript = '';
   $rootScope.formRendered = false;
   $rootScope.SelectedLanguage = 'en';
-  $state.reload();
   $rootScope.exportPDF = async function () {
     var pdf = new jsPDF();
     var elementIds = $rootScope.formSchema.components.map(record => record.component.id);
