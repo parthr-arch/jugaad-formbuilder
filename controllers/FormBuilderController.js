@@ -39,6 +39,12 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
   var initializeFormBuilder = () => {
     Formio.builder(document.getElementById('builder'), $scope.initializeFormBuilderSchema, builderOptions)
       .then((builder) => {
+        console.log(builder);
+        // angular.forEach(builder, function (field) {
+        //   if (field.key !== 'api') {
+        //     field.ignore = true; // Ignore all components except 'api'
+        //   }
+        // });
         $rootScope.formBuilder = builder;
         $scope.form = builder;
         if ($scope?.selectedForm?.data) {
