@@ -265,6 +265,50 @@ var formSchema = {
                     "input": true
                 },
                 {
+                    "label": "Extended Date Picker",
+                    "tableView": false,
+                    "validateWhenHidden": false,
+                    "key": "extendeddatepicker",
+                    "type": "extendeddatepicker",
+                    "input": true
+                },
+                {
+                    "label": "Extended Date Picker",
+                    "pickerType": "daymonthpicker",
+                    "tableView": false,
+                    "validateWhenHidden": false,
+                    "key": "extendeddatepicker2",
+                    "type": "extendeddatepicker",
+                    "input": true
+                },
+                {
+                    "label": "Extended Date Picker",
+                    "pickerType": "daymonthyearpicker",
+                    "tableView": false,
+                    "validateWhenHidden": false,
+                    "key": "extendeddatepicker3",
+                    "type": "extendeddatepicker",
+                    "input": true
+                },
+                {
+                    "label": "Extended Date Picker",
+                    "pickerType": "singletimepicker",
+                    "tableView": false,
+                    "validateWhenHidden": false,
+                    "key": "extendeddatepicker4",
+                    "type": "extendeddatepicker",
+                    "input": true
+                },
+                {
+                    "label": "Extended Date Picker",
+                    "pickerType": "daypicker",
+                    "tableView": false,
+                    "validateWhenHidden": false,
+                    "key": "extendeddatepicker1",
+                    "type": "extendeddatepicker",
+                    "input": true
+                },
+                {
                     "label": "Signature",
                     "tableView": false,
                     "validateWhenHidden": false,
