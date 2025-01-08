@@ -129,21 +129,23 @@ app.controller('PreGeneratedFormPreviewController', function ($scope, $rootScope
   $rootScope.previewFormPreBuildedForm = function () {
     var previewElement = document.getElementById('preview');
     previewElement.innerHTML = '';
-    Formio.createForm(previewElement, formSchema, languageSupport).then(function (form) {
-      console.log(form);
-      form.language = $rootScope.SelectedLanguage;
-      $rootScope.formInstance = form;
-      $rootScope.formRendered = true;
-      form.redraw();
-      $rootScope.formSchema = form
-      $rootScope.formInstance = form;
-      $rootScope.formRendered = true;
-      if (!$rootScope.$$phase) {
-        $rootScope.$apply();
-      }
-      $scope.setLanguage = function (lang) {
-        form.language = lang;
-      };
-    }).catch(function (error) { });
-  };
+    if (formSchema && languageSupport) {
+      Formio.createForm(previewElement, formSchema, languageSupport).then(function (form) {
+        console.log(form);
+        form.language = $rootScope.SelectedLanguage;
+        $rootScope.formInstance = form;
+        $rootScope.formRendered = true;
+        form.redraw();
+        $rootScope.formSchema = form
+        $rootScope.formInstance = form;
+        $rootScope.formRendered = true;
+        if (!$rootScope.$$phase) {
+          $rootScope.$apply();
+        }
+        $scope.setLanguage = function (lang) {
+          form.language = lang;
+        };
+      }).catch(function (error) { });
+    };
+  }
 });
