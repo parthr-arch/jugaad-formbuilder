@@ -30,9 +30,9 @@
     }
 
     render(content) {
-      if(registeredId.includes(this.id)){
+      if (registeredId.includes(this.id)) {
         const existingElement = document.getElementById(this.id);
-        return `<div class="extended-datepicker-component">${existingElement?.outerHTML}</div>`
+        return `<div class="extended-datepicker-component">${existingElement?.outerHTML}</div>`;
       }
       return super.render(`
         <div class="extended-datepicker-component">
@@ -59,32 +59,20 @@
         return;
       }
 
-       // Clean up any existing instance for this container
-      // this.cleanupPicker(containerElement);
-
       // Initialize the picker based on its type
       this.initializePicker(containerElement, outputElement, this.component.pickerType || 'daterangepicker');
-      
       return element;
-    }
-
-    cleanupPicker(containerElement) {
-      const existingPicker = $(containerElement).data('daterangepicker');
-      if (existingPicker) {
-        existingPicker.remove(); // Properly destroy the existing picker instance
-      }
-      $(containerElement).off(); // Remove all associated event listeners
     }
 
     initializePicker(containerElement, outputElement, pickerType) {
       const start = moment().subtract(29, 'days');
       const end = moment();
-    
+
       const updateDisplay = (start, end, format) => {
         const diffInDays = end.diff(start, 'days');
         const diffInMonths = end.diff(start, 'months');
         const diffInYears = end.diff(start, 'years');
-    
+
         let displayValue = '';
         switch (format) {
           case 'days':
@@ -102,20 +90,17 @@
           default:
             displayValue = '';
         }
-    
+
         $(outputElement).val(displayValue).show();
-        
+
         $(containerElement).find('span').html(
           `${start.format('MMMM D, YYYY')} - ${end.format('MMMM D, YYYY')}`
         );
       };
-    
-      // Clear previous bindings
-      // $(containerElement).off();
-    
+
       switch (pickerType) {
         case 'daterangepicker':
-          if(registeredId.includes(this.id)){
+          if (registeredId.includes(this.id)) {
             break;
           }
           registeredId.push(this.id);
@@ -126,18 +111,16 @@
             },
             (start, end) => {
               this.setValue({ startDate: start, endDate: end });
-              // Update the displayed date range
               $(containerElement).find('span').html(
                 `${start.format('MMMM D, YYYY')} - ${end.format('MMMM D, YYYY')}`
               );
             }
           );
-          // Ensure the initial display is correct
           $(containerElement).find('span').html(
             `${start.format('MMMM D, YYYY')} - ${end.format('MMMM D, YYYY')}`
           );
           break;
-    
+
         case 'singledatepicker':
           $(containerElement).daterangepicker(
             {
@@ -146,12 +129,12 @@
             },
             (date) => {
               this.setValue({ date });
-              $(outputElement).hide(); // No output for single date picker
+              $(outputElement).hide();
               $(containerElement).find('span').html(date.format('MMMM D, YYYY'));
             }
           );
           break;
-    
+
         case 'datetimepicker':
           $(containerElement).daterangepicker(
             {
@@ -163,12 +146,30 @@
             },
             (date) => {
               this.setValue({ datetime: date });
-              $(outputElement).hide(); // No output for single datetime picker
+              $(outputElement).hide();
               $(containerElement).find('span').html(date.format('MM/DD/YYYY HH:mm'));
             }
           );
           break;
-    
+
+        case 'singletimepicker':
+          $(containerElement).daterangepicker(
+            {
+              singleDatePicker: true,
+              timePicker: true,
+              timePicker24Hour: true,
+              timePickerIncrement: 1,
+              startDate: moment(),
+              locale: { format: 'HH:mm' },
+            },
+            (time) => {
+              this.setValue({ time: time });
+              $(outputElement).hide();
+              $(containerElement).find('span').html(time.format('HH:mm'));
+            }
+          );
+          break;
+
         case 'daypicker':
           $(containerElement).daterangepicker(
             {
@@ -182,7 +183,7 @@
           );
           updateDisplay(start, end, 'days');
           break;
-    
+
         case 'daymonthpicker':
           $(containerElement).daterangepicker(
             {
@@ -196,7 +197,7 @@
           );
           updateDisplay(start, end, 'daysMonths');
           break;
-    
+
         case 'daymonthyearpicker':
           $(containerElement).daterangepicker(
             {
@@ -210,12 +211,11 @@
           );
           updateDisplay(start, end, 'daysMonthsYears');
           break;
-    
+
         default:
           console.error(`Invalid picker type: ${pickerType}`);
       }
     }
-    
 
     static editForm() {
       return FieldComponent.editForm([
@@ -241,6 +241,7 @@
                 values: [
                   { label: 'Date Range Picker', value: 'daterangepicker' },
                   { label: 'Single Date Picker', value: 'singledatepicker' },
+                  { label: 'Single Time Picker', value: 'singletimepicker' },
                   { label: 'Single Date Picker with Time', value: 'datetimepicker' },
                   { label: 'Days Only', value: 'daypicker' },
                   { label: 'Days and Months', value: 'daymonthpicker' },
