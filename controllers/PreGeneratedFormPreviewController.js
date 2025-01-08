@@ -81,6 +81,10 @@ app.controller('PreGeneratedFormPreviewController', function ($scope, $rootScope
   {
     "template": "Static-Files/allInOne.js",
     "displayName": "All In One"
+  },
+  {
+    "template": "Static-Files/all-in-one-form1.js",
+    "displayName": "All In One Form 1"
   }
   ];
   $scope.loadScript = function () {
