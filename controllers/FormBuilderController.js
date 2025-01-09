@@ -37,14 +37,21 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
     ]
   };
   var initializeFormBuilder = () => {
+    // Formio.Components.components.textfield.editForm = function() {
+    //   const form = editForm();
+    //   const tabs = Formio.Utils.getComponent(form.components, 'tabs', true);
+    //   tabs.components.push({
+    //     key: 'custom',
+    //     label: 'Custom Tab',
+    //     components: [
+    //       // Add your custom components here
+    //     ]
+    //   });
+    //   return form;
+    // };
+    
     Formio.builder(document.getElementById('builder'), $scope.initializeFormBuilderSchema, builderOptions)
       .then((builder) => {
-        console.log(builder);
-        // angular.forEach(builder, function (field) {
-        //   if (field.key !== 'api') {
-        //     field.ignore = true; // Ignore all components except 'api'
-        //   }
-        // });
         $rootScope.formBuilder = builder;
         $scope.form = builder;
         if ($scope?.selectedForm?.data) {
@@ -101,10 +108,61 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
         builder.on('error', function (event, component) { });
         builder.on('dragComponent', function (event, component) { });
         builder.on('dropComponent', function (event, component) { });
+        // console.log('Builder instance:', builder);
+        // console.log('Available keys in builder:', Object.keys(builder));
+        // console.log('Formio instance:', Formio);
+        console.log('$Scope', $scope);
+        console.log('$rootScope', $rootScope);
+        
+        let keys = Object.entries($scope.form.schemas)
+          .filter(([_, value]) => value.hasOwnProperty('key'))
+          .map(([key, value]) => value.key);
+        let listOfComponents = keys
+          .filter(component => component !== "")
+          .map(component => component.toLowerCase())
+          .sort();
+        console.log(listOfComponents);
+        listOfComponents.forEach(component => {
+          builderOptions.editForm[component] = [
+            { key: 'api', ignore: true },
+            { key: 'layout', ignore: true },
+            { key: 'logic', ignore: true }
+          ];
+          builderOptions.editForm[component].push({
+            type: 'panel',
+            key: 'description',
+            label: 'Description',
+            weight: 10,
+            components: [
+              {
+                type: 'content',
+                key: 'description',
+                label: 'Description',
+                html: `<p style="font-size: 14px; line-height: 1.5; color: #333;">
+                          This is a description for the custom tab. Use this section to provide users with helpful information about the panel's purpose and how to configure it.
+                       </p>`
+              }]
+          },
+          {
+            type: 'panel',
+            key: 'visibility-permission',
+            label: 'Visibility',
+            weight: 10,
+            components: [
+              {
+                type: 'content',
+                key: 'description',
+                label: 'Description',
+                html: `<p style="font-size: 14px; line-height: 1.5; color: #333;">
+                          This is a description for the custom tab. Use this section to provide users with helpful information about the panel's purpose and how to configure it.
+                       </p>`
+              }]
+          });
+        });
+        console.log(builderOptions);
+        debugger;
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => { });
   };
   loadSavedForms();
   initializeFormBuilder();
@@ -614,7 +672,6 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
             }
             if (element.type === 'columns') {
               var columnWidth = Math.round(200 / element.columns.length)
-              console.log("columnWidth", columnWidth);
 
               var xIndex = 7;
               position += 10;
@@ -703,7 +760,6 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
               })
             }
           })
-
           $scope.initializeFormBuilderSchema.components.push(component);
           initializeFormBuilder();
         }
@@ -723,7 +779,6 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
               })
             }
           })
-
           $scope.initializeFormBuilderSchema.components.push(component);
           initializeFormBuilder();
         }
@@ -737,7 +792,6 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
           cancelButton.click();
         }
         $scope.initializeFormBuilderSchema.components = $scope?.initializeFormBuilderSchema?.components.filter(component => component.type == 'panel' || component.type == 'datagrid')
-
         initializeFormBuilder();
       }
     });
