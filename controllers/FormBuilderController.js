@@ -160,7 +160,6 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
           });
         });
         console.log(builderOptions);
-        debugger;
       })
       .catch((error) => { });
   };
