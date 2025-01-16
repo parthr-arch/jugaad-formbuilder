@@ -26,7 +26,7 @@ var builderOptions = {
                 "url": true,
                 "file": true,
                 "datetime": true,
-                "currency": false,
+                "currency": true,
                 "survey": true,
                 "signature": true,
                 "day": true,

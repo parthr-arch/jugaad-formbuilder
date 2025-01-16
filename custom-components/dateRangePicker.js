@@ -53,12 +53,12 @@
 
     attach(element) {
       super.attach(element);
-      console.log("document.getElementById(this.id)",document.getElementById(this.id))
+      // console.log("document.getElementById(this.id)",document.getElementById(this.id))
       const containerElement = document.getElementById(this.id);
       const outputElement = document.getElementById(`${this.id}-output`);
 
       if (!containerElement) {
-        console.error("Picker container not found.");
+        // console.error("Picker container not found.");
         return;
       }
 
@@ -115,7 +115,7 @@
     
       // Clear previous bindings
       // $(containerElement).off();
-      console.log("Here it is ", pickerType)
+      // console.log("Here it is ", pickerType)
       switch (pickerType) {
         case 'daterangepicker':
           const getElement = document.getElementById(this.id)?.querySelector('span')

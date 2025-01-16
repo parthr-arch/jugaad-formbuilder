@@ -117,16 +117,16 @@ app.controller('PreGeneratedFormPreviewController', function ($scope, $rootScope
     $rootScope.formRendered = false;
   };
   $rootScope.externalSubmit = function () {
-    console.log("List of Form Schema component", $rootScope?.formSchema?.components);
-    console.log("List of Form Schema component", $rootScope?.formSchema?.changed?.instance?.parent?.root?.component?.components);
+    // console.log("List of Form Schema component", $rootScope?.formSchema?.components);
+    // console.log("List of Form Schema component", $rootScope?.formSchema?.changed?.instance?.parent?.root?.component?.components);
     if ($rootScope.formInstance) {
       $rootScope.formInstance
         .submit()
         .then((submission) => {
-          console.log(submission);
+          // console.log(submission);
         })
         .catch((error) => {
-          console.log(error);
+          // console.log(error);
         });
     } else { }
   };
@@ -135,7 +135,7 @@ app.controller('PreGeneratedFormPreviewController', function ($scope, $rootScope
     previewElement.innerHTML = '';
     if (formSchema && languageSupport) {
       Formio.createForm(previewElement, formSchema, languageSupport).then(function (form) {
-        console.log(form);
+        // console.log(form);
         form.language = $rootScope.SelectedLanguage;
         $rootScope.formInstance = form;
         $rootScope.formRendered = true;
