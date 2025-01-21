@@ -265,7 +265,7 @@ var builderOptions = {
             },
             {
                 key: 'conditional',
-                ignore: false
+                ignore: true
             },
             {
                 key: 'layout',
@@ -273,15 +273,15 @@ var builderOptions = {
             },
             {
                 key: 'logic',
-                ignore: false
+                ignore: true
             },
             {
                 key: 'validation',
-                ignore: false
+                ignore: true
             },
             {
                 key: 'data',
-                ignore: false
+                ignore: true
             },
             {
                 key: 'display',
@@ -325,17 +325,14 @@ var builderOptions = {
                 ignore: false,
                 components: [
                     {
-                        // You can ignore existing fields.
-                        key: 'placeholder',
-                        ignore: true,
-                    },
-                    {
                         // Or add your own. The syntax is form.io component definitions.
                         type: 'textfield',
                         input: true,
-                        label: 'My Custom Setting',
+                        placeholder: 'Placeholder',
+                        label: 'Placeholder',
                         weight: 12,
-                        key: 'myCustomSetting', // This will be available as component.myCustomSetting
+                        tooltip: 'This is a custom dropdown for your settings.',
+                        key: 'placeholder', // This will be available as component.myCustomSetting
                     },
                     {
                         type: 'select',
