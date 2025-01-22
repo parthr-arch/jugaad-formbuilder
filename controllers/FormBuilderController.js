@@ -99,7 +99,7 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
         // builder.on('saveComponent', function() {
         //   console.log(builder.schema);
         // });
-        builder.on('saveComponent', (schema) => { console.log("builder.schema", builder.schema);$rootScope.formBuilderComponentSchema = schema; 
+        builder.on('saveComponent', (schema) => { console.log("Form Schema", builder.schema);$rootScope.formBuilderComponentSchema = schema; 
           // console.log($rootScope.formBuilderComponentSchema);console.log($scope.form)
          });
         builder.on('onDrop', function (event, component) { });
@@ -305,6 +305,7 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
           $rootScope.formRendered = true;
           if ($scope?.selectedForm?.data) {
             form.submission.data = angular.copy($scope.selectedForm.data);
+            console.log('Form Data', form.submission.data);
           }
           if ($scope?.selectedForm?.data) {
             if (form && form.submission) {
