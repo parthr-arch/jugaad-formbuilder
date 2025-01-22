@@ -96,7 +96,12 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
             return false;
           }
         });
-        builder.on('saveComponent', (schema) => { $rootScope.formBuilderComponentSchema = schema; });
+        // builder.on('saveComponent', function() {
+        //   console.log(builder.schema);
+        // });
+        builder.on('saveComponent', (schema) => { console.log("builder.schema", builder.schema);$rootScope.formBuilderComponentSchema = schema; 
+          // console.log($rootScope.formBuilderComponentSchema);console.log($scope.form)
+         });
         builder.on('onDrop', function (event, component) { });
         builder.on('removeComponent', function (event, component) { });
         builder.on('editComponent', function (event, component) { });
@@ -111,9 +116,8 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
         // console.log('Builder instance:', builder);
         // console.log('Available keys in builder:', Object.keys(builder));
         // console.log('Formio instance:', Formio);
-        console.log('$Scope', $scope);
-        console.log('$rootScope', $rootScope);
-        
+        // console.log('$Scope', $scope);
+        // console.log('$rootScope', $rootScope);
         let keys = Object.entries($scope.form.schemas)
           .filter(([_, value]) => value.hasOwnProperty('key'))
           .map(([key, value]) => value.key);
@@ -121,7 +125,7 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
           .filter(component => component !== "")
           .map(component => component.toLowerCase())
           .sort();
-        console.log(listOfComponents);
+        // console.log(listOfComponents);
         listOfComponents.forEach(component => {
           builderOptions.editForm[component] = [
             { key: 'api', ignore: true },
@@ -153,13 +157,11 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
                 type: 'content',
                 key: 'description',
                 label: 'Description',
-                html: `<p style="font-size: 14px; line-height: 1.5; color: #333;">
-                          This is a description for the custom tab. Use this section to provide users with helpful information about the panel's purpose and how to configure it.
-                       </p>`
+                html: `<custom-message></custom-message>`
               }]
           });
         });
-        console.log(builderOptions);
+        // console.log(builderOptions);
       })
       .catch((error) => { });
   };
