@@ -140,9 +140,8 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
         // console.log('Builder instance:', builder);
         // console.log('Available keys in builder:', Object.keys(builder));
         // console.log('Formio instance:', Formio);
-        console.log('$Scope', $scope);
-        console.log('$rootScope', $rootScope);
-        
+        // console.log('$Scope', $scope);
+        // console.log('$rootScope', $rootScope);
         let keys = Object.entries($scope.form.schemas)
           .filter(([_, value]) => value.hasOwnProperty('key'))
           .map(([key, value]) => value.key);
@@ -150,7 +149,7 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
           .filter(component => component !== "")
           .map(component => component.toLowerCase())
           .sort();
-        console.log(listOfComponents);
+        // console.log(listOfComponents);
         listOfComponents.forEach(component => {
           builderOptions.editForm[component] = [
             { key: 'api', ignore: true },
@@ -276,7 +275,7 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
           },
         );
         });
-        console.log(builderOptions);
+        // console.log(builderOptions);
       })
       .catch((error) => { });
   };
@@ -420,6 +419,7 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
           $rootScope.formRendered = true;
           if ($scope?.selectedForm?.data) {
             form.submission.data = angular.copy($scope.selectedForm.data);
+            console.log('Form Data', form.submission.data);
           }
           if ($scope?.selectedForm?.data) {
             if (form && form.submission) {
