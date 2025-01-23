@@ -1,4 +1,4 @@
-app.controller('FormIOController', function ($scope, $rootScope, formioComponents, $timeout, $state, $log, $window, $route) {
+app.controller('FormIOController', function ($scope, $rootScope, formioComponents, $timeout, $state, $log, $window, $route, $compile) {
   $rootScope.title = "Form IO";
   $rootScope.formSchema = null;
   $rootScope.formRendered = false;
@@ -96,7 +96,36 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
             return false;
           }
         });
-        builder.on('saveComponent', (schema) => { $rootScope.formBuilderComponentSchema = schema; });
+        builder.on('saveComponent', (schema) => { 
+          if(schema.conditionalLogic && schema.conditionalLogic.groups.length){ 
+            let showCondition = ''
+            let hideCondition = ''
+            schema.conditionalLogic.groups.forEach(group => {
+              if(group.logicAndAction.action === 'show'){
+                group.conditions.forEach((condition, index) => {
+                  if(index === 0 && showCondition === ''){
+                    showCondition = `data.${condition.field.value} == ${condition.value}`
+                  }else {
+                    showCondition += ` ${group.logicAndAction.logic} data.${condition.field.value} == ${condition.value}`
+                  }
+                })
+              }
+              if(group.logicAndAction.action === 'hide'){
+                group.conditions.forEach((condition, index) => {
+                  if(index === 0 && hideCondition === ''){
+                    hideCondition = `data.${condition.field.value} == ${condition.value}`
+                  }else {
+                    hideCondition += ` ${group.logicAndAction.logic} data.${condition.field.value} == ${condition.value}`
+                  }
+                })
+              }
+            })
+            schema.customConditional = `show = (${showCondition}) ${hideCondition ? `&& !(${hideCondition})` : ''}`
+          }
+          console.log("schema", schema);
+          $rootScope.formBuilderComponentSchema = schema;
+          
+        });
         builder.on('onDrop', function (event, component) { });
         builder.on('removeComponent', function (event, component) { });
         builder.on('editComponent', function (event, component) { });
@@ -150,14 +179,102 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
             weight: 10,
             components: [
               {
-                type: 'content',
-                key: 'description',
-                label: 'Description',
-                html: `<p style="font-size: 14px; line-height: 1.5; color: #333;">
-                          This is a description for the custom tab. Use this section to provide users with helpful information about the panel's purpose and how to configure it.
-                       </p>`
-              }]
-          });
+                type: 'datagrid',
+                key: 'conditionalLogic.groups',
+                label: 'Condition Groups',
+                addAnother: 'Add Group',
+                input: true,
+                components: [
+                  {
+                    type: 'container',
+                    key: 'logicAndAction',
+                    label: 'Group Logic and Action',
+                    components: [
+                      {
+                        type: 'select',
+                        key: 'logic',
+                        label: 'Group Logic',
+                        defaultValue: '&&',
+                        data: {
+                          values: [
+                            { label: 'AND', value: '&&' },
+                            { label: 'OR', value: '||' },
+                          ]
+                        }
+                      },
+                      {
+                        type: 'radio',
+                        key: 'action',
+                        label: 'Action',
+                        values: [
+                          { label: 'Show', value: 'show' },
+                          { label: 'Hide', value: 'hide' },
+                        ],
+                        defaultValue: 'show', // Default to "Show"
+                        inline: true
+                      }
+                    ]
+                  },
+                  {
+                    type: 'datagrid',
+                    key: 'conditions',
+                    label: 'Conditions',
+                    addAnother: 'Add Condition',
+                    components: [
+                      {
+                        type: 'select',
+                        key: 'field',
+                        label: 'Field',
+                        placeholder: 'Select a field',
+                        dataSrc: 'custom',
+                        template: '<span>{{ item.label || item.key }}</span>',
+                        refreshOn: 'change',
+                        clearOnRefresh: true,
+                        data: {
+                          custom: function (context) {
+                            console.log("context", context);
+                            if($rootScope.formSchema && $rootScope.formSchema.components){
+                              const getAllPanels = $rootScope.formSchema.components.filter(component => component.type == 'panel')
+                              let availableFields = []
+                              getAllPanels.forEach(panel => {
+                                const filterComponents = panel.components.filter(component => !['column', 'datagrid'].includes(component.type))
+                                availableFields = filterComponents.map(component => ({
+                                  value: component.key,
+                                  label: component.label || component.key
+                                }));
+                              })
+                              return availableFields;
+                            }
+                            return [];
+                          }
+                        }
+                      },
+                      {
+                        type: 'select',
+                        key: 'operator',
+                        label: 'Operator',
+                        data: {
+                          values: [
+                            { label: 'Equals', value: 'equals' },
+                            { label: 'Not Equals', value: 'notEquals' },
+                            { label: 'Greater Than', value: 'greaterThan' },
+                            { label: 'Less Than', value: 'lessThan' }
+                          ]
+                        }
+                      },
+                      {
+                        type: 'textfield',
+                        key: 'value',
+                        label: 'Value',
+                        placeholder: 'Enter value'
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+        );
         });
         console.log(builderOptions);
       })
