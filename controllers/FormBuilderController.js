@@ -371,7 +371,11 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
   $scope.externalSubmit = () => {
     if ($rootScope.formInstance) {
       $rootScope.formInstance.submit()
-        .then((submission) => { })
+        .then((submission) => { 
+          console.log("submission", submission.data);
+          $scope.formData = submission.data;
+          
+        })
         .catch((error) => { });
     }
   };
@@ -847,7 +851,7 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
           {}
         ],
         "validateWhenHidden": false,
-        "key": `datagrid-${Math.random().toFixed(4)}`,
+        "key": `datagrid-${Math.random().toFixed(4) * 10000}`,
         "type": "datagrid",
         "input": true,
         "components": []
@@ -861,6 +865,9 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
 
     builderInstance.on('addComponent', function (component) {
       var element = document.getElementById(component.id)
+      if(component.type === 'dataGridFooter'){
+        return
+      }
 
       if (component.type === 'panel' && (element.closest('.formio-component-panel') || element.closest('.formio-component-datagrid'))) {
         var findComponent = $scope.initializeFormBuilderSchema.components.find(formElement => formElement.id === component.id)
