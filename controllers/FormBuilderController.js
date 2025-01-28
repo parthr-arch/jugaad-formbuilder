@@ -5,6 +5,7 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
   $rootScope.formInstance = null;
   $scope.savedForms = [];
   $scope.selectedLanguage = 'en';
+  $scope.builderOptions = FORMBUILDEROPTION.BUILDEROPTIONS;
   var loadSavedForms = () => {
     var forms = $window.localStorage.getItem('savedForms');
     if (forms) {
@@ -50,7 +51,7 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
     //   return form;
     // };
     
-    Formio.builder(document.getElementById('builder'), $scope.initializeFormBuilderSchema, builderOptions)
+    Formio.builder(document.getElementById('builder'), $scope.initializeFormBuilderSchema, $scope.builderOptions)
       .then((builder) => {
         $rootScope.formBuilder = builder;
         $scope.form = builder;
@@ -119,56 +120,72 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
         // console.log('$Scope', $scope);
         // console.log('$rootScope', $rootScope);
         let keys = Object.entries($scope.form.schemas)
-          .filter(([_, value]) => value.hasOwnProperty('key'))
-          .map(([key, value]) => value.key);
+        .filter(([_, value]) => value.hasOwnProperty('key'))
+        .map(([key, value]) => value.key);
+
         let listOfComponents = keys
-          .filter(component => component !== "")
-          .map(component => component.toLowerCase())
-          .sort();
-        // console.log(listOfComponents);
-        listOfComponents.forEach(component => {
-          builderOptions.editForm[component] = [
+        .filter(component => component !== "")
+        .map(component => component.toLowerCase())
+        .sort();
+
+      // Iterate through components to configure the form
+      let v = 1;
+      listOfComponents.forEach(component => {
+        console.log(v+1);
+        // Initialize the component's form properties if not already done
+        if (!$scope.builderOptions.editForm[component]) {
+          $scope.builderOptions.editForm[component] = [
             { key: 'api', ignore: true },
             { key: 'layout', ignore: true },
-            { key: 'logic', ignore: true }
+            { key: 'logic', ignore: true },
+            { key: 'display', ignore: true },
+            { key: 'data', ignore: true },
+            { key: 'validation', ignore: true },
+            { key: 'conditional', ignore: true }
           ];
-          builderOptions.editForm[component].push({
-            type: 'panel',
-            key: 'description',
-            label: 'Description',
-            weight: 10,
-            components: [
-              {
-                type: 'content',
-                key: 'description',
-                label: 'Description',
-                html: `<p style="font-size: 14px; line-height: 1.5; color: #333;">
-                          This is a description for the custom tab. Use this section to provide users with helpful information about the panel's purpose and how to configure it.
-                       </p>`
-              }]
-          },
-          {
-            type: 'panel',
-            key: 'visibility-permission',
-            label: 'Visibility',
-            weight: 10,
-            components: [
-              {
-                type: 'content',
-                key: 'description',
-                label: 'Description',
-                html: `<custom-message></custom-message>`
-              }]
-          });
+        }
+        // Add a new panel for description
+        $scope.builderOptions.editForm[component].push({
+          type: 'panel',
+          key: `${component}-description`, // Ensure the key is unique
+          label: 'Description',
+          weight: 10,
+          components: [
+            {
+              type: 'content',
+              key: 'description',
+              label: 'Description',
+              html: `<p style="font-size: 14px; line-height: 1.5; color: #333;">
+                        This is a description for the custom tab. Use this section to provide users with helpful information about the panel's purpose and how to configure it.
+                    </p>`
+            }
+          ]
         });
-        // console.log(builderOptions);
+        // Add a visibility panel
+        $scope.builderOptions.editForm[component].push({
+          type: 'panel',
+          key: `${component}-visibility`, // Ensure the key is unique
+          label: 'Visibility',
+          weight: 10,
+          components: [
+            {
+              type: 'content',
+              key: 'visibility-description',
+              label: 'Description',
+              html: `<custom-message></custom-message>`
+            }
+          ]
+        });
+      });
+
+        // console.log($scope.builderOptions);
       })
       .catch((error) => { });
   };
   loadSavedForms();
   initializeFormBuilder();
   $scope.changeLanguage = function (language) {
-    builderOptions.language = language;
+    $scope.builderOptions.language = language;
     $scope.selectedLanguage = language;
     initializeFormBuilder();
   };
