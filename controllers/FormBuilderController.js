@@ -97,11 +97,9 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
             return false;
           }
         });
-        // builder.on('saveComponent', function() {
-        //   console.log(builder.schema);
-        // });
-        builder.on('saveComponent', (schema) => { console.log("Form Schema", builder.schema);$rootScope.formBuilderComponentSchema = schema; 
-          // console.log($rootScope.formBuilderComponentSchema);console.log($scope.form)
+        builder.on('saveComponent', (schema) => { console.log("Form Schema", $rootScope.formBuilder.schema
+        );$rootScope.formBuilderComponentSchema = schema; 
+          // console.log($rootScope.formBuilderComponentSchema);console.log($scope.form);console.log("Form Schema", builder.schema);
          });
         builder.on('onDrop', function (event, component) { });
         builder.on('removeComponent', function (event, component) { });
@@ -129,9 +127,7 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
         .sort();
 
       // Iterate through components to configure the form
-      let v = 1;
       listOfComponents.forEach(component => {
-        console.log(v+1);
         // Initialize the component's form properties if not already done
         if (!$scope.builderOptions.editForm[component]) {
           $scope.builderOptions.editForm[component] = [
@@ -177,8 +173,7 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
           ]
         });
       });
-
-        // console.log($scope.builderOptions);
+      // console.log($scope.builderOptions);
       })
       .catch((error) => { });
   };
@@ -274,7 +269,9 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
   $scope.externalSubmit = () => {
     if ($rootScope.formInstance) {
       $rootScope.formInstance.submit()
-        .then((submission) => { })
+        .then((submission) => { 
+          console.log(submission);
+        })
         .catch((error) => { });
     }
   };
