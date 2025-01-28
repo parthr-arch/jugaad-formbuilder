@@ -79,42 +79,44 @@
                     if (table) {
                         // Select the <tfoot> element of the table
                         const tfoot = table.querySelector('tfoot');
-                        const checkForExistingRow = tfoot.querySelector('tr');
-                        if (tfoot && checkForExistingRow?.getAttribute('id') !== `${dataGridToBindKey}-footer`) {
-                            // Create a new <tr> element
-                            const newRow = document.createElement('tr');
-                            newRow.setAttribute('id', `${dataGridToBindKey}-footer`)
+                        if(tfoot){
+                            const checkForExistingRow = tfoot.querySelector('tr');
+                            if (tfoot && checkForExistingRow?.getAttribute('id') !== `${dataGridToBindKey}-footer`) {
+                                // Create a new <tr> element
+                                const newRow = document.createElement('tr');
+                                newRow.setAttribute('id', `${dataGridToBindKey}-footer`)
 
-                            // Create and populate <td> elements for the new row
-                            const columns = [{key: '', label: '合計金額'}];
-                            if(findDataGridComponentDetail.components.length > 1){
-                                findDataGridComponentDetail.components.slice(1,findDataGridComponentDetail.components.length).forEach(record => {
-                                    if(record.key === this.component?.dropdown2){
-                                        columns.push({key: record.key,label:'0'})
-                                    }else {
-                                        columns.push({key: '',label:''})
-                                    }
-                                })    
-                            }
-                            columns.push({key: '',label:''})
-                            columns.forEach((colData) => {
-                                const td = document.createElement('td');
-                                if(colData.key){
-                                    td.setAttribute('id', colData.key)
+                                // Create and populate <td> elements for the new row
+                                const columns = [{key: '', label: '合計金額'}];
+                                if(findDataGridComponentDetail.components.length > 1){
+                                    findDataGridComponentDetail.components.slice(1,findDataGridComponentDetail.components.length).forEach(record => {
+                                        if(record.key === this.component?.dropdown2){
+                                            columns.push({key: record.key,label:'0'})
+                                        }else {
+                                            columns.push({key: '',label:''})
+                                        }
+                                    })    
                                 }
-                                
-                                td.innerHTML = `<b>${colData.label}</b>` || '';// Set the text content for each column
-                                newRow.appendChild(td);
-                            });
+                                columns.push({key: '',label:''})
+                                columns.forEach((colData) => {
+                                    const td = document.createElement('td');
+                                    if(colData.key){
+                                        td.setAttribute('id', colData.key)
+                                    }
+                                    
+                                    td.innerHTML = `<b>${colData.label}</b>` || '';// Set the text content for each column
+                                    newRow.appendChild(td);
+                                });
 
-                            // Append the new <tr> to the <tfoot>
-                            tfoot.insertBefore(newRow, tfoot.firstChild);
+                                // Append the new <tr> to the <tfoot>
+                                tfoot.insertBefore(newRow, tfoot.firstChild);
 
+                            } else {
+                                console.error('No <tfoot> found in the table.');
+                            }
                         } else {
-                            console.error('No <tfoot> found in the table.');
+                            console.error('No table found inside the parent div.');
                         }
-                    } else {
-                        console.error('No table found inside the parent div.');
                     }
                 } else {
                     console.error('Parent div with the specified ID not found.');
@@ -122,7 +124,7 @@
             }, 100);
             
             return `
-                <div tabindex="-1" ref="dragComponent" class="builder-component" style="visibility: hidden">
+                <div tabindex="-1" ref="dragComponent" class="builder-component" >
                     ${btnGroup}
                     <div id="${this.component.key}"><b>合計金額: 0</b></div>        
                 </div>

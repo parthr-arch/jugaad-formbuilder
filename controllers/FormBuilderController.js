@@ -5,7 +5,7 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
   $rootScope.formInstance = null;
   $scope.savedForms = [];
   $scope.selectedLanguage = 'en';
-  $scope.builderOptions = FORMBUILDEROPTION.BUILDEROPTIONS;
+  $scope.builderOptions = builderOptions;
   var loadSavedForms = () => {
     var forms = $window.localStorage.getItem('savedForms');
     if (forms) {
