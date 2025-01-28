@@ -99,7 +99,6 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
         });
         builder.on('saveComponent', (schema) => { console.log("Form Schema", $rootScope.formBuilder.schema
         );$rootScope.formBuilderComponentSchema = schema; 
-          // console.log($rootScope.formBuilderComponentSchema);console.log($scope.form);console.log("Form Schema", builder.schema);
          });
         builder.on('onDrop', function (event, component) { });
         builder.on('removeComponent', function (event, component) { });
@@ -112,11 +111,6 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
         builder.on('error', function (event, component) { });
         builder.on('dragComponent', function (event, component) { });
         builder.on('dropComponent', function (event, component) { });
-        // console.log('Builder instance:', builder);
-        // console.log('Available keys in builder:', Object.keys(builder));
-        // console.log('Formio instance:', Formio);
-        // console.log('$Scope', $scope);
-        // console.log('$rootScope', $rootScope);
         let keys = Object.entries($scope.form.schemas)
         .filter(([_, value]) => value.hasOwnProperty('key'))
         .map(([key, value]) => value.key);
@@ -173,7 +167,6 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
           ]
         });
       });
-      // console.log($scope.builderOptions);
       })
       .catch((error) => { });
   };
