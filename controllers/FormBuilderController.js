@@ -155,29 +155,29 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
             { key: 'api', ignore: true },
             { key: 'layout', ignore: true },
             { key: 'logic', ignore: true },
-            { key: 'display', ignore: true },
+            { key: 'display', ignore: false },
             { key: 'data', ignore: true },
             { key: 'validation', ignore: true },
             { key: 'conditional', ignore: true }
           ];
         }
         // Add a new panel for description
-        $scope.builderOptions.editForm[component].push({
-          type: 'panel',
-          key: `${component}-description`, // Ensure the key is unique
-          label: 'Description',
-          weight: 10,
-          components: [
-            {
-              type: 'content',
-              key: 'description',
-              label: 'Description',
-              html: `<p style="font-size: 14px; line-height: 1.5; color: #333;">
-                        This is a description for the custom tab. Use this section to provide users with helpful information about the panel's purpose and how to configure it.
-                    </p>`
-            }
-          ]
-        });
+        // $scope.builderOptions.editForm[component].push({
+        //   type: 'panel',
+        //   key: `${component}-description`, // Ensure the key is unique
+        //   label: 'Description',
+        //   weight: 10,
+        //   components: [
+        //     {
+        //       type: 'content',
+        //       key: 'description',
+        //       label: 'Description',
+        //       html: `<p style="font-size: 14px; line-height: 1.5; color: #333;">
+        //                 This is a description for the custom tab. Use this section to provide users with helpful information about the panel's purpose and how to configure it.
+        //             </p>`
+        //     }
+        //   ]
+        // });
         // Add a visibility panel
         $scope.builderOptions.editForm[component].push({
           type: 'panel',
@@ -767,7 +767,7 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
           {}
         ],
         "validateWhenHidden": false,
-        "key": `datagrid-${Math.random().toFixed(4)}`,
+        "key": `datagrid-${Math.random().toFixed(4) * 10000}`,
         "type": "datagrid",
         "input": true,
         "components": []
@@ -781,7 +781,9 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
 
     builderInstance.on('addComponent', function (component) {
       var element = document.getElementById(component.id)
-
+      if(component.type === 'dataGridFooter'){
+        return
+      }
       if (component.type === 'panel' && (element.closest('.formio-component-panel') || element.closest('.formio-component-datagrid'))) {
         var findComponent = $scope.initializeFormBuilderSchema.components.find(formElement => formElement.id === component.id)
         if (!findComponent) {

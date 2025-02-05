@@ -176,7 +176,14 @@
                                             (total, row) => total + (parseFloat(row[columnObj.columnDropdown]) || 0),
                                             0
                                         );
-        
+
+                                        // **Save footer values in form submission data**
+                                        if (!this.root.submission.data.dataGridFooterData) {
+                                            this.root.submission.data.dataGridFooterData = {};
+                                        }
+                                        this.root.submission.data.dataGridFooterData[selectedDataGridKey] = this.root.submission.data.footerData[selectedDataGridKey] || {};
+                                        this.root.submission.data.dataGridFooterData[selectedDataGridKey][columnObj.columnDropdown] = sum;
+
                                         const dataGridElement = document.getElementById(updatedGrid?.id);
         
                                         const table = dataGridElement?.querySelector('table.datagrid-table');
