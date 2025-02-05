@@ -181,7 +181,7 @@
                                         if (!this.root.submission.data.dataGridFooterData) {
                                             this.root.submission.data.dataGridFooterData = {};
                                         }
-                                        this.root.submission.data.dataGridFooterData[selectedDataGridKey] = this.root.submission.data.footerData[selectedDataGridKey] || {};
+                                        this.root.submission.data.dataGridFooterData[selectedDataGridKey] = this.root.submission.data.dataGridFooterData[selectedDataGridKey] || {};
                                         this.root.submission.data.dataGridFooterData[selectedDataGridKey][columnObj.columnDropdown] = sum;
 
                                         const dataGridElement = document.getElementById(updatedGrid?.id);

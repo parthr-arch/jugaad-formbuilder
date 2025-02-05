@@ -156,7 +156,7 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
             { key: 'layout', ignore: true },
             { key: 'logic', ignore: true },
             { key: 'display', ignore: false },
-            { key: 'data', ignore: true },
+            { key: 'data', ignore: false },
             { key: 'validation', ignore: true },
             { key: 'conditional', ignore: true }
           ];
