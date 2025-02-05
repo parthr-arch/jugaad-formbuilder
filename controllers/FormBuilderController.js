@@ -1,10 +1,11 @@
-app.controller('FormIOController', function ($scope, $rootScope, formioComponents, $timeout, $state, $log, $window, $route, $compile) {
+app.controller('FormIOController', function ($scope, $rootScope, formioComponents, $timeout, $state, $log, $window, $route) {
   $rootScope.title = "Form IO";
   $rootScope.formSchema = null;
   $rootScope.formRendered = false;
   $rootScope.formInstance = null;
   $scope.savedForms = [];
   $scope.selectedLanguage = 'en';
+  $scope.builderOptions = builderOptions;
   var loadSavedForms = () => {
     var forms = $window.localStorage.getItem('savedForms');
     if (forms) {
@@ -50,7 +51,7 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
     //   return form;
     // };
     
-    Formio.builder(document.getElementById('builder'), $scope.initializeFormBuilderSchema, builderOptions)
+    Formio.builder(document.getElementById('builder'), $scope.initializeFormBuilderSchema, $scope.builderOptions)
       .then((builder) => {
         $rootScope.formBuilder = builder;
         $scope.form = builder;
@@ -137,236 +138,69 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
         builder.on('error', function (event, component) { });
         builder.on('dragComponent', function (event, component) { });
         builder.on('dropComponent', function (event, component) { });
-        // console.log('Builder instance:', builder);
-        // console.log('Available keys in builder:', Object.keys(builder));
-        // console.log('Formio instance:', Formio);
-        // console.log('$Scope', $scope);
-        // console.log('$rootScope', $rootScope);
         let keys = Object.entries($scope.form.schemas)
-          .filter(([_, value]) => value.hasOwnProperty('key'))
-          .map(([key, value]) => value.key);
+        .filter(([_, value]) => value.hasOwnProperty('key'))
+        .map(([key, value]) => value.key);
+
         let listOfComponents = keys
-          .filter(component => component !== "")
-          .map(component => component.toLowerCase())
-          .sort();
-        // console.log(listOfComponents);
-        listOfComponents.forEach(component => {
-          builderOptions.editForm[component] = [
+        .filter(component => component !== "")
+        .map(component => component.toLowerCase())
+        .sort();
+
+      // Iterate through components to configure the form
+      listOfComponents.forEach(component => {
+        // Initialize the component's form properties if not already done
+        if (!$scope.builderOptions.editForm[component]) {
+          $scope.builderOptions.editForm[component] = [
             { key: 'api', ignore: true },
             { key: 'layout', ignore: true },
-            { key: 'logic', ignore: true }
+            { key: 'logic', ignore: true },
+            { key: 'display', ignore: true },
+            { key: 'data', ignore: true },
+            { key: 'validation', ignore: true },
+            { key: 'conditional', ignore: true }
           ];
-          builderOptions.editForm[component].push({
-            type: 'panel',
-            key: 'description',
-            label: 'Description',
-            weight: 10,
-            components: [
-              {
-                type: 'content',
-                key: 'description',
-                label: 'Description',
-                html: `<p style="font-size: 14px; line-height: 1.5; color: #333;">
-                          This is a description for the custom tab. Use this section to provide users with helpful information about the panel's purpose and how to configure it.
-                       </p>`
-              }]
-          },
-          {
-            type: 'panel',
-            key: 'visibility-permission',
-            label: 'Visibility',
-            weight: 10,
-            components: [{
-              type: 'datagrid',
-              key: 'conditionalLogic',
-              label: 'Conditional Logic',
-              addAnother: 'Add More Panel', // Button to add another condition group panel
-              input: true,
-              components: [{
-                  type: 'container',
-                  key: 'conditionGroup',
-                  label: 'Condition Group',
-                  components: [{
-                          type: 'container',
-                          key: 'logicAndAction',
-                          label: 'Group Logic and Action',
-                          components: [{
-                                  "label": "Columns",
-                                  "columns": [{
-                                          "components": [{
-                                              type: 'select',
-                                              key: 'logic',
-                                              label: 'Group Logic',
-                                              defaultValue: '&&',
-                                              data: {
-                                                  values: [{
-                                                          label: 'AND',
-                                                          value: '&&'
-                                                      },
-                                                      {
-                                                          label: 'OR',
-                                                          value: '||'
-                                                      }
-                                                  ]
-                                              }
-                                          }],
-                                          "width": 6,
-                                          "offset": 0,
-                                          "push": 0,
-                                          "pull": 0,
-                                          "size": "md",
-                                          "currentWidth": 6
-                                      },
-                                      {
-                                          "components": [{
-                                              type: 'radio',
-                                              key: 'action',
-                                              label: 'Action',
-                                              values: [{
-                                                      label: 'Show',
-                                                      value: 'show'
-                                                  },
-                                                  {
-                                                      label: 'Hide',
-                                                      value: 'hide'
-                                                  }
-                                              ],
-                                              defaultValue: 'show',
-                                              inline: true
-                                          }],
-                                          "width": 6,
-                                          "offset": 0,
-                                          "push": 0,
-                                          "pull": 0,
-                                          "size": "md",
-                                          "currentWidth": 6
-                                      }
-                                  ],
-                                  "key": "columns",
-                                  "type": "columns",
-                                  "input": false,
-                                  "tableView": false
-                              },
-          
-          
-                          ]
-                      },
-                      {
-                          type: 'datagrid',
-                          key: 'conditions',
-                          label: 'Conditions',
-                          addAnother: 'Add Condition',
-                          components: [{
-                                  type: 'select',
-                                  key: 'field',
-                                  label: 'Field',
-                                  placeholder: 'Select a field',
-                                  dataSrc: 'custom',
-                                  template: '<span>{{ item.label || item.key }}</span>',
-                                  refreshOn: 'change',
-                                  clearOnRefresh: true,
-                                  data: {
-                                      custom: function(context) {
-                                          if ($rootScope.formSchema && $rootScope.formSchema.components) {
-                                              const availableFields = [];
-                                              $rootScope.formSchema.components.forEach(panel => {
-                                                  if (panel.type === 'panel' && panel.components) {
-                                                      panel.components.forEach(component => {
-                                                          if (!['column', 'datagrid'].includes(component.type)) {
-                                                              availableFields.push({
-                                                                  value: component.key,
-                                                                  label: component.label || component.key
-                                                              });
-                                                          }
-                                                      });
-                                                  }
-                                              });
-                                              return availableFields;
-                                          }
-                                          return [];
-                                      }
-                                  }
-                              },
-                              {
-                                  type: 'select',
-                                  key: 'operator',
-                                  label: 'Operator',
-                                  refreshOn: 'change',
-                                  dataSrc: 'custom',
-                                  data: {
-                                      custom: function(context) {
-                                          const field = context.instance.data.field;
-                                          if (!field) return [];
-          
-                                          // Determine field type dynamically
-                                          const fieldType = ($rootScope.formSchema.components || [])
-                                              .flatMap(panel => panel.components || [])
-                                              .find(component => component.key === field)?.type || 'textfield';
-          
-                                          // Operator mapping based on field type
-                                          const operatorOptions = {
-                                              textfield: [{
-                                                      label: 'Equals',
-                                                      value: 'equals'
-                                                  },
-                                                  {
-                                                      label: 'Not Equals',
-                                                      value: 'notEquals'
-                                                  }
-                                              ],
-                                              number: [{
-                                                      label: 'Equals',
-                                                      value: 'equals'
-                                                  },
-                                                  {
-                                                      label: 'Not Equals',
-                                                      value: 'notEquals'
-                                                  },
-                                                  {
-                                                      label: 'Greater Than',
-                                                      value: 'greaterThan'
-                                                  },
-                                                  {
-                                                      label: 'Less Than',
-                                                      value: 'lessThan'
-                                                  }
-                                              ]
-                                          };
-          
-                                          return operatorOptions[fieldType] || operatorOptions.textfield;
-                                      }
-                                  }
-                              },
-                              {
-                                  type: 'textfield',
-                                  key: 'value',
-                                  label: 'Value',
-                                  placeholder: 'Enter value',
-                                  conditional: {
-                                      json: {
-                                          "!==": [{
-                                              var: "field"
-                                          }, ""]
-                                      } // Show only when a field is selected
-                                  }
-                              }
-                          ]
-                      }
-                  ]
-              }]
-          }]
-          
-          },
-        );
+        }
+        // Add a new panel for description
+        $scope.builderOptions.editForm[component].push({
+          type: 'panel',
+          key: `${component}-description`, // Ensure the key is unique
+          label: 'Description',
+          weight: 10,
+          components: [
+            {
+              type: 'content',
+              key: 'description',
+              label: 'Description',
+              html: `<p style="font-size: 14px; line-height: 1.5; color: #333;">
+                        This is a description for the custom tab. Use this section to provide users with helpful information about the panel's purpose and how to configure it.
+                    </p>`
+            }
+          ]
         });
-        // console.log(builderOptions);
+        // Add a visibility panel
+        $scope.builderOptions.editForm[component].push({
+          type: 'panel',
+          key: `${component}-visibility`, // Ensure the key is unique
+          label: 'Visibility',
+          weight: 10,
+          components: [
+            {
+              type: 'content',
+              key: 'visibility-description',
+              label: 'Description',
+              html: `<custom-message></custom-message>`
+            }
+          ]
+        });
+      });
       })
       .catch((error) => { });
   };
   loadSavedForms();
   initializeFormBuilder();
   $scope.changeLanguage = function (language) {
-    builderOptions.language = language;
+    $scope.builderOptions.language = language;
     $scope.selectedLanguage = language;
     initializeFormBuilder();
   };
@@ -456,9 +290,7 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
     if ($rootScope.formInstance) {
       $rootScope.formInstance.submit()
         .then((submission) => { 
-          console.log("submission", submission.data);
-          $scope.formData = submission.data;
-          
+          console.log(submission);
         })
         .catch((error) => { });
     }
@@ -935,7 +767,7 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
           {}
         ],
         "validateWhenHidden": false,
-        "key": `datagrid-${Math.random().toFixed(4) * 10000}`,
+        "key": `datagrid-${Math.random().toFixed(4)}`,
         "type": "datagrid",
         "input": true,
         "components": []
@@ -949,9 +781,6 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
 
     builderInstance.on('addComponent', function (component) {
       var element = document.getElementById(component.id)
-      if(component.type === 'dataGridFooter'){
-        return
-      }
 
       if (component.type === 'panel' && (element.closest('.formio-component-panel') || element.closest('.formio-component-datagrid'))) {
         var findComponent = $scope.initializeFormBuilderSchema.components.find(formElement => formElement.id === component.id)
