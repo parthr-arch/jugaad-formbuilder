@@ -97,7 +97,7 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
           }
         });
         builder.on('saveComponent', (schema) => { 
-          if(schema.conditionalLogic && schema.conditionalLogic.groups.length){ 
+          if(schema.conditionalLogic && schema.conditionalLogic.groups?.length){ 
             let showCondition = ''
             let hideCondition = ''
             schema.conditionalLogic.groups.forEach(group => {
@@ -176,102 +176,186 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
             key: 'visibility-permission',
             label: 'Visibility',
             weight: 10,
-            components: [
-              {
-                type: 'datagrid',
-                key: 'conditionalLogic.groups',
-                label: 'Condition Groups',
-                addAnother: 'Add Group',
-                input: true,
-                components: [
-                  {
-                    type: 'container',
-                    key: 'logicAndAction',
-                    label: 'Group Logic and Action',
-                    components: [
-                      {
-                        type: 'select',
-                        key: 'logic',
-                        label: 'Group Logic',
-                        defaultValue: '&&',
-                        data: {
-                          values: [
-                            { label: 'AND', value: '&&' },
-                            { label: 'OR', value: '||' },
+            components: [{
+              type: 'datagrid',
+              key: 'conditionalLogic',
+              label: 'Conditional Logic',
+              addAnother: 'Add More Panel', // Button to add another condition group panel
+              input: true,
+              components: [{
+                  type: 'container',
+                  key: 'conditionGroup',
+                  label: 'Condition Group',
+                  components: [{
+                          type: 'container',
+                          key: 'logicAndAction',
+                          label: 'Group Logic and Action',
+                          components: [{
+                                  "label": "Columns",
+                                  "columns": [{
+                                          "components": [{
+                                              type: 'select',
+                                              key: 'logic',
+                                              label: 'Group Logic',
+                                              defaultValue: '&&',
+                                              data: {
+                                                  values: [{
+                                                          label: 'AND',
+                                                          value: '&&'
+                                                      },
+                                                      {
+                                                          label: 'OR',
+                                                          value: '||'
+                                                      }
+                                                  ]
+                                              }
+                                          }],
+                                          "width": 6,
+                                          "offset": 0,
+                                          "push": 0,
+                                          "pull": 0,
+                                          "size": "md",
+                                          "currentWidth": 6
+                                      },
+                                      {
+                                          "components": [{
+                                              type: 'radio',
+                                              key: 'action',
+                                              label: 'Action',
+                                              values: [{
+                                                      label: 'Show',
+                                                      value: 'show'
+                                                  },
+                                                  {
+                                                      label: 'Hide',
+                                                      value: 'hide'
+                                                  }
+                                              ],
+                                              defaultValue: 'show',
+                                              inline: true
+                                          }],
+                                          "width": 6,
+                                          "offset": 0,
+                                          "push": 0,
+                                          "pull": 0,
+                                          "size": "md",
+                                          "currentWidth": 6
+                                      }
+                                  ],
+                                  "key": "columns",
+                                  "type": "columns",
+                                  "input": false,
+                                  "tableView": false
+                              },
+          
+          
                           ]
-                        }
                       },
                       {
-                        type: 'radio',
-                        key: 'action',
-                        label: 'Action',
-                        values: [
-                          { label: 'Show', value: 'show' },
-                          { label: 'Hide', value: 'hide' },
-                        ],
-                        defaultValue: 'show', // Default to "Show"
-                        inline: true
-                      }
-                    ]
-                  },
-                  {
-                    type: 'datagrid',
-                    key: 'conditions',
-                    label: 'Conditions',
-                    addAnother: 'Add Condition',
-                    components: [
-                      {
-                        type: 'select',
-                        key: 'field',
-                        label: 'Field',
-                        placeholder: 'Select a field',
-                        dataSrc: 'custom',
-                        template: '<span>{{ item.label || item.key }}</span>',
-                        refreshOn: 'change',
-                        clearOnRefresh: true,
-                        data: {
-                          custom: function (context) {
-                            console.log("context", context);
-                            if($rootScope.formSchema && $rootScope.formSchema.components){
-                              const getAllPanels = $rootScope.formSchema.components.filter(component => component.type == 'panel')
-                              let availableFields = []
-                              getAllPanels.forEach(panel => {
-                                const filterComponents = panel.components.filter(component => !['column', 'datagrid'].includes(component.type))
-                                availableFields = filterComponents.map(component => ({
-                                  value: component.key,
-                                  label: component.label || component.key
-                                }));
-                              })
-                              return availableFields;
-                            }
-                            return [];
-                          }
-                        }
-                      },
-                      {
-                        type: 'select',
-                        key: 'operator',
-                        label: 'Operator',
-                        data: {
-                          values: [
-                            { label: 'Equals', value: 'equals' },
-                            { label: 'Not Equals', value: 'notEquals' },
-                            { label: 'Greater Than', value: 'greaterThan' },
-                            { label: 'Less Than', value: 'lessThan' }
+                          type: 'datagrid',
+                          key: 'conditions',
+                          label: 'Conditions',
+                          addAnother: 'Add Condition',
+                          components: [{
+                                  type: 'select',
+                                  key: 'field',
+                                  label: 'Field',
+                                  placeholder: 'Select a field',
+                                  dataSrc: 'custom',
+                                  template: '<span>{{ item.label || item.key }}</span>',
+                                  refreshOn: 'change',
+                                  clearOnRefresh: true,
+                                  data: {
+                                      custom: function(context) {
+                                          if ($rootScope.formSchema && $rootScope.formSchema.components) {
+                                              const availableFields = [];
+                                              $rootScope.formSchema.components.forEach(panel => {
+                                                  if (panel.type === 'panel' && panel.components) {
+                                                      panel.components.forEach(component => {
+                                                          if (!['column', 'datagrid'].includes(component.type)) {
+                                                              availableFields.push({
+                                                                  value: component.key,
+                                                                  label: component.label || component.key
+                                                              });
+                                                          }
+                                                      });
+                                                  }
+                                              });
+                                              return availableFields;
+                                          }
+                                          return [];
+                                      }
+                                  }
+                              },
+                              {
+                                  type: 'select',
+                                  key: 'operator',
+                                  label: 'Operator',
+                                  refreshOn: 'change',
+                                  dataSrc: 'custom',
+                                  data: {
+                                      custom: function(context) {
+                                          const field = context.instance.data.field;
+                                          if (!field) return [];
+          
+                                          // Determine field type dynamically
+                                          const fieldType = ($rootScope.formSchema.components || [])
+                                              .flatMap(panel => panel.components || [])
+                                              .find(component => component.key === field)?.type || 'textfield';
+          
+                                          // Operator mapping based on field type
+                                          const operatorOptions = {
+                                              textfield: [{
+                                                      label: 'Equals',
+                                                      value: 'equals'
+                                                  },
+                                                  {
+                                                      label: 'Not Equals',
+                                                      value: 'notEquals'
+                                                  }
+                                              ],
+                                              number: [{
+                                                      label: 'Equals',
+                                                      value: 'equals'
+                                                  },
+                                                  {
+                                                      label: 'Not Equals',
+                                                      value: 'notEquals'
+                                                  },
+                                                  {
+                                                      label: 'Greater Than',
+                                                      value: 'greaterThan'
+                                                  },
+                                                  {
+                                                      label: 'Less Than',
+                                                      value: 'lessThan'
+                                                  }
+                                              ]
+                                          };
+          
+                                          return operatorOptions[fieldType] || operatorOptions.textfield;
+                                      }
+                                  }
+                              },
+                              {
+                                  type: 'textfield',
+                                  key: 'value',
+                                  label: 'Value',
+                                  placeholder: 'Enter value',
+                                  conditional: {
+                                      json: {
+                                          "!==": [{
+                                              var: "field"
+                                          }, ""]
+                                      } // Show only when a field is selected
+                                  }
+                              }
                           ]
-                        }
-                      },
-                      {
-                        type: 'textfield',
-                        key: 'value',
-                        label: 'Value',
-                        placeholder: 'Enter value'
                       }
-                    ]
-                  }
-                ]
-              }
-            ]
+                  ]
+              }]
+          }]
+          
           },
         );
         });

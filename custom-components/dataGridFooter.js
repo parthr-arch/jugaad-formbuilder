@@ -4,6 +4,7 @@
     let rootScope;
     let editFormComponents;
     let root;
+    let dataGridListInForm;
 
     class DataGridFooterComponent extends FieldComponent {
 
@@ -80,40 +81,59 @@
                         // Select the <tfoot> element of the table
                         const tfoot = table.querySelector('tfoot');
                         if(tfoot){
-                            const checkForExistingRow = tfoot.querySelector('tr');
-                            if (tfoot && checkForExistingRow?.getAttribute('id') !== `${dataGridToBindKey}-footer`) {
-                                // Create a new <tr> element
-                                const newRow = document.createElement('tr');
-                                newRow.setAttribute('id', `${dataGridToBindKey}-footer`)
-
-                                // Create and populate <td> elements for the new row
-                                const columns = [{key: '', label: '合計金額'}];
-                                if(findDataGridComponentDetail.components.length > 1){
-                                    findDataGridComponentDetail.components.slice(1,findDataGridComponentDetail.components.length).forEach(record => {
-                                        if(record.key === this.component?.dropdown2){
-                                            columns.push({key: record.key,label:'0'})
+                            const checkForExistingRow = tfoot.querySelectorAll('tr');
+                            checkForExistingRow?.forEach(footerRow => {
+                                if (footerRow?.getAttribute('id') !== `${dataGridToBindKey}-footer-label` && footerRow?.getAttribute('id') !== `${dataGridToBindKey}-footer-total`) {
+                                    // Create a new <tr> element
+                                    const newRow = document.createElement('tr');
+                                    newRow.setAttribute('id', `${dataGridToBindKey}-footer-label`)
+                                    const newSumRow = document.createElement('tr');
+                                    newSumRow.setAttribute('id', `${dataGridToBindKey}-footer-total`)
+    
+                                    // Create and populate <td> elements for the new row
+                                    const totalLabels = [];
+                                    const totalValues = []
+                                    findDataGridComponentDetail.components.forEach(record => {
+                                        if(this.component.columnMappingGrid.map(columns => columns.columnDropdown).includes(record.key)){
+                                            const label = this.component.columnMappingGrid.find(obj => obj.columnDropdown === record.key)
+                                            totalLabels.push({key: record.key,label: label.labelField})
+                                            totalValues.push({key: record.key,label: 0})
                                         }else {
-                                            columns.push({key: '',label:''})
+                                            totalLabels.push({key: '',label:''})
+                                            totalValues.push({key: '',label:''})
                                         }
                                     })    
-                                }
-                                columns.push({key: '',label:''})
-                                columns.forEach((colData) => {
-                                    const td = document.createElement('td');
-                                    if(colData.key){
-                                        td.setAttribute('id', colData.key)
-                                    }
                                     
-                                    td.innerHTML = `<b>${colData.label}</b>` || '';// Set the text content for each column
-                                    newRow.appendChild(td);
-                                });
-
-                                // Append the new <tr> to the <tfoot>
-                                tfoot.insertBefore(newRow, tfoot.firstChild);
-
-                            } else {
-                                console.error('No <tfoot> found in the table.');
-                            }
+                                    totalLabels.forEach((colData) => {
+                                        const td = document.createElement('td');
+                                        if(colData.key){
+                                            td.setAttribute('id', `${colData.key}-label`)
+                                        }
+                                        
+                                        td.innerHTML = `<b>${colData.label}</b>` || ''; // Set the text content for each column
+                                        newRow.appendChild(td);
+                                    });
+                                    totalValues.forEach((colData) => {
+                                        const td = document.createElement('td');
+                                        if(colData.key){
+                                            td.setAttribute('id', `${colData.key}-total`)
+                                        }
+                                        
+                                        td.innerHTML = `<b>${colData.label}</b>` || ''; // Set the text content for each column
+                                        newSumRow.appendChild(td);
+                                    });
+    
+                                    // Append the new <tr> to the <tfoot>
+                                    tfoot.insertBefore(newSumRow, tfoot.firstChild);
+                                    tfoot.insertBefore(newRow, tfoot.firstChild);
+                                    
+                                    
+    
+                                } else {
+                                    console.error('No <tfoot> found in the table.');
+                                }
+                            })
+                            
                         } else {
                             console.error('No table found inside the parent div.');
                         }
@@ -147,61 +167,88 @@
                             gridComponent = gridComponent?.dropdown1 ? gridComponent : gridComponent.component
                             const selectedDataGridKey = gridComponent?.dropdown1 // Key from dropdown1
                             const selectedColumnKey = gridComponent?.dropdown2 // Key from dropdown2
-                            
-                            if (selectedDataGridKey && selectedColumnKey && data[selectedDataGridKey]) {
-                                const rows = data[selectedDataGridKey];
-                                sum = rows.reduce(
-                                    (total, row) => total + (parseFloat(row[selectedColumnKey]) || 0),
-                                    0
-                                );
 
-                                const dataGridElement = document.getElementById(updatedGrid?.id);
-
-                                const table = dataGridElement?.querySelector('table.datagrid-table');
-
-                                if (table) {
-                                    const getSumColumn = document.getElementById(gridComponent?.dropdown2)
-                                    if(getSumColumn){
-                                        getSumColumn.innerHTML = `<b>${sum}</b>`
+                            if(selectedDataGridKey){
+                                gridComponent?.columnMappingGrid.forEach(columnObj => {
+                                    if (selectedDataGridKey && columnObj.columnDropdown && data[selectedDataGridKey]) {
+                                        const rows = data[selectedDataGridKey];
+                                        sum = rows.reduce(
+                                            (total, row) => total + (parseFloat(row[columnObj.columnDropdown]) || 0),
+                                            0
+                                        );
+        
+                                        const dataGridElement = document.getElementById(updatedGrid?.id);
+        
+                                        const table = dataGridElement?.querySelector('table.datagrid-table');
+        
+                                        if (table) {
+                                            const getSumColumn = document.getElementById(`${columnObj.columnDropdown}-total`)
+                                            if(getSumColumn){
+                                                getSumColumn.innerHTML = `<b>${sum}</b>`
+                                            }
+                                        }
                                     }
-                                }
+                                })
                             }
                         });
                         if(changed.changed?.instance?.parent?.type === 'form'){
                             const dataGridElement = document.getElementById(updatedGrid?.id);
                             const table = dataGridElement?.querySelector('table.datagrid-table');
                             const tfoot = table.querySelector('tfoot');
-                            const checkForExistingRow = tfoot.querySelector('tr');
-                            if (tfoot && checkForExistingRow?.getAttribute('id') !== `${updatedGrid?.key}-footer`) {
-                                // Create a new <tr> element
-                                const newRow = document.createElement('tr');   
-                                newRow.setAttribute('id', `${updatedGrid?.key}-footer`)
+                            const checkForExistingRow = tfoot.querySelectorAll('tr');
+                            if(tfoot){
 
-                                // Create and populate <td> elements for the new row
-                                const columns = [{key: '', label: '合計金額'}];
-                                if(updatedGrid.components.length > 1){
-                                    updatedGrid.components.slice(1,updatedGrid.components.length).forEach(record => {
-                                        if(record.key === this.component?.dropdown2){
-                                            columns.push({key: record.key,label: sum})
+                            
+                            checkForExistingRow?.forEach(footerRow => {
+                                if (footerRow?.getAttribute('id') !== `${updatedGrid?.key}-footer-label`  && footerRow?.getAttribute('id') !== `${updatedGrid?.key}-footer-total`) {
+                                    // Create a new <tr> element
+                                    const newRow = document.createElement('tr');   
+                                    newRow.setAttribute('id', `${updatedGrid?.key}-footer-label`)
+                                    const newSumRow = document.createElement('tr');   
+                                    newRow.setAttribute('id', `${updatedGrid?.key}-footer-total`)
+    
+                                    // Create and populate <td> elements for the new row
+                                    const totalLabels = [];
+                                    const totalValues = []
+                                    updatedGrid.components.forEach(record => {
+                                        if(this.component.columnMappingGrid.map(columns => columns.columnDropdown).includes(record.key)){
+                                            const label = this.component.columnMappingGrid.find(obj => obj.columnDropdown === record.key)
+                                            totalLabels.push({key: record.key,label: label.labelField})
+                                            totalValues.push({key: record.key,label: sum})
                                         }else {
-                                            columns.push({key: '',label:''})
+                                            totalLabels.push({key: '',label:''})
+                                            totalValues.push({key: '',label:''})
                                         }
+                                        
                                     })    
+                                
+                                   
+                                    totalLabels.forEach((colData) => {
+                                        const td = document.createElement('td');
+                                        if(colData.key){
+                                            td.setAttribute('id', `${colData.key}-label`)
+                                        }
+                                        
+                                        td.innerHTML = `<b>${colData.label}</b>` || ''; // Set the text content for each column
+                                        newRow.appendChild(td);
+                                    });
+                                    totalValues.forEach((colData) => {
+                                        const td = document.createElement('td');
+                                        if(colData.key){
+                                            td.setAttribute('id', `${colData.key}-total`)
+                                        }
+                                        
+                                        td.innerHTML = `<b>${colData.label}</b>` || ''; // Set the text content for each column
+                                        newSumRow.appendChild(td);
+                                    });
+    
+                                    // Append the new <tr> to the <tfoot>
+                                    tfoot.insertBefore(newSumRow, tfoot.firstChild);
+                                    tfoot.insertBefore(newRow, tfoot.firstChild);
                                 }
-                                columns.push({key: '',label:''})
-                                columns.forEach((colData) => {
-                                    const td = document.createElement('td');
-                                    if(colData.key){
-                                        td.setAttribute('id', colData.key)
-                                    }
-                                    
-                                    td.innerHTML = `<b>${colData.label}</b>` || ''; // Set the text content for each column
-                                    newRow.appendChild(td);
-                                });
-
-                                // Append the new <tr> to the <tfoot>
-                                tfoot.insertBefore(newRow, tfoot.firstChild);
-                            }
+                            })
+                        }
+                            
                         }
                     }
                 };
@@ -222,23 +269,56 @@
        
         // Handle the dropdown change event
         handleDropdownChange(value) {
-            this.dropdownValue = value.data.dropdown1;
+            const selectedGrid = this.getDataGridColumns(value); // Fetch columns for the selected grid
 
-            const columnList = (rootScope?.formSchema?.components || [])
-                .filter((component) => component.type === 'datagrid' && component.key === this.dropdownValue)
-                .flatMap((datagrid) => datagrid.components)
-                .filter((field) => field.type === 'textfield' || field.type === 'number')
-                .map((field) => ({ label: field.key, value: field.key }));
-
-            // Update dropdown2's options dynamically
-            const dropdown2 = editFormComponents.components.find((comp) => comp.key === 'dropdown2');
-            if (dropdown2) {
-                dropdown2.data.values = columnList; // Update options
-                this.redrawEditForm();
-            }
+            const dataGridComponent = {
+                type: 'datagrid',
+                key: 'columnMappingGrid',
+                label: 'Column Mapping',
+                components: [
+                    {
+                        type: 'select',
+                        key: 'columnDropdown',
+                        label: 'Select Column',
+                        dataSrc: 'values',
+                        data: {
+                            values: selectedGrid.map(col => ({ label: col, value: col })),
+                        }
+                    },
+                    {
+                        type: 'textfield',
+                        key: 'labelField',
+                        label: 'Label'
+                    }
+                ]
+            };
+        
+            this.updateFormComponents(dataGridComponent);
             
         }
 
+        // Function to fetch column names of the selected Data Grid
+        getDataGridColumns(gridKey) {
+            const selectedGrid = dataGridListInForm.find(grid => grid.value === gridKey);
+            return selectedGrid ? selectedGrid.columns : [];
+        }
+
+        // Function to update the form dynamically
+        updateFormComponents(newComponent) {
+            const formComponents = editFormComponents.components;
+            
+            // Remove existing Data Grid if present
+            const existingIndex = formComponents.findIndex(comp => comp.key === 'columnMappingGrid');
+            if (existingIndex !== -1) {
+                formComponents.splice(existingIndex, 1);
+            }
+
+            // Add new Data Grid component
+            formComponents.push(newComponent);
+            
+            // Refresh form rendering (assumes `redraw()` or similar method is available)
+            // this.prototype.redraw();
+        }
 
         // Add dropdown fields to the edit form
         static editForm = () => {
@@ -251,8 +331,7 @@
 
             const dataGridList = (rootScope?.formSchema?.components || [])
             .filter((component) => component.type === 'datagrid')
-            let dataGridListInForm = dataGridList.map((item) => ({ label: item.label, value: item.key }));
-
+            dataGridListInForm = dataGridList.map((item) => ({ label: item.label, value: item.key }));
             editFormComponents = tabs.components.find((component) => component.key === 'display');
             let columnList = []
             dataGridList.forEach((item) => {
@@ -274,19 +353,28 @@
                     onChange: (value) => this.prototype.handleDropdownChange.call(this.prototype, value), 
                 },
                 {
-                    type: 'select',
-                    key: 'dropdown2',
-                    label: 'Select Column for Sum',
-                    placeholder: 'Select an option',
-                    dataSrc: 'values',
-                    data: {
-                        values: columnList,
-                    },
-                    weight: 21, // Position in the Display tab
+                    type: 'datagrid',
+                    key: 'columnMappingGrid',
+                    label: 'Column Mapping',
+                    components: [
+                        {
+                            type: 'select',
+                            key: 'columnDropdown',
+                            label: 'Select Column',
+                            data: {
+                                values: columnList,
+                            }
+                        },
+                        {
+                            type: 'textfield',
+                            key: 'labelField',
+                            label: 'Label'
+                        }
+                    ]
                 }
             );
 
-        
+
             return editForm;
         };
         
