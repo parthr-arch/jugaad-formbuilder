@@ -1,4 +1,3 @@
-// SliderComponent.js
 (function () {
   const FieldComponent = Formio.Components.components.field;
 
@@ -13,6 +12,7 @@
         min: 0,
         max: 100,
         step: 1,
+        defaultValue: 0,  // Set default value for the slider
         ...extend,
       });
     }
@@ -33,89 +33,66 @@
 
     constructor(component, options, data) {
       super(component, options, data);
+      this.value = this.dataValue || this.component.defaultValue || 0;
     }
 
-    init() {
-      super.init();
-    }
-
-    get inputInfo() {
-      const info = super.inputInfo;
-      return info;
-    }
-
-    render(content) {
+    render() {
       return super.render(`
-          <div class="slider-component">
-              <input 
-                  type="range" 
-                  ref="sliderInput" 
-                  min="${this.component.min}" 
-                  max="${this.component.max}" 
-                  step="${this.component.step}" 
-                  value="${this.dataValue || 0}"
-              />
-              <span ref="sliderValue">${this.dataValue || 0}</span>
-          </div>
+        <div class="slider-component">
+          <label>${this.component.label}</label>
+          <input 
+            type="range" 
+            ref="sliderInput" 
+            min="${this.component.min}" 
+            max="${this.component.max}" 
+            step="${this.component.step}" 
+            value="${this.value}"
+          />
+          <span ref="sliderValue">${this.value}</span>
+        </div>
       `);
     }
 
-
-    removeComponent() {
-      this.remove();
-    }
-
     attach(element) {
+      super.attach(element);
+
       this.loadRefs(element, {
         sliderInput: 'single',
         sliderValue: 'single',
-        editButton: 'single',
-        removeButton: 'single'
       });
 
-      // Handle input value changes
+      // Update value on input change
       this.addEventListener(this.refs.sliderInput, 'input', (event) => {
-        const value = parseInt(event.target.value);
-        this.setValue(value);
-        this.refs.sliderValue.innerHTML = value;
+        const newValue = parseInt(event.target.value, 10);
+        this.setValue(newValue);
+        this.updateSliderValue(newValue);
       });
 
-      // Handle edit button click
-      this.addEventListener(this.refs.editButton, 'click', () => {
-        this.editComponent();
-      });
+      // Initialize slider value display
+      this.updateSliderValue(this.value);
 
-      // Handle remove button click
-      this.addEventListener(this.refs.removeButton, 'click', () => {
-        this.removeComponent();
-      });
-
-      return super.attach(element);
-    }
-    editComponent() {
-      const newLabel = prompt("Enter new label for the slider:", this.component.label);
-      if (newLabel !== null && newLabel !== "") {
-        this.component.label = newLabel;
-        this.redraw();
-      }
-    }
-
-    removeComponent() {
-      if (confirm("Are you sure you want to remove this slider?")) {
-        this.root.removeComponent(this);
-      }
-    }
-
-    getValue() {
-      return super.getValue();
+      return element;
     }
 
     setValue(value, flags = {}) {
+      if (value !== this.value) {
+        this.value = value;
+        if (this.refs.sliderInput) {
+          this.refs.sliderInput.value = value;
+          this.updateSliderValue(value);
+        }
+      }
       return super.setValue(value, flags);
     }
 
-    updateValue(value, flags = {}) {
-      return super.updateValue(value, flags);
+    getValue() {
+      return this.value;
+    }
+
+    updateSliderValue(value) {
+      if (this.refs.sliderValue) {
+        this.refs.sliderValue.innerHTML = value;
+      }
     }
   }
 

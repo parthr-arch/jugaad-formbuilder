@@ -18,7 +18,13 @@
       });
     }
 
-    // Provide metadata for the component in the builder
+
+    // Set default schema for the component
+    get defaultSchema() {
+      return EnableDisableComponent.schema();
+    }
+
+    // Constructor to initialize the component
     static get builderInfo() {
       return {
         title: 'Enable/Disable Toggle',
@@ -29,14 +35,9 @@
       };
     }
 
-    // Set default schema for the component
-    get defaultSchema() {
-      return EnableDisableComponent.schema();
-    }
-
-    // Constructor to initialize the component
     constructor(component, options, data) {
       super(component, options, data);
+      this.value = this.dataValue || this.component.defaultValue || false;
     }
 
     // Initialize the component
@@ -54,21 +55,29 @@
     render() {
       return super.render(`
         <div class="enable-disable-component">
-          <label>${this.component.label}</label>
-          <input type="checkbox" ${this.dataValue ? 'checked' : ''}>
-        </div>`);
+          <label>
+            <input type="checkbox" ref="toggleCheckbox" ${this.value ? 'checked' : ''}>
+            ${this.component.label}
+          </label>
+        </div>
+      `);
     }
 
-    // Attach event listeners and element interactions
     attach(element) {
       super.attach(element);
 
-      const checkbox = element.querySelector('input[type="checkbox"]');
-
-      // Add change event listener to update value on checkbox toggle
-      checkbox.addEventListener('change', (event) => {
-        this.setValue(event.target.checked);
+      this.loadRefs(element, {
+        toggleCheckbox: 'single',
       });
+
+      // Update value on checkbox change
+      this.addEventListener(this.refs.toggleCheckbox, 'change', (event) => {
+        const newValue = event.target.checked;
+        this.setValue(newValue);
+      });
+
+      // Ensure initial value is displayed correctly
+      this.setValue(this.value);
 
       return element;
     }
@@ -91,13 +100,18 @@
     }
 
     // Get the current value of the component
-    getValue() {
-      return super.getValue();
+    setValue(value, flags = {}) {
+      if (value !== this.value) {
+        this.value = value;
+        if (this.refs.toggleCheckbox) {
+          this.refs.toggleCheckbox.checked = value;
+        }
+      }
+      return super.setValue(value, flags);
     }
 
-    // Set a new value for the component
-    setValue(value, flags = {}) {
-      return super.setValue(value, flags);
+    getValue() {
+      return this.value;
     }
 
     // Update the value with optional flags
