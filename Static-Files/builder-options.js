@@ -5,11 +5,11 @@ var getData = [
 var builderOptions = {
     // "builder": null,
     "builder": {
-        "default": true,
-        "api": true,
-        "conditional": true,
-        "logic": true,
-        "layout": true,
+        "default": false,
+        "api": false,
+        "conditional": false,
+        "logic": false,
+        "layout": false,
         "allComponents": {
             "title": "Jugaad Components",
             "weight": 0,
