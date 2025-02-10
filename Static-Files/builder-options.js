@@ -48,7 +48,7 @@ var builderOptions = {
                 "tree": false,
                 "selectboxes": true,
                 "tags": false,
-                "address": true,
+                "address": false,
                 "location": true,
                 "repeater": true,
                 "submit": false,
@@ -80,79 +80,79 @@ var builderOptions = {
                 "columnsLayout": true,
                 "dataGridFooter": true,
                 "confirmemail": true,
-                "addressContainer": {
-                    "title": "Address",
-                    "key": "addressContainer",
-                    "schema": {
-                      "label": "Addresses",
-                      "type": "container",
-                      "key": "addressContainer",
-                      "input": true,
-                      "components": [
-                        {
-                          "label": "Postal Code",
-                          "key": "postalCode",
-                          "type": "textfield",
-                          "input": true
-                        },
-                        {
-                          "label": "Prefecture",
-                          "key": "prefecture",
-                          "type": "textfield",
-                          "input": true
-                        },
-                        {
-                          "label": "City",
-                          "key": "city",
-                          "type": "textfield",
-                          "input": true
-                        },
-                        {
-                          "label": "Address 1",
-                          "key": "addressone",
-                          "type": "textfield",
-                          "input": true
-                        },
-                        {
-                          "label": "Address 2",
-                          "key": "addresstwo",
-                          "type": "textfield",
-                          "input": true
-                        }, 
-                        {
-                          "label":"Full Address",
-                          "key":"fullAddress",
-                          "type":"textarea",
-                          "input":true
-                        }
+                // "addressContainer": {
+                //     "title": "Address",
+                //     "key": "addressContainer",
+                //     "schema": {
+                //       "label": "Addresses",
+                //       "type": "container",
+                //       "key": "addressContainer",
+                //       "input": true,
+                //       "components": [
+                //         {
+                //           "label": "Postal Code",
+                //           "key": "postalCode",
+                //           "type": "textfield",
+                //           "input": true
+                //         },
+                //         {
+                //           "label": "Prefecture",
+                //           "key": "prefecture",
+                //           "type": "textfield",
+                //           "input": true
+                //         },
+                //         {
+                //           "label": "City",
+                //           "key": "city",
+                //           "type": "textfield",
+                //           "input": true
+                //         },
+                //         {
+                //           "label": "Address 1",
+                //           "key": "addressone",
+                //           "type": "textfield",
+                //           "input": true
+                //         },
+                //         {
+                //           "label": "Address 2",
+                //           "key": "addresstwo",
+                //           "type": "textfield",
+                //           "input": true
+                //         }, 
+                //         {
+                //           "label":"Full Address",
+                //           "key":"fullAddress",
+                //           "type":"textarea",
+                //           "input":true
+                //         }
       
-                      ]
-                    }
-                  },
-                  "contactContainer": {
-                    "title": "Contact",
-                    "key": "contactContainer",
-                    "schema": {
-                      "label": "Contacts",
-                      "type": "container",
-                      "key": "contactContainer",
-                      "input": true,
-                      "components": [
-                        {
-                          "label": "Contact (Mobile)",
-                          "key": "contactMobile",
-                          "type": "textfield",
-                          "input": true
-                        },
-                        {
-                         "label": "Contact (landline)",
-                          "key": "contactLandline",
-                          "type": "textfield",
-                          "input": true
-                        }
-                      ]
-                    }
-                  },
+                //       ]
+                //     }
+                //   },
+                //   "contactContainer": {
+                //     "title": "Contact",
+                //     "key": "contactContainer",
+                //     "schema": {
+                //       "label": "Contacts",
+                //       "type": "container",
+                //       "key": "contactContainer",
+                //       "input": true,
+                //       "components": [
+                //         {
+                //           "label": "Contact (Mobile)",
+                //           "key": "contactMobile",
+                //           "type": "textfield",
+                //           "input": true
+                //         },
+                //         {
+                //          "label": "Contact (landline)",
+                //           "key": "contactLandline",
+                //           "type": "textfield",
+                //           "input": true
+                //         }
+                //       ]
+                //     }
+                //   },
                 // "geoLocation": true,
             }
         },

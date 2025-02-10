@@ -85,6 +85,10 @@ app.controller('PreGeneratedFormPreviewController', function ($scope, $rootScope
   {
     "template": "Static-Files/all-in-one-form1.js",
     "displayName": "All In One Form 1"
+  },
+  {
+    "template": "Static-Files/list-of-new-components.js",
+    "displayName": "List of new components"
   }
   ];
   $scope.loadScript = function () {
@@ -117,16 +121,16 @@ app.controller('PreGeneratedFormPreviewController', function ($scope, $rootScope
     $rootScope.formRendered = false;
   };
   $rootScope.externalSubmit = function () {
-    // console.log("List of Form Schema component", $rootScope?.formSchema?.components);
-    // console.log("List of Form Schema component", $rootScope?.formSchema?.changed?.instance?.parent?.root?.component?.components);
+    console.log("List of Form Schema component", $rootScope?.formSchema?.components);
+    console.log("List of Form Schema component", $rootScope?.formSchema?.changed?.instance?.parent?.root?.component?.components);
     if ($rootScope.formInstance) {
       $rootScope.formInstance
         .submit()
         .then((submission) => {
-          // console.log(submission);
+          console.log(submission);
         })
         .catch((error) => {
-          // console.log(error);
+          console.log(error);
         });
     } else { }
   };

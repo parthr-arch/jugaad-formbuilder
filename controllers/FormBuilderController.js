@@ -11,6 +11,7 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
     if (forms) {
       try {
         $scope.savedForms = JSON.parse(forms);
+        console.log($scope.savedForms);
       } catch (error) { }
     }
   };
@@ -287,6 +288,7 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
   $scope.getFormData = () => { };
 
   $scope.externalSubmit = () => {
+    debugger;
     if ($rootScope.formInstance) {
       $rootScope.formInstance.submit()
         .then((submission) => { 
