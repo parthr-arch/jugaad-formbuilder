@@ -96,7 +96,7 @@ app.controller('PreGeneratedFormPreviewController', function ($scope, $rootScope
   //   "displayName": "List of new components"
   // }
   ];
-  $scope.loadScript = function () {
+  $scope.loadScript = function (selectedScript) {
     var selectedTemplate = $scope.selectedScript;
     if (selectedTemplate) {
       $scope.removeOtherScripts(selectedTemplate);
@@ -142,6 +142,7 @@ app.controller('PreGeneratedFormPreviewController', function ($scope, $rootScope
   $rootScope.previewFormPreBuildedForm = function () {
     var previewElement = document.getElementById('preview');
     previewElement.innerHTML = '';
+    debugger;
     if (formSchema && languageSupport) {
       Formio.createForm(previewElement, formSchema, languageSupport).then(function (form) {
         // console.log(form);
