@@ -39,14 +39,14 @@ app.controller('PreGeneratedFormPreviewController', function ($scope, $rootScope
 
   }
   $scope.scripts = [
-  // {
-  //   "template": "Static-Files/form-schema-4.js",
-  //   "displayName": "Simple Calulation"
-  // },
-  // {
-  //   "template": "Static-Files/complex-calc.js",
-  //   "displayName": "Grid Calculation"
-  // },
+  {
+    "template": "Static-Files/form-schema-4.js",
+    "displayName": "Simple Calulation"
+  },
+  {
+    "template": "Static-Files/complex-calc.js",
+    "displayName": "Grid Calculation"
+  },
   {
     "template": "Static-Files/new-components-list.js",
     "displayName": "New Component Form"
