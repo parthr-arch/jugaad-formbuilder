@@ -6,16 +6,16 @@
         <div class="w-50">
             <select id="scriptSelector" ng-model="selectedScript" ng-change="loadScript()" 
                 class="form-control form-control-lg" aria-label="Select a script" aria-labelledby="scriptSelectorLabel">
-                <option value="" disabled selected>Select a script</option>
+                <option value="" disabled selected>Preview Form</option>
                 <option ng-repeat="script in scripts" ng-value="script.template">{{ script.displayName }}</option>
             </select>
         </div>
-        <button class="btn btn-primary btn-sm ms-2" ng-click="exportPDF()" ng-disabled="!selectedScript" aria-label="Export PDF">
+        <!-- <button class="btn btn-primary btn-sm ms-2" ng-click="exportPDF()" ng-disabled="!selectedScript" aria-label="Export PDF">
             <i class="bi bi-file-earmark-pdf"></i> Export PDF
-        </button>
+        </button> -->
     </div>
     
-    <div ng-if="selectedScript === 'Static-Files/translation-form.js'" class="d-flex align-items-center mb-3">
+    <div ng-if="selectedScript === 'Static-Files/new-components-list.js'" class="d-flex align-items-center mb-3">
         <label for="languageSelect" class="fw-bold me-2">Choose Language:</label>
         <button class="btn btn-secondary me-2" ng-click="setLanguage('en')" aria-label="Select English">English</button>
         <button class="btn btn-secondary" ng-click="setLanguage('jp')" aria-label="Select Japanese">Japanese</button>

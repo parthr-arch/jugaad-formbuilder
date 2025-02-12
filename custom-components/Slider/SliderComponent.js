@@ -39,7 +39,6 @@
     render() {
       return super.render(`
         <div class="slider-component">
-          <label>${this.component.label}</label>
           <input 
             type="range" 
             ref="sliderInput" 

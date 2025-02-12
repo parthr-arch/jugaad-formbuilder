@@ -57,7 +57,6 @@
         <div class="enable-disable-component">
           <label>
             <input type="checkbox" ref="toggleCheckbox" ${this.value ? 'checked' : ''}>
-            ${this.component.label}
           </label>
         </div>
       `);

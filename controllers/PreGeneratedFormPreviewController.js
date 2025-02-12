@@ -38,58 +38,63 @@ app.controller('PreGeneratedFormPreviewController', function ($scope, $rootScope
     });
 
   }
-  $scope.scripts = [{
-    "template": "Static-Files/form-schema-4.js",
-    "displayName": "Simple Calulation"
-  },
+  $scope.scripts = [
+  // {
+  //   "template": "Static-Files/form-schema-4.js",
+  //   "displayName": "Simple Calulation"
+  // },
+  // {
+  //   "template": "Static-Files/complex-calc.js",
+  //   "displayName": "Grid Calculation"
+  // },
   {
-    "template": "Static-Files/form-shutcho-shinsei.js",
-    "displayName": "shutcho shinsei"
+    "template": "Static-Files/new-components-list.js",
+    "displayName": "New Component Form"
   },
-  {
-    "template": "Static-Files/simple-form.js",
-    "displayName": "Simple Form"
-  },
-  {
-    "template": "Static-Files/complex-calc.js",
-    "displayName": "Complex Form"
-  },
-  {
-    "template": "Static-Files/wizard-form.js",
-    "displayName": "Wizard Form"
-  },
-  {
-    "template": "Static-Files/attandance.js",
-    "displayName": "Attandance Form"
-  },
-  {
-    "template": "Static-Files/translation-form.js",
-    "displayName": "Multi-Language Form"
-  },
-  {
-    "template": "Static-Files/all-data.js",
-    "displayName": "All Form"
-  },
-  {
-    "template": "Static-Files/form-schema-3.js",
-    "displayName": "form-schema-3"
-  },
-  {
-    "template": "Static-Files/form-schema-7.js",
-    "displayName": "Multi page form for pdf"
-  },
-  {
-    "template": "Static-Files/allInOne.js",
-    "displayName": "All In One"
-  },
-  {
-    "template": "Static-Files/all-in-one-form1.js",
-    "displayName": "All In One Form 1"
-  },
-  {
-    "template": "Static-Files/list-of-new-components.js",
-    "displayName": "List of new components"
-  }
+  // {
+  //   "template": "Static-Files/translation-form.js",
+  //   "displayName": "Multi-Language Form"
+  // },
+  // {
+  //   "template": "Static-Files/form-shutcho-shinsei.js",
+  //   "displayName": "shutcho shinsei"
+  // },
+  // {
+  //   "template": "Static-Files/simple-form.js",
+  //   "displayName": "Simple Form"
+  // },
+  // {
+  //   "template": "Static-Files/wizard-form.js",
+  //   "displayName": "Wizard Form"
+  // },
+  // {
+  //   "template": "Static-Files/attandance.js",
+  //   "displayName": "Attandance Form"
+  // },
+  // {
+  //   "template": "Static-Files/all-data.js",
+  //   "displayName": "All Form"
+  // },
+  // {
+  //   "template": "Static-Files/form-schema-3.js",
+  //   "displayName": "form-schema-3"
+  // },
+  // {
+  //   "template": "Static-Files/form-schema-7.js",
+  //   "displayName": "Multi page form for pdf"
+  // },
+  // {
+  //   "template": "Static-Files/allInOne.js",
+  //   "displayName": "All In One"
+  // },
+  // {
+  //   "template": "Static-Files/all-in-one-form1.js",
+  //   "displayName": "All In One Form 1"
+  // },
+  // {
+  //   "template": "Static-Files/list-of-new-components.js",
+  //   "displayName": "List of new components"
+  // }
   ];
   $scope.loadScript = function () {
     var selectedTemplate = $scope.selectedScript;

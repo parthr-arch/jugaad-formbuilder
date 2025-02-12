@@ -29,12 +29,12 @@ var formSchema = {
                 { label: 'Overall Experience?', value: 'overallExperience' }
             ]
         },
-        {
-            type: 'button',
-            action: 'submit',
-            label: 'Submit',
-            theme: 'primary'
-        }
+        // {
+        //     type: 'button',
+        //     action: 'submit',
+        //     label: 'Submit',
+        //     theme: 'primary'
+        // }
     ],
 };
 
