@@ -11,7 +11,7 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
     if (forms) {
       try {
         $scope.savedForms = JSON.parse(forms);
-        console.log($scope.savedForms);
+        // console.log($scope.savedForms);
       } catch (error) { }
     }
   };
@@ -99,6 +99,7 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
           }
         });
         builder.on('saveComponent', (schema) => { 
+          console.log('Form builder Components:', builder.schema.components);
           if(schema.conditionalLogic && schema.conditionalLogic.groups?.length){ 
             let showCondition = ''
             let hideCondition = ''
@@ -124,7 +125,7 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
             })
             schema.customConditional = `show = (${showCondition}) ${hideCondition ? `&& !(${hideCondition})` : ''}`
           }
-          console.log("schema", schema);
+          // console.log("schema", schema);
           $rootScope.formBuilderComponentSchema = schema;
           
         });
@@ -288,11 +289,10 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
   $scope.getFormData = () => { };
 
   $scope.externalSubmit = () => {
-    debugger;
     if ($rootScope.formInstance) {
       $rootScope.formInstance.submit()
         .then((submission) => { 
-          console.log(submission);
+          console.log("Submitted Value", submission);
         })
         .catch((error) => { });
     }
@@ -341,7 +341,7 @@ app.controller('FormIOController', function ($scope, $rootScope, formioComponent
           $rootScope.formRendered = true;
           if ($scope?.selectedForm?.data) {
             form.submission.data = angular.copy($scope.selectedForm.data);
-            console.log('Form Data', form.submission.data);
+            // console.log('Form Data', form.submission.data);
           }
           if ($scope?.selectedForm?.data) {
             if (form && form.submission) {
